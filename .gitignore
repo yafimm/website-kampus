@@ -1,0 +1,14 @@
+/node_modules
+/public/hot
+/public/storage
+/public/assets/images-resource/barang
+/public/assets/images-resource/inventaris
+/public/assets/document/peminjaman
+/storage/*.key
+/vendor
+.env
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log

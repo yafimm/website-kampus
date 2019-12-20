@@ -1,0 +1,17 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\config",
+    "\\database",
+    "\\public",
+    "\\resources",
+    "\\routes",
+    "\\storage",
+    "\\storage\\app",
+    "\\storage\\app\\public",
+    "\\storage\\framework",
+    "\\storage\\framework\\testing"
+  ],
+  "SelectedNode": "\\.env",
+  "PreviewInSolutionExplorer": false
+}
