@@ -41,16 +41,10 @@
                         <button type="submit" class="btn btn-block btn-primary">Masuk</button>
                     </div>
                     <div class="form-group">
-                        <a href="{{ url('/register/bagumum') }}" class="btn btn-block btn-primary">Daftar Bagian Umum</a>
-                    </div>
-                    <div class="form-group">
                         <a href="{{ url('/register/mahasiswa') }}" class="btn btn-block btn-primary">Daftar Mahasiswa</a>
                     </div>
                     <div class="form-group">
-                        <a href="{{ url('/register/ormawa') }}" class="btn btn-block btn-primary">Daftar Ormawa</a>
-                    </div>
-                    <div class="form-group">
-                        <a href="{{ url('/register/dosen') }}" class="btn btn-block btn-primary">Daftar Dosen</a>
+                        <a href="{{ url('/register/dosen') }}" class="btn btn-block btn-primary">Daftar Dosen / Non Dosen</a>
                     </div>
                     <div class="row">
                         <div class="checkbox-primary col-md-8" style="height: 20px;margin-bottom:20px">

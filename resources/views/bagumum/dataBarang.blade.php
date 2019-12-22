@@ -14,7 +14,7 @@
                     $('#tahunan').bsdatepicker({
                         autoclose: true,
                         format: " yyyy",
-                        viewMode: "years", 
+                        viewMode: "years",
                         minViewMode: "years",
                         startDate: '2019',
                         endDate: new Date(),
@@ -26,7 +26,7 @@
                     $('#bulanan').bsdatepicker({
                         autoclose: true,
                         format: " mm-yyyy",
-                        viewMode: "months", 
+                        viewMode: "months",
                         minViewMode: "months",
                         startDate: '2019',
                         endDate: new Date(),
@@ -39,7 +39,7 @@
                         format: 'mm-dd-yyyy'
                     });
                 });
-                
+
 
             </script>
             <!-- Bootstrap Datepicker -->
@@ -112,6 +112,8 @@
                             <thead>
                                 <tr>
                                     <th></th>
+                                    <th>No</th>
+                                    <th>Kode</th>
                                     <th>Nama</th>
                                     <th>Stock</th>
                                     <th>Satuan</th>
@@ -123,6 +125,8 @@
                             <tfoot>
                                 <tr>
                                     <th></th>
+                                    <th>No</th>
+                                    <th>Kode</th>
                                     <th>Nama</th>
                                     <th>Stock</th>
                                     <th>Satuan</th>
@@ -135,12 +139,10 @@
                                 @php
                                 $count = 0;
                                 @endphp
-                                @foreach ($data_barang as $barang)
-                                @php
-                                $count = $count + 1;
-                                @endphp
+                                @foreach ($data_barang as $key => $barang)
                                 <tr>
-                                    <td>{{$count}}</td>
+                                    <td>{{$key + 1}}</td>
+                                    <td>{{$barang->b_nama}}</td>
                                     <td>{{$barang->b_nama}}</td>
                                     <td>{{$barang->b_stock}}</td>
                                     <td>{{$barang->b_satuan}}</td>

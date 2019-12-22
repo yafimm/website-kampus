@@ -16,6 +16,7 @@ class CreateTableDataInventaris extends Migration
         Schema::create('inventaris', function (Blueprint $table) {
             $table->bigIncrements('i_id');
             $table->string('i_nama');
+            $table->string('i_kode');
             $table->integer('i_unit');
             $table->string('i_posisi');
             $table->string('i_foto');

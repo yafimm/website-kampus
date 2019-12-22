@@ -44,7 +44,7 @@
                 <h2>Halaman Data Pengguna</h2>
                 <p>Selamat Datang {{Auth::user()->name}} | <strong>{{Auth::user()->role}}</strong></p>
             </div>
-            
+
             <div class="panel">
                 <div class="panel-body">
                     <h3 class="title-hero">
@@ -53,9 +53,6 @@
                         </a>
                         <a href="{{ url('/admin/pengguna/tambah/mahasiswa') }}" class="btn btn-primary">
                             <i class="glyph-icon icon-plus-circle"></i> Tambah Akun Mahasiswa
-                        </a>
-                        <a href="{{ url('/admin/pengguna/tambah/ormawa') }}" class="btn btn-primary">
-                            <i class="glyph-icon icon-plus-circle"></i> Tambah Akun Ormawa
                         </a>
                     </h3>
                     <div class="example-box-wrapper">
