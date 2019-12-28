@@ -13,11 +13,23 @@ class HakAksesMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $nameRole)
+    public function handle($request, Closure $next, ...$nameRole)
     {
-        if(auth()->check() && !auth()->user()->hasRole($nameRole)){
-            return redirect('/400');
+
+        foreach($nameRole as $role) {
+
+            try {
+                if ($request->user()->hasRole($role)) {
+                  return $next($request);
+            }
+
+            } catch (ModelNotFoundException $exception) {
+              return abort('401');
+            }
         }
-        return $next($request);
+        // if(auth()->check() && !auth()->user()->hasRole($nameRole)){
+        //     return abort('401');
+        // }
+        // return $next($request);
     }
 }

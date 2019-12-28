@@ -19,6 +19,7 @@ class CreateTableDataBarang extends Migration
             $table->string('b_nama');
             $table->integer('b_stock');
             $table->string('b_satuan');
+            $table->integer('b_harga')->nullable();
             $table->string('b_foto')->nullable();
             $table->timestamps();
         });

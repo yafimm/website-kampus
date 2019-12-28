@@ -19,6 +19,7 @@ class CreateTableDataInventaris extends Migration
             $table->string('i_kode');
             $table->integer('i_unit');
             $table->string('i_posisi');
+            $table->string('i_harga');
             $table->string('i_foto');
             $table->string('i_keterangan');
             $table->timestamps();

@@ -15,7 +15,6 @@ Route::get('/','WelcomeController@index');
 
 //authentikasi user - V
 Route::get('/register/bagumum','RegisterController@getRegisterBagUmum');
-Route::get('/register/ormawa', 'RegisterController@getRegisterOrmawa');
 Route::get('register/mahasiswa', 'RegisterController@getRegisterMahasiswa');
 Route::get('register/dosen', 'RegisterController@getRegisterDosen');
 Route::post('/register/regist', 'RegisterController@postRegister');
@@ -23,42 +22,6 @@ Route::get('/login', 'LoginController@getLogin')->name('login');
 Route::post('/login/authentication', 'LoginController@postLogin');
 Route::get('/logout', 'LoginController@postLogout');
 
-//Admin - V
-Route::get('/admin/dashboard', 'AdminDashboardController@dashboardAdmin');
-//Admin-Barang - V
-Route::get('/admin/barang', 'AdminDataBarangController@index');
-Route::get('/admin/barang/tambah', 'AdminDataBarangController@tambah');
-Route::get('/admin/barang/ubah/{id}', 'AdminDataBarangController@ubah');
-Route::get('/admin/barang/lihat/{id}', 'AdminDataBarangController@lihat');
-Route::post('/admin/barang/prosesTambah', 'AdminDataBarangController@prosesTambah');
-Route::post('/admin/barang/prosesUbah', 'AdminDataBarangController@prosesUbah');
-Route::post('/admin/barang/prosesHapus', 'AdminDataBarangController@prosesHapus');
-Route::post('/admin/barang/cetakTahunan', 'AdminDataBarangController@cetakTahunan');
-Route::post('/admin/barang/cetakBulanan', 'AdminDataBarangController@cetakBulanan');
-Route::post('/admin/barang/cetakHarian', 'AdminDataBarangController@cetakTanggal');
-Route::post('/admin/barang/prosesRestock', 'AdminDataBarangController@prosesRestock');
-
-//Admin-Inventaris - V
-Route::get('/admin/inventaris', 'AdminDataInventarisController@index');
-Route::get('/admin/inventaris/tambah', 'AdminDataInventarisController@tambah');
-Route::get('/admin/inventaris/ubah/{id}', 'AdminDataInventarisController@ubah');
-Route::get('/admin/inventaris/lihat/{id}', 'AdminDataInventarisController@lihat');
-Route::post('/admin/inventaris/prosesTambah', 'AdminDataInventarisController@prosesTambah');
-Route::post('/admin/inventaris/prosesUbah', 'AdminDataInventarisController@prosesUbah');
-Route::post('/admin/inventaris/prosesHapus', 'AdminDataInventarisController@prosesHapus');
-Route::post('/admin/inventaris/cetakTahunan', 'AdminDataInventarisController@cetakTahunan');
-Route::post('/admin/inventaris/cetakBulanan', 'AdminDataInventarisController@cetakBulanan');
-Route::post('/admin/inventaris/cetakHarian', 'AdminDataInventarisController@cetakTanggal');
-
-//Admin-Pengguna - V
-Route::get('/admin/pengguna', 'AdminDataPenggunaController@index');
-Route::get('/admin/pengguna/tambah/{jenis}', 'AdminDataPenggunaController@tambah');
-Route::get('/admin/pengguna/ubah/{id}', 'AdminDataPenggunaController@ubah');
-Route::get('/admin/pengguna/lihat/{id}', 'AdminDataPenggunaController@lihat');
-Route::post('/admin/pengguna/prosesTambah', 'AdminDataPenggunaController@prosesTambah');
-Route::post('/admin/pengguna/prosesUbah', 'AdminDataPenggunaController@prosesUbah');
-Route::post('/admin/pengguna/prosesHapus', 'AdminDataPenggunaController@prosesHapus');
-Route::post('/admin/pengguna/resetPassword', 'AdminDataPenggunaController@resetPassword');
 
 //Admin-Peminjaman - V
 Route::get('/admin/peminjaman', 'AdminDataPeminjamanController@index');
@@ -77,33 +40,6 @@ Route::post('/admin/request/prosesHapus', 'AdminDataRequestController@prosesHapu
 Route::post('/admin/request/cetakTahunan', 'AdminDataRequestController@cetakTahunan');
 Route::post('/admin/request/cetakBulanan', 'AdminDataRequestController@cetakBulanan');
 Route::post('/admin/request/cetakHarian', 'AdminDataRequestController@cetakTanggal');
-
-
-Route::get('/bagumum/dashboard', 'BagumumDashboardController@dashboardBagUmum');
-//Bagumum-Barang - V
-Route::get('/bagumum/barang', 'BagumumDataBarangController@index');
-Route::get('/bagumum/barang/tambah', 'BagumumDataBarangController@tambah');
-Route::get('/bagumum/barang/ubah/{id}', 'BagumumDataBarangController@ubah');
-Route::get('/bagumum/barang/lihat/{id}', 'BagumumDataBarangController@lihat');
-Route::post('/bagumum/barang/prosesTambah', 'BagumumDataBarangController@prosesTambah');
-Route::post('/bagumum/barang/prosesUbah', 'BagumumDataBarangController@prosesUbah');
-Route::post('/bagumum/barang/prosesHapus', 'BagumumDataBarangController@prosesHapus');
-Route::post('/bagumum/barang/cetakTahunan', 'BagumumDataBarangController@cetakTahunan');
-Route::post('/bagumum/barang/cetakBulanan', 'BagumumDataBarangController@cetakBulanan');
-Route::post('/bagumum/barang/cetakHarian', 'BagumumDataBarangController@cetakTanggal');
-Route::post('/bagumum/barang/prosesRestock', 'BagumumDataBarangController@prosesRestock');
-
-//Bagumum-Inventaris - V
-Route::get('/bagumum/inventaris', 'BagumumDataInventarisController@index');
-Route::get('/bagumum/inventaris/tambah', 'BagumumDataInventarisController@tambah');
-Route::get('/bagumum/inventaris/ubah/{id}', 'BagumumDataInventarisController@ubah');
-Route::get('/bagumum/inventaris/lihat/{id}', 'BagumumDataInventarisController@lihat');
-Route::post('/bagumum/inventaris/prosesTambah', 'BagumumDataInventarisController@prosesTambah');
-Route::post('/bagumum/inventaris/prosesUbah', 'BagumumDataInventarisController@prosesUbah');
-Route::post('/bagumum/inventaris/prosesHapus', 'BagumumDataInventarisController@prosesHapus');
-Route::post('/bagumum/inventaris/cetakTahunan', 'BagumumDataInventarisController@cetakTahunan');
-Route::post('/bagumum/inventaris/cetakBulanan', 'BagumumDataInventarisController@cetakBulanan');
-Route::post('/bagumum/inventaris/cetakHarian', 'BagumumDataInventarisController@cetakTanggal');
 
 //Bagumum-Peminjaman - V
 Route::get('/bagumum/peminjaman', 'BagumumDataPeminjamanController@index');
@@ -154,6 +90,81 @@ Route::post('/dosen/peminjaman/prosesUbah', 'DosenDataPeminjamanController@prose
 
 Route::get('/dosen/peminjaman/cetak/{id}', 'DosenDataPeminjamanController@cetak');
 Route::get('/user/peminjaman/cetak/{id}', 'UserDataPeminjamanController@cetak');
+
+Route::group(['middleware' => ['web', 'role:admin,bagumum']], function() {
+  // Modul Barang
+  Route::get('/barang', 'BarangController@index')->name('barang.index');
+  Route::post('/barang/restock', 'BarangController@prosesRestock')->name('barang.restock');
+  Route::get('/barang/tambah', 'BarangController@tambah')->name('barang.tambah');
+  Route::post('/barang/cetaktahunan', 'BarangController@cetakTahunan')->name('barang.cetakTahunan');
+  Route::post('/barang/cetakBulanan', 'BarangController@cetakBulanan')->name('barang.cetakBulanan');
+  Route::post('/barang/cetakHarian', 'BarangController@cetakTanggal')->name('barang.cetakHarian');
+  Route::post('/barang', 'BarangController@prosesTambah')->name('barang.prosesTambah');
+  Route::delete('/barang/{id}', 'BarangController@prosesHapus')->name('barang.prosesHapus');
+  Route::get('/barang/{id}', 'BarangController@lihat')->name('barang.lihat');
+  Route::put('/barang/{id}', 'BarangController@prosesUbah')->name('barang.prosesUbah');
+  Route::get('/barang/{id}/edit', 'BarangController@ubah')->name('barang.ubah');
+
+  // Modul Inventaris
+  Route::get('/inventaris', 'InventarisController@index')->name('inventaris.index');
+  Route::post('/inventaris', 'InventarisController@prosesTambah')->name('inventaris.prosesTambah');
+  Route::post('/inventaris/prosesHapus', 'InventarisController@prosesHapus')->name('inventaris.prosesHapus');
+  Route::get('/inventaris/tambah', 'InventarisController@tambah')->name('inventaris.tambah');
+  Route::get('/inventaris/{id}', 'InventarisController@lihat')->name('inventaris.lihat');
+  Route::put('/inventaris/{id}', 'InventarisController@prosesUbah')->name('inventaris.prosesUbah');
+  Route::get('/inventaris/{id}/edit', 'InventarisController@ubah')->name('inventaris.ubah');
+});
+
+
+// Modul Peminjaman
+Route::group(['middleware' => ['web', 'role:admin,bagumum']], function() {
+  Route::post('/peminjaman/konfirmasi', 'PeminjamanController@prosesKonfirmasi')->name('peminjaman.prosesKonfirmasi');
+  Route::post('/peminjaman/cetakTahunan', 'PeminjamanController@cetakTahunan')->name('peminjaman.cetakTahunan');
+  Route::post('/peminjaman/cetakBulanan', 'PeminjamanController@cetakBulanan')->name('peminjaman.cetakBulanan');
+  Route::post('/peminjaman/cetakHarian', 'PeminjamanController@cetakTanggal')->name('peminjaman.cetakHarian');
+});
+
+Route::group(['middleware' => ['web', 'role:admin,bagumum,dosen,mahasiswa']], function() {
+  Route::get('/peminjaman', 'PeminjamanController@index')->name('peminjaman.index');
+  Route::get('/peminjaman/{id}', 'PeminjamanController@lihat')->name('peminjaman.lihat');
+  Route::post('/peminjaman/prosesHapus', 'PeminjamanController@prosesHapus')->name('peminjaman.prosesHapus');
+});
+
+Route::group(['middleware' => ['web', 'role:dosen,mahasiswa']], function() {
+  Route::get('/peminjaman/pinjam', 'PeminjamanController@pinjam')->name('peminjaman.pinjam');
+  Route::post('/peminjaman/prosesPinjam', 'PeminjamanController@prosesPinjam')->name('peminjaman.prosesPinjam');
+});
+
+
+// Modul Pengguna
+Route::group(['middleware' => ['web', 'role:admin']], function() {
+    Route::get('/pengguna', 'UsersController@index')->name('user.index');
+    Route::get('/pengguna/tambah/{role}', 'UsersController@tambah')->name('user.tambah');
+    Route::get('/pengguna/{id}', 'UsersController@lihat')->name('user.lihat');
+    Route::put('/pengguna/{id}', 'UsersController@prosesUbah')->name('user.prosesUbah');
+    Route::get('/pengguna/{id}/edit', 'UsersController@ubah')->name('user.ubah');
+    Route::post('/pengguna/prosesHapus', 'UsersController@prosesHapus')->name('user.prosesHapus');
+    Route::post('/pengguna/prosesUbahPassword', 'UsersController@prosesUbahPassword')->name('user.resetPassword');
+});
+
+// Modul request
+Route::group(['middleware' => ['web', 'role:dosen,admin,bagumum']], function() {
+  Route::get('/request', 'RequestController@index')->name('request.index');
+  Route::get('/request/tambah', 'RequestController@tambah')->name('request.tambah');
+  Route::get('/request/{id}/edit', 'RequestController@ubah')->name('request.ubah');
+  Route::get('/request/{id}', 'RequestController@lihat')->name('request.lihat');
+  Route::post('/request/konfirmasi', 'RequestController@prosesKonfirmasi')->name('request.prosesKonfirmasi');
+  Route::post('/request/prosesHapus', 'RequestController@prosesHapus')->name('request.prosesHapus');
+});
+
+Route::group(['middleware' => ['web', 'role:admin,bagumum']], function() {
+  Route::post('/request/cetakTahunan', 'RequestController@cetakTahunan')->name('request.cetakTahunan');
+  Route::post('/request/cetakBulanan', 'RequestController@cetakBulanan')->name('request.cetakBulanan');
+  Route::post('/request/cetakHarian', 'RequestController@cetakTanggal')->name('request.cetakHarian');
+});
+
+
+Route::get('/dashboard', 'UsersController@dashboard')->name('dashboard');
 
 Route::get('/default', function () {
     return view('dashboard');

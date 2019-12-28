@@ -9,20 +9,21 @@ class LoginController extends Controller
 {
     public function __construct()
     {
-        
+
     }
 
     public function getLogin(){
         if(Auth::check()){
-            if(Auth::user()->role == 'mahasiswa' || Auth::user()->role == 'ormawa'){
-                return redirect('/user/dashboard');
-            }else if(Auth::user()->role == 'admin'){
-                return redirect('/admin/dashboard');
-            }else if(Auth::user()->role == 'bagumum'){
-                return redirect('/bagumum/dashboard');
-            }else if(Auth::user()->role == 'dosen'){
-                return redirect('/dosen/dashboard');
-            }
+            // if(Auth::user()->role == 'mahasiswa' || Auth::user()->role == 'ormawa'){
+            //     return redirect('/user/dashboard');
+            // }else if(Auth::user()->role == 'admin'){
+            //     return redirect('/admin/dashboard');
+            // }else if(Auth::user()->role == 'bagumum'){
+            //     return redirect('/bagumum/dashboard');
+            // }else if(Auth::user()->role == 'dosen'){
+            //     return redirect('/dosen/dashboard');
+            // }
+            return redirect('dashboard');
         }else{
             return view('auth.viewLogin');
         }
@@ -33,15 +34,16 @@ class LoginController extends Controller
          $email = $request->post('email');
          $password = $request->post('password');
          if(Auth::attempt(['email' => $email, 'password' => $password])){
-            if(Auth::user()->role == 'mahasiswa' || Auth::user()->role == 'ormawa'){
-                return redirect('/user/dashboard');
-            }else if(Auth::user()->role == 'admin'){
-                return redirect('/admin/dashboard');
-            }else if(Auth::user()->role == 'bagumum'){
-                return redirect('/bagumum/dashboard');
-            }else if(Auth::user()->role == 'dosen'){
-                return redirect('/dosen/dashboard');
-            }
+            // if(Auth::user()->role == 'mahasiswa' || Auth::user()->role == 'ormawa'){
+            //     return redirect('/user/dashboard');
+            // }else if(Auth::user()->role == 'admin'){
+            //     return redirect('/admin/dashboard');
+            // }else if(Auth::user()->role == 'bagumum'){
+            //     return redirect('/bagumum/dashboard');
+            // }else if(Auth::user()->role == 'dosen'){
+            //     return redirect('/dosen/dashboard');
+            // }
+            return redirect('dashboard');
          }else{
             return redirect('/');
          }
