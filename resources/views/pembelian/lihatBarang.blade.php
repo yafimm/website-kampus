@@ -1,4 +1,4 @@
-@extends('template.layout')
+@extends('bagumum.app')
 @section('content')
 <div id="page-content-wrapper">
     <div id="page-content">
@@ -34,7 +34,7 @@
             <script type="text/javascript" src="{{ asset('assets/widgets/charts/piegage/piegage-demo.js') }}"></script>
 
             <div id="page-title">
-                <h2>Halaman Lihat Data Pengguna</h2>
+                <h2>Halaman Lihat Data Barang</h2>
                 <p>Selamat Datang {{Auth::user()->name}} | <strong>{{Auth::user()->role}}</strong></p>
             </div>
 
@@ -46,28 +46,39 @@
                     <div class="example-box-wrapper">
                         <div class="example-box-wrapper">
                             <form class="form-horizontal">
-
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">Status</label>
+                                    <label class="col-sm-3 control-label">Nama Barang</label>
                                     <div class="col-sm-6">
-                                        @if ($data_request[0]->rb_status == 0)
-                                        <span class="bs-label label-primary">Menunggu</span>
-                                        @elseif ($data_request[0]->rb_status == 1)
-                                        <span class="bs-label label-warning">Ditolak</span>
+                                        <input disabled name="nama" type="text" class="form-control" id=""
+                                            placeholder="Kolom Nama Barang" value="{{$data_barang->b_nama}}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Stock Barang</label>
+                                    <div class="col-sm-6">
+                                        <input disabled name="stock" type="number" class="form-control" id=""
+                                            placeholder="Kolom Stock Barang" value="{{$data_barang->b_stock}}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Harga Barang</label>
+                                    <div class="col-sm-6">
+                                        <input disabled name="harga" type="number" class="form-control" id=""
+                                            placeholder="Kolom Harga Barang" value="{{$data_barang->b_harga}}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Satuan</label>
+                                    <div class="col-sm-6">
+                                        @if($data_barang->b_satuan == 'Rim')
+                                        <span class="bs-label label-info">Rim</span>
+                                        @elseif ($data_barang->b_satuan == 'Pcs')
+                                        <span class="bs-label label-info">Pcs</span>
                                         @else
-                                        <span class="bs-label label-success">Disetujui</span>
+                                        <span class="bs-label label-info">Pack</span>
                                         @endif
                                     </div>
                                 </div>
-
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">Nama Pengguna</label>
-                                    <div class="col-sm-6">
-                                        <input disabled name="nama" type="text" class="form-control" id="nama"
-                                            placeholder="Kolom Nama Pengguna" value="{{$data_request[0]->name}}">
-                                    </div>
-                                </div>
-
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Foto Barang</label>
                                     <div class="row">
@@ -78,31 +89,24 @@
                                                     <div class="center-vertical">
                                                         <div class="center-content">
                                                             <h3 class="thumb-heading animated bounceIn">
-                                                                {{$data_request[0]->b_nama}}
+                                                                {{$data_barang->b_nama}}
+                                                                <small>{{$data_barang->created_at}}</small>
                                                             </h3>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="thumb-overlay bg-black"></div>
-                                                <img src="{{ asset('assets/images-resource/barang/resize_'.$data_request[0]->b_foto) }}"
-                                                    alt="">
+                                                <img src="{{ asset('assets/images-resource/barang/resize_'.$data_barang->b_foto) }}"
+                                                    alt="" >
                                             </div>
                                         </div>
                                     </div>
 
                                 </div>
-
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">Jumlah</label>
-                                    <div class="col-sm-6">
-                                        <input disabled name="jumlah" type="text" class="form-control" id="jumlah"
-                                            placeholder="Kolom Jumlah" value="{{$data_request[0]->rb_jumlah}}">
-                                    </div>
-                                </div>
 
-                                <div class="form-group">
                                     <div class="col-sm-3">
-                                        <a href="{{ url('/admin/request') }}" class="btn btn-blue-alt"><i
+                                        <a href="{{ url('/bagumum/barang') }}" class="btn btn-blue-alt"><i
                                                 class="glyph-icon icon-arrow-left"></i> Kembali</a>
                                     </div>
                                 </div>

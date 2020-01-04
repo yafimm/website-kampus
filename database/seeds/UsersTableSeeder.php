@@ -37,5 +37,14 @@ class UsersTableSeeder extends Seeder
         'nip' => '12202020',
         'npm' => '1222',
       ]);
+
+      \App\User::create([
+        'name' => 'dosen',
+        'email' => 'dosen@gmail.com',
+        'password' => bcrypt('dosen'),
+        'role' => 'dosen',
+        'nip' => '12202020',
+        'npm' => '1222',
+      ]);
     }
 }

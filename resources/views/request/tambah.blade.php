@@ -1,4 +1,4 @@
-@extends('dosen.app')
+@extends('template.layout')
 @section('content')
 <div id="page-content-wrapper">
     <div id="page-content">
@@ -46,7 +46,7 @@
                     </h3>
                     <div class="example-box-wrapper">
                         <div class="example-box-wrapper">
-                            <form class="form-horizontal" action="{{ url('/dosen/request/prosesTambah') }}"
+                            <form class="form-horizontal" action="{{ route('request.prosesTambah') }}"
                                 method="POST" enctype="multipart/form-data">
                                 {{ csrf_field() }}
                                 <input type="hidden" name="status" value="0">

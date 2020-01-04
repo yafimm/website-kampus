@@ -47,9 +47,12 @@
             <script type="text/javascript" src="{{ asset('assets/widgets/datepicker-ui/datepicker-demo.js') }}">
             </script>
 
+
             <script type="text/javascript" src="{{ asset('assets/widgets/datatable/datatable.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/widgets/datatable/datatable-bootstrap.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/widgets/datatable/datatable-tabletools.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/widgets/datatable/datatable-bootstrap.js') }}">
+            </script>
+            <script type="text/javascript" src="{{ asset('assets/widgets/datatable/datatable-tabletools.js') }}">
+            </script>
             <script type="text/javascript" src="{{ asset('assets/widgets/datatable/datatable-reorder.js') }}"></script>
 
             <script type="text/javascript">
@@ -58,8 +61,8 @@
                 $(document).ready(function () {
                     var table = $('#dt_barang').DataTable();
                     var tt = new $.fn.dataTable.TableTools(table);
-
                     $('.dataTables_filter input').attr("placeholder", "Search...");
+
                 });
 
             </script>
@@ -84,14 +87,16 @@
             <script type="text/javascript" src="{{ asset('assets/widgets/charts/piegage/piegage-demo.js') }}"></script>
 
             <div id="page-title">
-                <h2>Halaman Data Request Barang</h2>
+                <h2>Halaman Data Barang</h2>
                 <p>Selamat Datang {{Auth::user()->name}} | <strong>{{Auth::user()->role}}</strong></p>
             </div>
 
             <div class="panel">
                 <div class="panel-body">
-                    @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('bagumum'))
                     <h3 class="title-hero">
+                        <a href="{{ route('barang.tambah') }}" class="btn btn-primary">
+                            <i class="glyph-icon icon-plus-circle"></i> Tambah
+                        </a>
                         <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportTahunan">
                             <i class="glyph-icon icon-clipboard"></i> Cetak Laporan Tahunan
                         </button>
@@ -102,17 +107,16 @@
                             <i class="glyph-icon icon-clipboard"></i> Cetak Laporan Harian
                         </button>
                     </h3>
-                    @endif
                     <div class="example-box-wrapper">
-                        <table id="dt_barang" class="table table-striped table-bordered" cellspacing="0"
-                            width="100%">
+                        <table id="dt_barang" class="table table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th>User</th>
-                                    <th>Barang</th>
-                                    <th>Jumlah</th>
-                                    <th>Status</th>
+                                    <th>Kode</th>
+                                    <th>Nama</th>
+                                    <th>Stock</th>
+                                    <th>Satuan</th>
+                                    <th>Harga</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -120,80 +124,40 @@
                             <tfoot>
                                 <tr>
                                     <th></th>
-                                    <th>User</th>
-                                    <th>Barang</th>
-                                    <th>Jumlah</th>
-                                    <th>Status</th>
+                                    <th>Kode</th>
+                                    <th>Nama</th>
+                                    <th>Stock</th>
+                                    <th>Satuan</th>
+                                    <th>Harga</th>
                                     <th>Aksi</th>
                                 </tr>
                             </tfoot>
 
                             <tbody>
-                                @php
-                                $count = 0;
-                                @endphp
-                                @foreach ($data_request as $request)
-                                @php
-                                $count = $count + 1;
-                                @endphp
+                                @foreach ($data_barang as $key => $barang)
                                 <tr>
-                                    <td>{{$count}}</td>
-                                    <td>{{$request->name}}</td>
-                                    <td>{{$request->b_nama}}</td>
-                                    <td>{{$request->rb_jumlah}}</td>
+                                    <td>{{$key + 1}}</td>
+                                    <td>{{$barang->b_kode}}</td>
+                                    <td>{{$barang->b_nama}}</td>
+                                    <td>{{$barang->b_stock}}</td>
+                                    <td>{{$barang->b_satuan}}</td>
+                                    <td>{{$barang->b_harga}}</td>
                                     <td>
-                                        @if ($request->rb_status == 0)
-                                            <span class="bs-label label-blue-alt">Menunggu</span>
-                                        @elseif($request->rb_status == 1)
-                                            <span class="bs-label label-danger">Ditolak</span>
-                                        @elseif($request->rb_status == 2)
-                                            <span class="bs-label label-success">Disetujui</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if ($request->rb_status == 0)
-                                            <a href="{{ route('request.lihat',$request->rb_id) }}" class="btn btn-info">
-                                                <i class="glyph-icon icon-circle-o"></i> Lihat
-                                            </a>
-                                            @if(Auth::user()->hasRole('dosen'))
-                                            <a href="{{ route('request.ubah',$request->rb_id) }}"
-                                                class="btn btn-info">
-                                                <i class="glyph-icon icon-edit"></i> Edit
-                                            </a>
-                                            @endif
-                                            @if((Auth::user()->hasRole('admin') || Auth::user()->hasRole('bagumum')))
-                                            <button class="btn btn-primary btn-md" data-toggle="modal"
-                                            data-target="#modalSetuju" data-requestid="{{$request->rb_id}}">
-                                            <i class="glyph-icon icon-check"></i> Setuju
-                                            </button>
-
-                                            <button class="btn btn-warning btn-md" data-toggle="modal"
-                                            data-target="#modalTolak" data-requestid="{{$request->rb_id}}">
-                                            <i class="glyph-icon icon-remove"></i> Tolak
-                                            </button>
-                                            @endif
-
-                                            <button class="btn btn-danger btn-md" data-toggle="modal"
-                                            data-target="#modalHapus" data-requestid="{{$request->rb_id}}">
-                                            <i class="glyph-icon icon-trash"></i> Hapus
-                                            </button>
-                                        @elseif($request->rb_status == 1)
-                                            <a href="{{ route('request.lihat',$request->rb_id) }}" class="btn btn-info">
-                                                <i class="glyph-icon icon-circle-o"></i> Lihat
-                                            </a>
-
-                                            @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('bagumum'))
-
-                                            @endif
-                                            <button class="btn btn-danger btn-md" data-toggle="modal"
-                                            data-target="#modalHapus" data-requestid="{{$request->rb_id}}">
-                                            <i class="glyph-icon icon-trash"></i> Hapus
-                                            </button>
-                                        @elseif($request->rb_status == 2)
-                                            <a href="{{ route('request.lihat',$request->rb_id) }}" class="btn btn-info">
-                                                <i class="glyph-icon icon-circle-o"></i> Lihat
-                                            </a>
-                                        @endif
+                                        <a href="{{ route('barang.lihat', $barang->b_id) }}" class="btn btn-info">
+                                            <i class="glyph-icon icon-circle-o"></i> Lihat
+                                        </a>
+                                        <a href="{{ route('barang.ubah', $barang->b_id) }}"
+                                            class="btn btn-warning">
+                                            <i class="glyph-icon icon-pencil"></i> Ubah
+                                        </a>
+                                        <button class="btn btn-danger btn-md" data-toggle="modal"
+                                            data-target="#modalHapus" data-barangid="{{$barang->b_id}}">
+                                            <i class="glyph-icon icon-remove"></i> Hapus
+                                        </button>
+                                        <button class="btn btn-primary btn-md" data-toggle="modal"
+                                            data-target="#modalRestock" data-barangid="{{$barang->b_id}}">
+                                            <i class="glyph-icon icon-refresh"></i> Tambah Stock
+                                        </button>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -204,88 +168,21 @@
             </div>
 
             <!-- Kumpulan Modal -->
-            <div class="modal fade" id="modalSetuju" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header" style="background-color:#079bef;color:#fff">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">Konfirmasi Setuju</h4>
-                        </div>
-                        <form name="setujuForm" id="setujuForm" action="{{ route('request.prosesKonfirmasi') }}"
-                            method="POST" class="form-horizontal">
-                            {{ csrf_field() }}
-                            <input type="hidden" name="idsetuju" id="idsetuju">
-                            <input type="hidden" name="jenis" id="jenis" value="2">
-                            <div class="modal-body">
-                                <p>Yakin ingin Konfirmasi Setuju ?</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-success">Setuju</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <script type="text/javascript">
-                $('#modalSetuju').on('show.bs.modal', function (event) {
-                    var button = $(event.relatedTarget);
-                    var id = button.data('requestid');
-                    var modal = $(this);
-                    modal.find('#idsetuju').val(id);
-                });
-            </script>
-
-            <div class="modal fade" id="modalTolak" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header" style="background-color:#e67e22;color:#fff">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">Tolak Request</h4>
-                        </div>
-                        <form name="deleteForm" id="deleteForm" action="{{ route('request.prosesKonfirmasi') }}"
-                            method="POST" class="form-horizontal">
-                            {{ csrf_field() }}
-                            <input type="hidden" name="idtolak" id="idtolak">
-                            <input type="hidden" name="jenis" id="jenis" value="1">
-                            <div class="modal-body">
-                                <p>Yakin ingin menolak request ?</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-warning">Tolak</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <script type="text/javascript">
-                $('#modalTolak').on('show.bs.modal', function (event) {
-                    var button = $(event.relatedTarget);
-                    var id = button.data('requestid');
-                    var modal = $(this);
-                    modal.find('#idtolak').val(id);
-                });
-            </script>
-
             <div class="modal fade" id="modalHapus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header" style="background-color:#e74c3c;color:#fff">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">Hapus Request</h4>
+                            <h4 class="modal-title">Hapus Data</h4>
                         </div>
-                        <form name="deleteForm" id="deleteForm" action="{{ route('request.prosesHapus') }}"
+                        <form name="deleteForm" id="deleteForm" action="{{ route('barang.prosesHapus', $barang->b_id) }}"
                             method="POST" class="form-horizontal">
-                            {{ csrf_field() }}
-                            <input type="hidden" name="idhapus" id="idhapus">
+                            @CSRF
+                            @method('DELETE')
+                            <input type="hidden" name="id" id="id">
                             <div class="modal-body">
-                                <p>Yakin ingin menghapus data request ?</p>
+                                <p>Yakin ingin menghapus Data ?</p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-primary" data-dismiss="modal">Batal</button>
@@ -299,10 +196,11 @@
             <script type="text/javascript">
                 $('#modalHapus').on('show.bs.modal', function (event) {
                     var button = $(event.relatedTarget);
-                    var id = button.data('requestid');
+                    var id = button.data('barangid');
                     var modal = $(this);
-                    modal.find('#idhapus').val(id);
+                    modal.find('#id').val(id);
                 });
+
             </script>
 
             <div class="modal fade" id="modalReportTahunan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -313,7 +211,7 @@
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             <h4 class="modal-title"><strong>Cetak Laporan Tahunan</strong></h4>
                         </div>
-                        <form name="reportTahunan" id="reportTahunan" action="{{ route('request.cetakTahunan') }}"
+                        <form name="reportTahunan" id="reportTahunan" action="{{ route('barang.cetakTahunan') }}"
                             method="POST" class="form-horizontal bordered-row">
                             {{ csrf_field() }}
                             <div class="modal-body">
@@ -348,7 +246,7 @@
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             <h4 class="modal-title"><strong>Cetak Laporan Bulanan</strong></h4>
                         </div>
-                        <form name="reportBulanan" id="reportBulanan" action="{{ route('request.cetakBulanan') }}"
+                        <form name="reportBulanan" id="reportBulanan" action="{{ route('barang.cetakBulanan') }}"
                             method="POST" class="form-horizontal bordered-row">
                             {{ csrf_field() }}
                             <div class="modal-body">
@@ -383,7 +281,7 @@
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             <h4 class="modal-title"><strong>Cetak Laporan Harian</strong></h4>
                         </div>
-                        <form name="reportHarian" id="reportHarian" action="{{ route('request.cetakHarian') }}"
+                        <form name="reportHarian" id="reportHarian" action="{{ route('barang.cetakHarian') }}"
                             method="POST" class="form-horizontal bordered-row">
                             {{ csrf_field() }}
                             <div class="modal-body">
@@ -409,6 +307,47 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="modalRestock" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color:#357ef2;color:#fff">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Tambah Stock Barang</h4>
+                        </div>
+                        <form name="restockForm" id="restockForm" action="{{ route('barang.restock') }}"
+                            method="POST" class="form-horizontal">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="id" id="id">
+                            <div class="modal-body">
+                                <p>Masukkan penambahan stock</p>
+                                <br>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Tambah Stock</label>
+                                    <div class="col-sm-6">
+                                        <input required name="stock" type="number" class="form-control" id="stock"
+                                            placeholder="Kolom Stock Barang">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-success">Tambahkan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <script type="text/javascript">
+                $('#modalRestock').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget);
+                    var id = button.data('barangid');
+                    var modal = $(this);
+                    modal.find('#id').val(id);
+                });
+            </script>
 
 
         </div>

@@ -1,4 +1,4 @@
-@extends('dosen.app')
+@extends('template.layout')
 @section('content')
 <div id="page-content-wrapper">
     <div id="page-content">

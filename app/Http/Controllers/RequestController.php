@@ -113,7 +113,7 @@ class RequestController extends Controller
                 'rb_status' => $jenis
             ]);
         }
-        return redirect()->route('request.indexx');
+        return redirect()->route('request.index');
     }
 
     public function cetakTahunan(Request $request){

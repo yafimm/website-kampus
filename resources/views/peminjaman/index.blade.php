@@ -202,24 +202,42 @@
                                             <i class="glyph-icon icon-circle-o"></i> Lihat
                                         </a>
 
-                                        <button class="btn btn-primary btn-md" data-toggle="modal"
-                                        data-target="#modalSetuju" data-peminjamanid="{{$peminjaman->p_id}}">
-                                        <i class="glyph-icon icon-check"></i> Setuju
-                                        </button>
+                                          @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('bagumum'))
+                                          <button class="btn btn-primary btn-md" data-toggle="modal"
+                                          data-target="#modalSetuju" data-peminjamanid="{{$peminjaman->p_id}}">
+                                          <i class="glyph-icon icon-check"></i> Setuju
+                                          </button>
 
-                                        <button class="btn btn-warning btn-md" data-toggle="modal"
-                                        data-target="#modalTolak" data-peminjamanid="{{$peminjaman->p_id}}">
-                                        <i class="glyph-icon icon-remove"></i> Tolak
-                                        </button>
+                                          <button class="btn btn-warning btn-md" data-toggle="modal"
+                                          data-target="#modalTolak" data-peminjamanid="{{$peminjaman->p_id}}">
+                                          <i class="glyph-icon icon-remove"></i> Tolak
+                                          </button>
+                                          @endif
+
+                                          @if(Auth::user()->hasRole('dosen') || Auth::user()->hasRole('mahasiswa'))
+                                          <a href="{{ route('peminjaman.ubah',$peminjaman->p_id) }}"
+                                              class="btn btn-info">
+                                              <i class="glyph-icon icon-edit"></i> Ubah
+                                          </a>
+                                          @endif
 
                                         <button class="btn btn-danger btn-md" data-toggle="modal"
                                         data-target="#modalHapus" data-peminjamanid="{{$peminjaman->p_id}}">
                                         <i class="glyph-icon icon-trash"></i> Hapus
                                         </button>
+
+
                                         @elseif($peminjaman->p_status == 1)
                                         <a href="{{ route('peminjaman.lihat', $peminjaman->p_id) }}" class="btn btn-info">
                                             <i class="glyph-icon icon-circle-o"></i> Lihat
                                         </a>
+                                          @if(Auth::user()->hasRole('dosen') || Auth::user()->hasRole('mahasiswa'))
+                                          <a href="{{ route('peminjaman.cetak', $peminjaman->p_id) }}"
+                                            class="btn btn-info">
+                                            <i class="glyph-icon icon-print"></i> Cetak
+                                          </a>
+                                          @endif
+
                                         @else
                                         <a href="{{ route('peminjaman.lihat', $peminjaman->p_id) }}" class="btn btn-info">
                                             <i class="glyph-icon icon-circle-o"></i> Lihat

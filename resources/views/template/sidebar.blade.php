@@ -48,6 +48,28 @@
                     <span>Data Pengguna</span>
                 </a>
             </li>
+
+            <li class="no-menu">
+                <a href="{{ route('user.index') }}" title="Frontend template">
+                    <i class="glyph-icon icon-typicons-popup" style="color:#337ab7"></i>
+                    <span>Data Pembelian</span>
+                </a>
+            </li>
+
+            <li class="no-menu">
+                <a href="{{ route('user.index') }}" title="Frontend template">
+                    <i class="glyph-icon icon-typicons-popup" style="color:#337ab7"></i>
+                    <span>Data Maintenance</span>
+                </a>
+            </li>
+
+            <li class="no-menu">
+                <a href="{{ route('user.index') }}" title="Frontend template">
+                    <i class="glyph-icon icon-typicons-popup" style="color:#337ab7"></i>
+                    <span>Executive Dashboard</span>
+                </a>
+            </li>
+
             @endif
 
             <li class="header"><span>Shortcut</span></li>
@@ -79,7 +101,7 @@
               @endif
 
             <li class="btn-primary">
-                <a href="{{ url('/user/peminjaman/pinjam') }}" style="text-decoration: none;color:#fff">
+                <a href="{{ route('peminjaman.pinjam') }}" style="text-decoration: none;color:#fff">
                     <i class="glyph-icon icon-typicons-upload" style="color:#fff"></i>
                     <span>Pinjam Barang</span>
                 </a>

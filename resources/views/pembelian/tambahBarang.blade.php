@@ -5,7 +5,6 @@
 
         <div class="container">
 
-
             <script type="text/javascript" src="{{ asset('assets/widgets/datatable/datatable.js') }}"></script>
             <script type="text/javascript" src="{{ asset('assets/widgets/datatable/datatable-bootstrap.js') }}">
             </script>
@@ -13,6 +12,19 @@
             </script>
             <script type="text/javascript" src="{{ asset('assets/widgets/datatable/datatable-reorder.js') }}"></script>
 
+            <script type="text/javascript">
+                /* Datatables export */
+
+                $(document).ready(function () {
+                    var table = $('#dt_barang').DataTable();
+                    var tt = new $.fn.dataTable.TableTools(table);
+
+
+                    $('.dataTables_filter input').attr("placeholder", "Search...");
+
+                });
+
+            </script>
             <!-- Sparklines charts -->
 
             <script type="text/javascript" src="{{ asset('assets/widgets/charts/sparklines/sparklines.js') }}"></script>
@@ -33,8 +45,9 @@
             <script type="text/javascript" src="{{ asset('assets/widgets/charts/piegage/piegage.js') }}"></script>
             <script type="text/javascript" src="{{ asset('assets/widgets/charts/piegage/piegage-demo.js') }}"></script>
 
+
             <div id="page-title">
-                <h2>Halaman Lihat Data Pengguna</h2>
+                <h2>Halaman Tambah Data Barang</h2>
                 <p>Selamat Datang {{Auth::user()->name}} | <strong>{{Auth::user()->role}}</strong></p>
             </div>
 
@@ -45,65 +58,61 @@
                     </h3>
                     <div class="example-box-wrapper">
                         <div class="example-box-wrapper">
-                            <form class="form-horizontal">
-
+                            <form class="form-horizontal" action="{{ route('barang.prosesTambah') }}" method="POST"
+                                enctype="multipart/form-data">
+                                @CSRF
+                                @method('POST')
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">Status</label>
+                                    <label class="col-sm-3 control-label">Nama Barang</label>
                                     <div class="col-sm-6">
-                                        @if ($data_request[0]->rb_status == 0)
-                                        <span class="bs-label label-primary">Menunggu</span>
-                                        @elseif ($data_request[0]->rb_status == 1)
-                                        <span class="bs-label label-warning">Ditolak</span>
-                                        @else
-                                        <span class="bs-label label-success">Disetujui</span>
-                                        @endif
+                                        <input required name="nama" type="text" class="form-control" id=""
+                                            placeholder="Kolom Nama Barang">
                                     </div>
                                 </div>
-
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">Nama Pengguna</label>
+                                    <label class="col-sm-3 control-label">Kode Barang</label>
                                     <div class="col-sm-6">
-                                        <input disabled name="nama" type="text" class="form-control" id="nama"
-                                            placeholder="Kolom Nama Pengguna" value="{{$data_request[0]->name}}">
+                                        <input required name="kode" type="text" class="form-control" id=""
+                                            placeholder="Kolom Kode Barang">
                                     </div>
                                 </div>
-
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Stock Barang</label>
+                                    <div class="col-sm-6">
+                                        <input required name="stock" type="number" class="form-control" id=""
+                                            placeholder="Kolom Stock Barang">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Harga Barang</label>
+                                    <div class="col-sm-6">
+                                        <input required name="harga" type="number" class="form-control" id=""
+                                            placeholder="Kolom Harga Barang">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Satuan</label>
+                                    <div class="col-sm-6">
+                                        <select name="satuan" id="satuan" class="form-control">
+                                            <option value="Rim">Rim</option>
+                                            <option value="Pcs">Pcs</option>
+                                            <option value="Pack">Pack</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Foto Barang</label>
-                                    <div class="row">
-                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                            <div class="thumbnail-box thumbnail-box-inverse">
-                                                <a href="#" title="Foto Barang" class="thumb-link"></a>
-                                                <div class="thumb-content">
-                                                    <div class="center-vertical">
-                                                        <div class="center-content">
-                                                            <h3 class="thumb-heading animated bounceIn">
-                                                                {{$data_request[0]->b_nama}}
-                                                            </h3>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="thumb-overlay bg-black"></div>
-                                                <img src="{{ asset('assets/images-resource/barang/resize_'.$data_request[0]->b_foto) }}"
-                                                    alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">Jumlah</label>
                                     <div class="col-sm-6">
-                                        <input disabled name="jumlah" type="text" class="form-control" id="jumlah"
-                                            placeholder="Kolom Jumlah" value="{{$data_request[0]->rb_jumlah}}">
+                                        <input type="file" name="foto" id="foto" class="form-control">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <div class="col-sm-3">
-                                        <a href="{{ url('/admin/request') }}" class="btn btn-blue-alt"><i
-                                                class="glyph-icon icon-arrow-left"></i> Kembali</a>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <button type="submit" class="btn btn-success">
+                                                <i class="glyph-icon icon-check"></i> Tambahkan</button>
                                     </div>
                                 </div>
 
