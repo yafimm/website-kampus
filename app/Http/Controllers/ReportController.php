@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Pembelian;
 use App\Barang;
+use App\Inventaris;
+use App\Peminjaman;
+use App\User;
+use App\Maintenance;
+use App\Request as RequestBarang;
 
 class ReportController extends Controller
 {
@@ -18,32 +23,33 @@ class ReportController extends Controller
             }
             else if($request->jenis == 'datainventaris')
             {
-
+                $arr_inventaris = Inventaris::whereDate('created_at', '>=', date('Y-m-d', strtotime($request->mulai)))->whereDate('created_at', '<=', date('Y-m-d', strtotime($request->akhir)))->get();
+                return view('report.reportmodul.inventarisindex', compact('arr_inventaris'));
             }
             else if($request->jenis == 'databarang')
             {
                 $arr_barang = Barang::whereDate('created_at', '>=', date('Y-m-d', strtotime($request->mulai)))->whereDate('created_at', '<=', date('Y-m-d', strtotime($request->akhir)))->get();
-                return view('report.barangindex', compact('arr_barang'));
+                return view('report.reportmodul.barangindex', compact('arr_barang'));
             }
             else if($request->jenis == 'datapeminjaman')
             {
-                $peminjaman = Peminjaman::whereDate('created_at', '>=', $request->mulai)->whereDate('created_at', '<=', $request->akhir)->get();
-                return view('', compact('peminjaman'));
+                $arr_peminjaman = Peminjaman::whereDate('created_at', '>=', date('Y-m-d', strtotime($request->mulai)))->whereDate('created_at', '<=', date('Y-m-d', strtotime($request->akhir)))->get();
+                return view('report.reportmodul.peminjamanindex', compact('arr_peminjaman'));
             }
             else if($request->jenis == 'datapengguna')
             {
-                $user = User::whereDate('created_at', '>=', $request->mulai)->whereDate('created_at', '<=', $request->akhir)->get();
-                return view('', compact('user'));
+                $arr_pengguna = User::whereDate('created_at', '>=', date('Y-m-d', strtotime($request->mulai)))->whereDate('created_at', '<=', date('Y-m-d', strtotime($request->akhir)))->get();
+                return view('report.reportmodul.penggunaindex', compact('arr_pengguna'));
             }
             else if($request->jenis == 'datarequest')
             {
-                $request = Request::whereDate('created_at', '>=', $request->mulai)->whereDate('created_at', '<=', $request->akhir)->get();
-                return view('', compact('request'));
+                $arr_request = RequestBarang::whereDate('created_at', '>=', date('Y-m-d', strtotime($request->mulai)))->whereDate('created_at', '<=', date('Y-m-d', strtotime($request->akhir)))->get();
+                return view('report.reportmodul.requestindex', compact('arr_request'));
             }
             else if($request->jenis == 'datamaintenance')
             {
-                $maintenance = Maintenance::whereDate('created_at', '>=', $request->mulai)->whereDate('created_at', '<=', $request->akhir)->get();
-                return view('', compact('maintenance'));
+                $maintenance = Maintenance::whereDate('created_at', '>=', date('Y-m-d', strtotime($request->mulai)))->whereDate('created_at', '<=', date('Y-m-d', strtotime($request->akhir)))->get();
+                return view('report.reportmodul.maintenanceindex', compact('maintenance'));
             }
         }
 

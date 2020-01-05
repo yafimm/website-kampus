@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('npm');
             $table->string('nip');
             $table->string('name');
+            $table->string('no_telpon')->nullable();
             $table->string('email',100)->unique();
             $table->string('password');
             $table->rememberToken();

@@ -7,7 +7,7 @@
                 <th></th>
                 <th>Kode</th>
                 <th>Nama</th>
-                <th>Stock</th>
+                <th>Unit</th>
                 <th>Harga</th>
                 <th>Tanggal</th>
                 <th>Total</th>
@@ -19,7 +19,7 @@
                 <th></th>
                 <th>Kode</th>
                 <th>Nama</th>
-                <th>Stock</th>
+                <th>Unit</th>
                 <th>Harga</th>
                 <th>Tanggal</th>
                 <th>Total</th>
@@ -27,21 +27,21 @@
         </tfoot>
 
         <tbody>
-            @foreach ($arr_barang as $key => $barang)
+            @foreach ($arr_inventaris as $key => $inventaris)
             <tr>
                 <td>{{$key + 1}}</td>
-                <td>{{$barang->b_kode}}</td>
-                <td>{{$barang->b_nama}}</td>
-                <td>{{$barang->b_stock}}</td>
-                <td>Rp. {{ number_format($barang->b_harga,2,",",".") }}</td>
-                <td>{{$barang->created_at->format('d-m-Y')}}</td>
-                <td>Rp. {{ number_format($barang->total,2,",",".")}}</td>
+                <td>{{$inventaris->i_kode}}</td>
+                <td>{{$inventaris->i_nama}}</td>
+                <td>{{$inventaris->i_unit}}</td>
+                <td>{{$inventaris->i_harga}}</td>
+                <td>{{$inventaris->created_at->format('d-m-Y')}}</td>
+                <td>{{$inventaris->total}}</td>
             </tr>
             @endforeach
         </tbody>
     </table>
     <div class="col-12 text-right">
-      <h4>Total Keseluruhan : Rp. {{ number_format($arr_barang->sum('total'),2,",",".") }}</h4>
+      <h4>Total Keseluruhan : Rp. {{ number_format($arr_inventaris->sum('total'),2,",",".") }}</h4>
     </div>
 </div>
 
