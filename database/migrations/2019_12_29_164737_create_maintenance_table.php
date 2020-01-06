@@ -15,6 +15,14 @@ class CreateMaintenanceTable extends Migration
     {
         Schema::create('maintenance', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('no_register');
+            $table->string('kode');
+            $table->integer('barang_id')->unsigned();
+            $table->string('posisi');
+            $table->date('tanggal_maintenance');
+            $table->integer('biaya')->nullable();
+            $table->string('keterangan')->nullable();
+            $table->enum('status',['SELESAI','SEDANG BERJALAN','BELUM MULAI'])->default('BELUM MULAI');
             $table->timestamps();
         });
     }

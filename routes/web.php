@@ -82,8 +82,9 @@ Route::group(['middleware' => ['web', 'auth', 'role:admin']], function() {
     Route::get('/pengguna/{id}/edit', 'UsersController@ubah')->name('user.ubah');
     Route::post('/pengguna/prosesHapus', 'UsersController@prosesHapus')->name('user.prosesHapus');
     Route::post('/pengguna/prosesUbahPassword', 'UsersController@prosesUbahPassword')->name('user.resetPassword');
-
     Route::get('/report', 'ReportController@index')->name('report.index');
+
+    Route::resource('maintenance', 'MaintenanceController');
 });
 
 // Modul request
