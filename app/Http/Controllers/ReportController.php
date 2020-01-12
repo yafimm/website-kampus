@@ -17,7 +17,7 @@ class ReportController extends Controller
     {
         if(isset($request->jenis))
         {
-            if($request->jenis == 'datapembelian')
+            if($request->jenis == 'datapengadaan')
             {
 
             }
@@ -48,8 +48,9 @@ class ReportController extends Controller
             }
             else if($request->jenis == 'datamaintenance')
             {
-                $maintenance = Maintenance::whereDate('created_at', '>=', date('Y-m-d', strtotime($request->mulai)))->whereDate('created_at', '<=', date('Y-m-d', strtotime($request->akhir)))->get();
-                return view('report.reportmodul.maintenanceindex', compact('maintenance'));
+                $arr_maintenance = Maintenance::whereDate('tanggal_maintenance', '>=', date('Y-m-d', strtotime($request->mulai)))->whereDate('tanggal_maintenance', '<=', date('Y-m-d', strtotime($request->akhir)))->orderBy('no_register', 'asc')->get();
+                // dd($arr_maintenance);
+                return view('report.reportmodul.maintenanceindex', compact('arr_maintenance'));
             }
         }
 

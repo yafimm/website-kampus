@@ -1,4 +1,4 @@
-@extends('template.layout')
+ @extends('template.layout')
 @section('content')
 <div id="page-content-wrapper">
     <div id="page-content">
@@ -95,8 +95,11 @@
             <div class="panel">
                 <div class="panel-body">
                     <h3 class="title-hero my-2">
-                        <a href="{{ route('maintenance.create') }}" class="btn btn-primary">
+                        <a href="{{ route('maintenance.create',['no_register' => $arr_maintenance[0]->no_register, 'tanggal_maintenance' => date('d-m-Y', strtotime($arr_maintenance[0]->tanggal_maintenance))]) }}" class="btn btn-primary">
                             <i class="glyph-icon icon-plus-circle"></i> Tambah
+                        </a>
+                        <a href="{{ route('maintenance.edit', $arr_maintenance[0]->no_register) }}" class="btn btn-primary">
+                            <i class="glyphicon glyphicon-edit"></i> Ubah
                         </a>
                         <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportTahunan">
                             <i class="glyph-icon icon-clipboard"></i> Cetak Laporan Tahunan
@@ -156,7 +159,7 @@
                                     <td>{{date('d-m-Y', strtotime($maintenance->tanggal_maintenance))}}</td>
                                     <td>{{$maintenance->biaya != 0 ? 'Rp. '. number_format($maintenance->biaya, 2, ',', '.') : 'Free'}}</td>
                                     <td>{{$maintenance->keterangan}}</td>
-                                    <td>{{$maintenance->status}}</td>
+                                    <td>{!! $maintenance->status == 'SELESAI' ? '<span class="label label-success">'.$maintenance->status.'</span>' : $maintenance->status == 'SEDANG BERJALAN' ? '<span class="label label-warning">'.$maintenance->status.'</span>': '<span class="label label-danger">'.$maintenance->status.'</span>'!!}</td>
                                 </tr>
                                 @endforeach
                             </tbody>

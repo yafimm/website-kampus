@@ -91,7 +91,7 @@
 
 
             <div id="page-title">
-                <h2>Halaman Tambah Data Maintenance</h2>
+                <h2>Halaman Ubah Data Maintenance</h2>
                 <p>Selamat Datang {{Auth::user()->name}} | <strong>{{Auth::user()->role}}</strong></p>
             </div>
 
@@ -102,12 +102,13 @@
                     </h3>
                     <div class="example-box-wrapper">
                         <div class="example-box-wrapper">
-                            <form class="form-horizontal" action="{{ route('maintenance.store') }}" method="POST"
+                            <form class="form-horizontal" action="{{ route('maintenance.update', $arr_maintenance[0]->no_register) }}" method="POST"
                                 enctype="multipart/form-data">
                                 @CSRF
                                 @method('POST')
 
                                 @include('maintenance.shared.form')
+
                             </form>
                         </div>
                     </div>

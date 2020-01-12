@@ -57,14 +57,14 @@
             </li>
 
             <li class="no-menu">
-                <a href="{{ route('user.index') }}" title="Frontend template">
+                <a href="{{ route('maintenance.index') }}" title="Frontend template">
                     <i class="glyph-icon icon-typicons-popup" style="color:#337ab7"></i>
                     <span>Data Maintenance</span>
                 </a>
             </li>
 
             <li class="no-menu">
-                <a href="{{ route('user.index') }}" title="Frontend template">
+                <a href="{{ route('report.index') }}" title="Frontend template">
                     <i class="glyph-icon icon-typicons-popup" style="color:#337ab7"></i>
                     <span>Executive Dashboard</span>
                 </a>
