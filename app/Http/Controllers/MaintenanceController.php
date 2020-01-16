@@ -18,7 +18,8 @@ class MaintenanceController extends Controller
     public function create()
     {
         $arr_barang = Barang::all();
-        return view('maintenance.create', compact('arr_barang'));
+        $maintenance = new Maintenance();
+        return view('maintenance.create', compact('arr_barang', 'maintenance'));
     }
 
     public function store(Request $request)
@@ -67,30 +68,30 @@ class MaintenanceController extends Controller
 
     public function update(Request $request, $id)
     {
-      $data = $request->all();
-      //Patokan total arraynya dari jumlah barang
-      for ($i=0; $i < count($request->barang_id); $i++) {
-        $maintenance[] = [
-            'no_register' => $id,
-            'kode' => $request->kode[$i],
-            'barang_id' => $request->barang_id[$i],
-            'tanggal_maintenance' => date('Y-m-d', strtotime($request->tanggal_maintenance)),
-            'biaya' => $request->biaya[$i],
-            'keterangan' => $request->keterangan[$i],
-            'posisi' => $request->posisi[$i],
-        ];
-      }
-      Maintenance::where('no_register', $id)->delete();
-      // dd($maintenance);
-      $store = Maintenance::insert($maintenance);
-      if($store){
-            return redirect()->route('maintenance.show', $id)
-                            ->with('alert-class', 'alert-success')
-                            ->with('flash_message', 'Data Berhasil diubah !!');
-      }
-      return redirect()->route('maintenance.show', $id)
-                        ->with('alert-class', 'alert-danger')
-                        ->with('flash_message', 'Data Gagal diubah !!');
+        $data = $request->all();
+        //Patokan total arraynya dari jumlah barang
+        for ($i=0; $i < count($request->barang_id); $i++) {
+          $maintenance[] = [
+              'no_register' => $id,
+              'kode' => $request->kode[$i],
+              'barang_id' => $request->barang_id[$i],
+              'tanggal_maintenance' => date('Y-m-d', strtotime($request->tanggal_maintenance)),
+              'biaya' => $request->biaya[$i],
+              'keterangan' => $request->keterangan[$i],
+              'posisi' => $request->posisi[$i],
+          ];
+        }
+        Maintenance::where('no_register', $id)->delete();
+        // dd($maintenance);
+        $store = Maintenance::insert($maintenance);
+        if($store){
+              return redirect()->route('maintenance.show', $id)
+                              ->with('alert-class', 'alert-success')
+                              ->with('flash_message', 'Data Berhasil diubah !!');
+        }
+        return redirect()->route('maintenance.show', $id)
+                          ->with('alert-class', 'alert-danger')
+                          ->with('flash_message', 'Data Gagal diubah !!');
     }
 
     public function destroy($id)

@@ -43,11 +43,9 @@
                         '</div>'+
                         '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
                           '<label for="exampleFormControlSelect1">Barang</label>'+
-                          '<select class="form-control" name="barang_id[]" id="exampleFormControlSelect1">'+
-                            @foreach($arr_barang as $barang)
-                            '<option value="{{ $barang->b_id }}">{{ $barang->b_nama }}</option>'+
-                            @endforeach
-                          '</select>'+
+                          '<div class="col-12">'+
+                            '<input required name="barang[]" type="text" class="form-control" id="" placeholder="Kolom Kode">'+
+                          '</div>'+
                         '</div>'+
                         '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
                           '<label class="col-12 control-label">Posisi</label>'+
@@ -91,7 +89,7 @@
 
 
             <div id="page-title">
-                <h2>Halaman Tambah Data Maintenance</h2>
+                <h2>Halaman Ubah Data Maintenance</h2>
                 <p>Selamat Datang {{Auth::user()->name}} | <strong>{{Auth::user()->role}}</strong></p>
             </div>
 
@@ -102,14 +100,22 @@
                     </h3>
                     <div class="example-box-wrapper">
                         <div class="example-box-wrapper">
-                            <form class="form-horizontal" action="{{ route('maintenance.store') }}" method="POST"
+                            <form class="form-horizontal" action="{{ route('pengadaan.update', $arr_pengadaan[0]->no_register) }}" method="POST"
                                 enctype="multipart/form-data">
                                 @CSRF
                                 @method('POST')
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Nomor Register</label>
                                     <div class="col-sm-6">
-                                        <input required name="no_register" type="text" class="form-control" id="" value="{{ Request::get('no_register') }}"
+                                        <input required name="no_register" type="text" class="form-control" id="" value="{{ $arr_pengadaan[0]->no_register }}"
+                                            placeholder="Kolom Nomor Register">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Nama Supplier/Toko</label>
+                                    <div class="col-sm-6">
+                                        <input required name="supplier" type="text" class="form-control" id="" value="{{ $arr_pengadaan[0]->supplier }}"
                                             placeholder="Kolom Nomor Register">
                                     </div>
                                 </div>
@@ -121,15 +127,15 @@
                                           <span class="add-on input-group-addon">
                                               <i class="glyph-icon icon-calendar"></i>
                                           </span>
-                                          <input required id="datestart" name="tanggal_maintenance" type="text"
-                                              class="bootstrap-datepicker form-control" value="{{ Request::get('tanggal_maintenance') }}"
+                                          <input required id="datestart" name="tanggal" type="text"
+                                              class="bootstrap-datepicker form-control" value="{{ date('d-m-Y', strtotime($arr_pengadaan[0]->tanggal)) }}"
                                               data-date-format="mm/dd/yyyy">
                                       </div>
                                   </div>
                                 </div>
 
+                                @include('pengadaan.shared.form')
 
-                                @include('maintenance.shared.form')
                             </form>
                         </div>
                     </div>

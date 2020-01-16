@@ -43,11 +43,9 @@
                         '</div>'+
                         '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
                           '<label for="exampleFormControlSelect1">Barang</label>'+
-                          '<select class="form-control" name="barang_id[]" id="exampleFormControlSelect1">'+
-                            @foreach($arr_barang as $barang)
-                            '<option value="{{ $barang->b_id }}">{{ $barang->b_nama }}</option>'+
-                            @endforeach
-                          '</select>'+
+                          '<div class="col-12">'+
+                            '<input required name="kode[]" type="text" class="form-control" id="" placeholder="Kolom Kode">'+
+                          '</div>'+
                         '</div>'+
                         '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
                           '<label class="col-12 control-label">Posisi</label>'+
@@ -102,7 +100,7 @@
                     </h3>
                     <div class="example-box-wrapper">
                         <div class="example-box-wrapper">
-                            <form class="form-horizontal" action="{{ route('maintenance.store') }}" method="POST"
+                            <form class="form-horizontal" action="{{ route('pengadaan.store') }}" method="POST"
                                 enctype="multipart/form-data">
                                 @CSRF
                                 @method('POST')
@@ -115,21 +113,29 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label class="col-sm-3 control-label">Nama Supplier/Toko</label>
+                                    <div class="col-sm-6">
+                                        <input required name="supplier" type="text" class="form-control" id="" value="{{ $arr_pengadaan[0]->supplier }}"
+                                            placeholder="Kolom Nomor Register">
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
                                   <label class="col-sm-3 control-label">Tanggal Maintenance </label>
                                   <div class="col-sm-6">
                                       <div class="input-prepend input-group">
                                           <span class="add-on input-group-addon">
                                               <i class="glyph-icon icon-calendar"></i>
                                           </span>
-                                          <input required id="datestart" name="tanggal_maintenance" type="text"
-                                              class="bootstrap-datepicker form-control" value="{{ Request::get('tanggal_maintenance') }}"
+                                          <input required id="datestart" name="tanggal" type="text"
+                                              class="bootstrap-datepicker form-control" value="{{ Request::get('tanggal') }}"
                                               data-date-format="mm/dd/yyyy">
                                       </div>
                                   </div>
                                 </div>
 
-
-                                @include('maintenance.shared.form')
+                                @include('pengadaan.shared.form')
                             </form>
                         </div>
                     </div>

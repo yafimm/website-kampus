@@ -50,9 +50,9 @@
             </li>
 
             <li class="no-menu">
-                <a href="{{ route('user.index') }}" title="Frontend template">
+                <a href="{{ route('pengadaan.index') }}" title="Frontend template">
                     <i class="glyph-icon icon-typicons-popup" style="color:#337ab7"></i>
-                    <span>Data Pembelian</span>
+                    <span>Data Pengadaan</span>
                 </a>
             </li>
 

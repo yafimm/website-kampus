@@ -16,5 +16,6 @@ class DatabaseSeeder extends Seeder
         $this->call(MaintenanceTableSeeder::class);
         $this->call(InventarisTableSeeder::class);
         $this->call(RequestTableSeeder::class);
+        $this->call(PengadaanTableSeeder::class);
     }
 }

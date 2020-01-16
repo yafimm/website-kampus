@@ -106,6 +106,27 @@
                                 enctype="multipart/form-data">
                                 @CSRF
                                 @method('POST')
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Nomor Register</label>
+                                    <div class="col-sm-6">
+                                        <input required name="no_register" type="text" class="form-control" id="" value="{{ $arr_maintenance[0]->no_register }}"
+                                            placeholder="Kolom Nomor Register">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                  <label class="col-sm-3 control-label">Tanggal Maintenance </label>
+                                  <div class="col-sm-6">
+                                      <div class="input-prepend input-group">
+                                          <span class="add-on input-group-addon">
+                                              <i class="glyph-icon icon-calendar"></i>
+                                          </span>
+                                          <input required id="datestart" name="tanggal_maintenance" type="text"
+                                              class="bootstrap-datepicker form-control" value="{{ $arr_maintenance[0]->tanggal_maintenance }}"
+                                              data-date-format="mm/dd/yyyy">
+                                      </div>
+                                  </div>
+                                </div>
 
                                 @include('maintenance.shared.form')
 

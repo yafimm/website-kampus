@@ -1,9 +1,8 @@
 <div class="form-group my-2">
   <div class="body-form" id="body-form-detail">
-    @if(isset($arr_maintenance))
+    @if($arr_pengadaan)
       <!-- Kalo gak edit bakal nampilin edit -->
-
-      @foreach($arr_maintenance as $no => $maintenance)
+      @foreach($arr_pengadaan as $no => $pengadaan)
 
       <hr>
       <h5>Data Detail ke - {{ $no + 1 }}</h5>
@@ -11,33 +10,25 @@
         <div class="col-md-4 col-sm-4 col-6 form-controll">
           <label class="col-12 control-label">Kode</label>
           <div class="col-12">
-            <input required name="kode[]" type="text" value="{{ old('kode', $maintenance->kode) }}" class="form-control" id="" placeholder="Kolom Kode">
+            <input required name="kode[]" type="text" value="{{ old('kode', $pengadaan->kode) }}" class="form-control" id="" placeholder="Kolom Kode">
           </div>
         </div>
         <div class="col-md-4 col-sm-4 col-6 form-controll">
           <label for="exampleFormControlSelect1">Barang</label>
-          <select class="form-control" name="barang_id[]" value"{{ old('barang_id', $maintenance->barang_id) }}" id="exampleFormControlSelect1">
-            @foreach($arr_barang as $barang)
-            <option value="{{ $barang->b_id }}" {{ $maintenance->barang_id == $barang->b_id ? 'selected' : '' }}>{{ $barang->b_nama }}</option>
-            @endforeach
-          </select>
+          <div class="col-12">
+            <input required name="barang_id[]" type="text" value="{{ old('barang_id', $pengadaan->barang_id) }}" class="form-control" id="" placeholder="Kolom Kode">
+          </div>
         </div>
         <div class="col-md-4 col-sm-4 col-6 form-controll">
-          <label class="col-12 control-label">Posisi</label>
+          <label class="col-12 control-label">Jumlah barang</label>
           <div class="col-12">
-            <input required name="posisi[]" value="{{ $maintenance->posisi }}" type="text" class="form-control" id="" placeholder="Kolom Posisi">
+            <input required name="qty[]" value="{{ $pengadaan->qty }}" type="text" class="form-control" id="" placeholder="Kolom Posisi">
           </div>
         </div>
         <div class="col-md-4 col-sm-4 col-6 form-controll">
           <label class="col-12 control-label">Biaya</label>
           <div class="col-12">
-            <input required name="biaya[]" type="text" value="{{ $maintenance->biaya }}" class="form-control" id="" placeholder="Kolom Biaya">
-          </div>
-        </div>
-        <div class="col-md-4 col-sm-4 col-6 form-controll">
-          <label class="col-12 control-label">Keterangan</label>
-          <div class="col-12">
-            <input required name="keterangan[]" type="text" value="{{ $maintenance->keterangan }}" class="form-control" id=""placeholder="Kolom Keterangan">
+            <input required name="biaya[]" type="text" value="{{ $pengadaan->biaya }}" class="form-control" id="" placeholder="Kolom Biaya">
           </div>
         </div>
         </div>
