@@ -1,6 +1,6 @@
 <div class="form-group my-2">
   <div class="body-form" id="body-form-detail">
-    @if($arr_pengadaan)
+    @if(!empty($arr_pengadaan))
       <!-- Kalo gak edit bakal nampilin edit -->
       @foreach($arr_pengadaan as $no => $pengadaan)
 

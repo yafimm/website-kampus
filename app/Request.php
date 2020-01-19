@@ -8,6 +8,8 @@ class Request extends Model
 {
   protected $table = 'request_barang';
 
+  protected $primaryKey = 'rb_id';
+
   protected $fillable = [
       'user_id','b_id','rb_jumlah','rb_status'
   ];

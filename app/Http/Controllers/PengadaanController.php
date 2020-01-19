@@ -15,7 +15,8 @@ class PengadaanController extends Controller
 
     public function create()
     {
-        return view('pengadaan.create');
+        $arr_pengadaan = collect(new Pengadaan);
+        return view('pengadaan.create', compact('arr_pengadaan'));
     }
 
     public function show($id)
@@ -25,8 +26,32 @@ class PengadaanController extends Controller
         return view('pengadaan.show', compact('arr_pengadaan'));
     }
 
-    public function store()
+    public function store(Request $request)
     {
+        $data = $request->all();
+        // dd($request->all());
+        //Patokan total arraynya dari jumlah barang
+        for ($i=0; $i < count($request->barang_id); $i++) {
+          $pengadaan[] = [
+              'no_register' => $request->no_register,
+              'supplier' => $request->supplier,
+              'kode' => $request->kode[$i],
+              'barang_id' => $request->barang_id[$i],
+              'tanggal' => date('Y-m-d', strtotime($request->tanggal)),
+              'biaya' => $request->biaya[$i],
+              'qty' => $request->qty[$i]
+          ];
+        }
+
+        $store = Pengadaan::insert($pengadaan);
+        if($store){
+              return redirect()->route('pengadaan.show', $request->no_register)
+                              ->with('alert-class', 'alert-success')
+                              ->with('flash_message', 'Data Pengadaan berhasil ditambahkan !!');
+        }
+        return redirect()->route('pengadaan.show', $request->no_register)
+                          ->with('alert-class', 'alert-danger')
+                          ->with('flash_message', 'Data Gagal ditambahkan !!');
 
     }
 

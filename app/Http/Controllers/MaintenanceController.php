@@ -35,13 +35,14 @@ class MaintenanceController extends Controller
               'biaya' => $request->biaya[$i],
               'keterangan' => $request->keterangan[$i],
               'posisi' => $request->posisi[$i],
+              'status' => ucfirst($request->status[$i]),
           ];
         }
         // dd($maintenance);
 
         $store = Maintenance::insert($maintenance);
         if($store){
-              return redirect()->route('maintenance.index');
+              return redirect()->route('maintenance.index')->with('alert-class', 'alert-success')->with('flash_message', 'Data Maintenance berhasil dibuat !!');
         }
         return redirect()->route('maintenance.index');
 
@@ -79,6 +80,7 @@ class MaintenanceController extends Controller
               'biaya' => $request->biaya[$i],
               'keterangan' => $request->keterangan[$i],
               'posisi' => $request->posisi[$i],
+              'status' => ucfirst($request->status[$i]),
           ];
         }
         Maintenance::where('no_register', $id)->delete();

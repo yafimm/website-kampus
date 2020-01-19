@@ -53,7 +53,9 @@ Route::group(['middleware' => ['web','auth','role:admin,bagumum']], function() {
 Route::group(['middleware' => ['web', 'auth', 'role:dosen,mahasiswa']], function() {
   Route::get('/peminjaman/pinjam', 'PeminjamanController@pinjam')->name('peminjaman.pinjam');
   Route::post('/peminjaman/prosesPinjam', 'PeminjamanController@prosesPinjam')->name('peminjaman.prosesPinjam');
+  Route::post('/peminjaman/prosesUbah', 'PeminjamanController@prosesUbah')->name('peminjaman.prosesUbah');
   Route::put('/peminjaman/{id}', 'PeminjamanController@prosesUbah')->name('peminjaman.prosesUbah');
+  Route::get('/peminjaman/{id}/cetak', 'PeminjamanController@cetak')->name('peminjaman.cetak');
   Route::get('/peminjaman/{id}/edit', 'PeminjamanController@ubah')->name('peminjaman.ubah');
   Route::get('/peminjaman/cetak/{id}', 'PeminjamanController@cetak')->name('peminjaman.cetak');
 });
@@ -82,6 +84,7 @@ Route::group(['middleware' => ['web', 'auth', 'role:admin']], function() {
     Route::get('/pengguna/{id}/edit', 'UsersController@ubah')->name('user.ubah');
     Route::post('/pengguna/prosesHapus', 'UsersController@prosesHapus')->name('user.prosesHapus');
     Route::post('/pengguna/prosesUbahPassword', 'UsersController@prosesUbahPassword')->name('user.resetPassword');
+    Route::post('/pengguna/prosesTambah', 'UsersController@prosesTambah')->name('user.prosesTambah');
     Route::get('/report', 'ReportController@index')->name('report.index');
 
     Route::get('/maintenance', 'MaintenanceController@index')->name('maintenance.index');
@@ -93,8 +96,8 @@ Route::group(['middleware' => ['web', 'auth', 'role:admin']], function() {
 
     Route::get('/pengadaan', 'PengadaanController@index')->name('pengadaan.index');
     Route::post('/pengadaan', 'PengadaanController@store')->name('pengadaan.store');
-    Route::get('/pengadaan/{id}', 'PengadaanController@show')->name('pengadaan.show');
     Route::get('/pengadaan/create', 'PengadaanController@create')->name('pengadaan.create');
+    Route::get('/pengadaan/{id}', 'PengadaanController@show')->name('pengadaan.show');
     Route::get('/pengadaan/{id}/edit', 'PengadaanController@edit')->name('pengadaan.edit');
     Route::post('/pengadaan/{id}', 'PengadaanController@update')->name('pengadaan.update');
 });
@@ -106,6 +109,7 @@ Route::group(['middleware' => ['web', 'auth', 'role:dosen,admin,bagumum']], func
   Route::get('/request/tambah', 'RequestController@tambah')->name('request.tambah');
   Route::get('/request/{id}/edit', 'RequestController@ubah')->name('request.ubah');
   Route::get('/request/{id}', 'RequestController@lihat')->name('request.lihat');
+  Route::put('request/{id}', 'RequestController@prosesUbah')->name('request.prosesUbah');
   Route::post('/request/konfirmasi', 'RequestController@prosesKonfirmasi')->name('request.prosesKonfirmasi');
   Route::post('/request/prosesHapus', 'RequestController@prosesHapus')->name('request.prosesHapus');
 });

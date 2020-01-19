@@ -284,8 +284,12 @@
 
             </div>
             @include('template.sidebar')
-            @yield('content')
-
+            <div id="page-content-wrapper">
+              <div id="page-content">
+                @include('_partial.flash_message')
+                @yield('content')
+              </div>
+            </div>
         </div>
 
 

@@ -40,7 +40,10 @@
         "classmap": [
             "database/seeds",
             "database/factories"
-        ]
+        ],
+        "files": [
+           "App/Yaff_helpers.php"
+         ]
     },
     "autoload-dev": {
         "psr-4": {

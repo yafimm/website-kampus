@@ -40,7 +40,15 @@
             <input required name="keterangan[]" type="text" value="{{ $maintenance->keterangan }}" class="form-control" id=""placeholder="Kolom Keterangan">
           </div>
         </div>
+        <div class="col-md-4 col-sm-4 col-6 form-controll">
+          <label for="exampleFormControlSelect1">Status</label>
+          <select class="form-control" name="status[]" value"{{ old('status', $maintenance->status) }}" id="exampleFormControlSelect1">
+            <option value="Belum Mulai" {{ $maintenance->status == 'Belum Mulai' ? 'selected' : '' }}>Belum Mulai</option>
+            <option value="Sedang Berjalan" {{ $maintenance->status == 'Sedang Berjalan' ? 'selected' : '' }}>Sedang Berjalan</option>
+            <option value="Selesai" {{ $maintenance->status == 'Selesai' ? 'selected' : '' }}>Selesai</option>
+          </select>
         </div>
+      </div>
 
       @endforeach
 
