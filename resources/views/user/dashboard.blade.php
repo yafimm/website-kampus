@@ -155,16 +155,18 @@
                                     <i class="glyph-icon icon-circle-o"></i> Lihat
                                 </a>
 
-                                <button class="btn btn-primary btn-md" data-toggle="modal"
-                                    data-target="#modalSetujuRequest" data-requestid="{{$request->rb_id}}">
-                                    <i class="glyph-icon icon-check"></i> Setuju
-                                </button>
+                                  @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('bagumum'))
+                                  <button class="btn btn-primary btn-md" data-toggle="modal"
+                                      data-target="#modalSetujuRequest" data-requestid="{{$request->rb_id}}">
+                                      <i class="glyph-icon icon-check"></i> Setuju
+                                  </button>
 
-                                <button class="btn btn-warning btn-md" data-toggle="modal"
-                                    data-target="#modalTolakRequest" data-requestid="{{$request->rb_id}}">
-                                    <i class="glyph-icon icon-remove"></i> Tolak
-                                </button>
+                                  <button class="btn btn-warning btn-md" data-toggle="modal"
+                                      data-target="#modalTolakRequest" data-requestid="{{$request->rb_id}}">
+                                      <i class="glyph-icon icon-remove"></i> Tolak
+                                  </button>
 
+                                  @endif
                                 <button class="btn btn-danger btn-md" data-toggle="modal"
                                     data-target="#modalHapusRequest" data-requestid="{{$request->rb_id}}">
                                     <i class="glyph-icon icon-trash"></i> Hapus
@@ -174,11 +176,12 @@
                                     class="btn btn-info">
                                     <i class="glyph-icon icon-circle-o"></i> Lihat
                                 </a>
-
-                                <button class="btn btn-primary btn-md" data-toggle="modal"
-                                    data-target="#modalSetujuRequest" data-requestid="{{$request->rb_id}}">
-                                    <i class="glyph-icon icon-check"></i> Setuju
-                                </button>
+                                  @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('bagumum'))
+                                    <button class="btn btn-primary btn-md" data-toggle="modal"
+                                        data-target="#modalSetujuRequest" data-requestid="{{$request->rb_id}}">
+                                        <i class="glyph-icon icon-check"></i> Setuju
+                                    </button>
+                                  @endif
 
                                 <button class="btn btn-danger btn-md" data-toggle="modal"
                                     data-target="#modalHapusRequest" data-requestid="{{$request->rb_id}}">
@@ -208,7 +211,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title">Konfirmasi Setuju</h4>
                 </div>
-                <form name="setujuForm" id="setujuForm" action="{{ url('/admin/request/konfirmasi') }}"
+                <form name="setujuForm" id="setujuForm" action="{{ route('request.prosesKonfirmasi') }}"
                     method="POST" class="form-horizontal">
                     {{ csrf_field() }}
                     <input type="hidden" name="idsetuju" id="idsetuju">
@@ -243,7 +246,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title">Tolak Request</h4>
                 </div>
-                <form name="deleteForm" id="deleteForm" action="{{ url('/admin/request/konfirmasi') }}"
+                <form name="deleteForm" id="deleteForm" action="{{ route('request.prosesKonfirmasi') }}"
                     method="POST" class="form-horizontal">
                     {{ csrf_field() }}
                     <input type="hidden" name="idtolakRequest" id="idtolakRequest">
@@ -278,7 +281,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title">Hapus Request</h4>
                 </div>
-                <form name="deleteForm" id="deleteForm" action="{{ url('/admin/request/konfirmasi') }}"
+                <form name="deleteForm" id="deleteForm" action="{{ route('request.prosesHapus') }}"
                     method="POST" class="form-horizontal">
                     {{ csrf_field() }}
                     <input type="hidden" name="idhapusRequest" id="idhapusRequest">
@@ -538,7 +541,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title">Konfirmasi Setuju</h4>
                 </div>
-                <form name="setujuForm" id="setujuForm" action="{{ url('/admin/peminjaman/konfirmasi') }}"
+                <form name="setujuForm" id="setujuForm" action="{{ route('peminjaman.prosesKonfirmasi') }}"
                     method="POST" class="form-horizontal">
                     {{ csrf_field() }}
                     <input type="hidden" name="idsetuju" id="idsetuju">
@@ -573,7 +576,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title">Tolak peminjaman</h4>
                 </div>
-                <form name="deleteForm" id="deleteForm" action="{{ url('/admin/peminjaman/konfirmasi') }}"
+                <form name="deleteForm" id="deleteForm" action="{{ route('peminjaman.prosesKonfirmasi') }}"
                     method="POST" class="form-horizontal">
                     {{ csrf_field() }}
                     <input type="hidden" name="idtolak" id="idtolak">
@@ -608,7 +611,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title">Hapus peminjaman</h4>
                 </div>
-                <form name="deleteForm" id="deleteForm" action="{{ url('/admin/peminjaman/konfirmasi') }}"
+                <form name="deleteForm" id="deleteForm" action="{{ route('peminjaman.prosesHapus') }}"
                     method="POST" class="form-horizontal">
                     {{ csrf_field() }}
                     <input type="hidden" name="idhapus" id="idhapus">
