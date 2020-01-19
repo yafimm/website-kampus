@@ -49,42 +49,60 @@
                             <label class="col-sm-3 control-label">Kode Inventaris</label>
                             <div class="col-sm-6">
                                 <input name="kode" type="text" class="form-control" id=""
-                                    placeholder="Kolom Nama Inventaris" value="{{$data_inventaris->i_kode}}">
+                                    placeholder="Kolom Nama Inventaris" value="{{old('kode', $data_inventaris->i_kode)}}">
+                                @if($errors->has('kode'))
+                                   <small class="form-text text-danger">*{{ $errors->first('kode') }}</small>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Nama Inventaris</label>
                             <div class="col-sm-6">
                                 <input required name="nama" type="text" class="form-control" id=""
-                                    placeholder="Kolom Nama Inventaris" value="{{$data_inventaris->i_nama}}">
+                                    placeholder="Kolom Nama Inventaris" value="{{old('nama', $data_inventaris->i_nama)}}">
+                                @if($errors->has('nama'))
+                                   <small class="form-text text-danger">*{{ $errors->first('nama') }}</small>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Unit Inventaris</label>
                             <div class="col-sm-6">
                                 <input required name="unit" type="number" class="form-control" id=""
-                                    placeholder="Kolom Unit Inventaris" value="{{$data_inventaris->i_unit}}">
+                                    placeholder="Kolom Unit Inventaris" value="{{old('unit', $data_inventaris->i_unit)}}">
+                                @if($errors->has('unit'))
+                                   <small class="form-text text-danger">*{{ $errors->first('unit') }}</small>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Harga Inventaris</label>
                             <div class="col-sm-6">
                                 <input required name="harga" type="number" class="form-control" id=""
-                                    placeholder="Kolom Harga Inventaris" value="{{$data_inventaris->i_harga}}">
+                                    placeholder="Kolom Harga Inventaris" value="{{old('harga', $data_inventaris->i_harga)}}">
+                                @if($errors->has('harga'))
+                                   <small class="form-text text-danger">*{{ $errors->first('harga') }}</small>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Posisi Inventaris</label>
                             <div class="col-sm-6">
                                 <input required name="posisi" type="text" class="form-control" id=""
-                                    placeholder="Kolom Posisi Inventaris" value="{{$data_inventaris->i_posisi}}">
+                                    placeholder="Kolom Posisi Inventaris" value="{{old('posisi', $data_inventaris->i_posisi)}}">
+                                @if($errors->has('posisi'))
+                                   <small class="form-text text-danger">*{{ $errors->first('posisi') }}</small>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Keterangan Inventaris</label>
                             <div class="col-sm-6">
                                 <textarea placeholder="Kolom Keterangan Inventaris" class="form-control"
-                                    name="keterangan" id="keterangan" cols="30" rows="10">{{$data_inventaris->i_keterangan}}</textarea>
+                                    name="keterangan" id="keterangan" cols="30" rows="10">{{old('keterangan', $data_inventaris->i_keterangan)}}</textarea>
+                                @if($errors->has('keterangan'))
+                                   <small class="form-text text-danger">*{{ $errors->first('keterangan') }}</small>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group">

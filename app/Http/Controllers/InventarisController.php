@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\InventarisRequest;
 use File;
 use Image;
 use PDF;
@@ -33,7 +34,7 @@ class InventarisController extends Controller
         $data_inventaris = Inventaris::findOrFail($id);
         return view('inventaris.lihatInventaris', compact('data_inventaris'));
     }
-    public function prosesTambah(Request $request){
+    public function prosesTambah(InventarisRequest $request){
         request()->validate([
             'foto' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -67,7 +68,7 @@ class InventarisController extends Controller
         return redirect()->route('inventaris.index')->with('alert-class', 'alert-success')->with('flash_message', 'Data Berhasil ditambahkan ke database !!');
     }
 
-    public function prosesUbah(Request $request, $id){
+    public function prosesUbah(InventarisRequest $request, $i_id){
         $data = ['i_nama' => $request->nama,
                   'i_unit' => $request->unit,
                   'i_kode' => $request->kode,
@@ -75,7 +76,7 @@ class InventarisController extends Controller
                   'i_posisi' => $request->posisi,
                   'i_keterangan' => $request->keterangan,
                 ];
-        $data_inventaris = Inventaris::findOrFail($id);
+        $data_inventaris = Inventaris::findOrFail($i_id);
 
         if(!empty($request->file('foto'))) {
             $i_foto = $request->file('foto');

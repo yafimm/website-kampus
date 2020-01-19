@@ -47,7 +47,10 @@
                             <label class="col-sm-3 control-label">Nama Inventaris</label>
                             <div class="col-sm-6">
                                 <input required name="nama" type="text" class="form-control" id=""
-                                    placeholder="Kolom Nama Inventaris">
+                                    placeholder="Kolom Nama Inventaris" value="{{ old('nama') }}">
+                                @if($errors->has('nama'))
+                                   <small class="form-text text-danger">*{{ $errors->first('nama') }}</small>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group">
@@ -55,20 +58,29 @@
                             <div class="col-sm-6">
                                 <input required name="kode" type="text" class="form-control" id=""
                                     placeholder="Kolom Kode Inventaris" value="{{ YaffSetInventarisKode() }}" readonly>
+                                @if($errors->has('kode'))
+                                   <small class="form-text text-danger">*{{ $errors->first('kode') }}</small>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Unit Inventaris</label>
                             <div class="col-sm-6">
                                 <input required name="unit" type="number" class="form-control" id=""
-                                    placeholder="Kolom Unit Inventaris">
+                                    placeholder="Kolom Unit Inventaris" value="{{ old('unit') }}">
+                                @if($errors->has('unit'))
+                                   <small class="form-text text-danger">*{{ $errors->first('unit') }}</small>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Harga Inventaris</label>
                             <div class="col-sm-6">
                                 <input required name="harga" type="number" class="form-control" id=""
-                                    placeholder="Kolom Harga Inventaris">
+                                    placeholder="Kolom Harga Inventaris" value="{{ old('harga') }}">
+                                @if($errors->has('harga'))
+                                   <small class="form-text text-danger">*{{ $errors->first('harga') }}</small>
+                                @endif
                             </div>
                         </div>
 
@@ -76,19 +88,28 @@
                             <label class="col-sm-3 control-label">Posisi Inventaris</label>
                             <div class="col-sm-6">
                                 <input required name="posisi" type="text" class="form-control" id=""
-                                    placeholder="Kolom Posisi Inventaris">
+                                    placeholder="Kolom Posisi Inventaris" value="{{ old('posisi') }}">
+                                @if($errors->has('posisi'))
+                                   <small class="form-text text-danger">*{{ $errors->first('posisi') }}</small>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Keterangan Inventaris</label>
                             <div class="col-sm-6">
-                                <textarea placeholder="Kolom Keterangan Inventaris" class="form-control" name="keterangan" id="keterangan" cols="30" rows="10"></textarea>
+                                <textarea placeholder="Kolom Keterangan Inventaris" class="form-control" name="keterangan" id="keterangan" cols="30" rows="10">{{ old('keterangan') }}</textarea>
+                                @if($errors->has('keterangan'))
+                                   <small class="form-text text-danger">*{{ $errors->first('keterangan') }}</small>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Foto Inventaris</label>
                             <div class="col-sm-6">
                                 <input type="file" name="foto" id="foto" class="form-control">
+                                @if($errors->has('foto'))
+                                   <small class="form-text text-danger">*{{ $errors->first('foto') }}</small>
+                                @endif
                             </div>
                         </div>
 

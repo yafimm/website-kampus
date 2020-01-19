@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\BarangRequest;
 use App\Barang;
 use DB;
 use Image;
@@ -30,10 +31,7 @@ class BarangController extends Controller
          return view('barang.lihatBarang', compact('data_barang'));
      }
 
-     public function prosesTambah(Request $request){
-         request()->validate([
-             'foto' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-         ]);
+     public function prosesTambah(BarangRequest $request){
 
          $imageName = time().'.'.$request->foto->getClientOriginalExtension();
 
@@ -59,7 +57,7 @@ class BarangController extends Controller
          return redirect()->route('barang.index')->with('alert-class', 'alert-success')->with('flash_message','Data Barang berhasil ditambah ke database !!');
      }
 
-     public function prosesUbah(Request $request){
+     public function prosesUbah(BarangRequest $request){
          $data = ['b_nama' => $request->nama,
                   'b_stock' => $request->stock,
                   'b_satuan' => $request->satuan,

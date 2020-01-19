@@ -64,21 +64,30 @@
                             <label class="col-sm-3 control-label">Nama Barang</label>
                             <div class="col-sm-6">
                                 <input required name="nama" type="text" class="form-control" id=""
-                                    placeholder="Kolom Nama Barang" value="{{$data_barang->b_nama}}">
+                                    placeholder="Kolom Nama Barang" value="{{old('nama',$data_barang->b_nama)}}">
+                                @if($errors->has('nama'))
+                                   <small class="form-text text-danger">*{{ $errors->first('kode') }}</small>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Stock Barang</label>
                             <div class="col-sm-6">
                                 <input required name="stock" type="number" class="form-control" id=""
-                                    placeholder="Kolom Stock Barang" value="{{$data_barang->b_stock}}">
+                                    placeholder="Kolom Stock Barang" value="{{old('stock', $data_barang->b_stock)}}">
+                                @if($errors->has('stock'))
+                                   <small class="form-text text-danger">*{{ $errors->first('stock') }}</small>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Harga Barang</label>
                             <div class="col-sm-6">
                                 <input required name="harga" type="number" class="form-control" id=""
-                                    placeholder="Kolom Harga Barang" value="{{$data_barang->b_harga}}">
+                                    placeholder="Kolom Harga Barang" value="{{old('harga',$data_barang->b_harga)}}">
+                                @if($errors->has('harga'))
+                                   <small class="form-text text-danger">*{{ $errors->first('harga') }}</small>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group">
@@ -99,12 +108,18 @@
                                         <option selected value="Pack">Pack</option>
                                     @endif
                                 </select>
+                                @if($errors->has('satuan'))
+                                   <small class="form-text text-danger">*{{ $errors->first('satuan') }}</small>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Foto Barang</label>
                             <div class="col-sm-6">
                                 <input type="file" name="foto" id="foto" class="form-control">
+                                @if($errors->has('foto'))
+                                   <small class="form-text text-danger">*{{ $errors->first('foto') }}</small>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group">

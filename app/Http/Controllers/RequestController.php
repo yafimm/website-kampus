@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\RequestBarangRequest;
 use PDF;
 use DB;
 use App\Request as RequestBarang;
@@ -35,7 +36,7 @@ class RequestController extends Controller
         return view('request.lihatRequest', compact('data_request'));
     }
 
-    public function prosesKonfirmasi(Request $request){
+    public function prosesKonfirmasi(RequestBarangRequest $request){
         if($request->post('jenis') == 1){
             $id = $request->post('idtolak');
             $jenis = 1;
@@ -57,7 +58,7 @@ class RequestController extends Controller
         return redirect()->route('request.index')->with('alert-class', 'alert-success')->with('flash_message', 'Data Request berhasil disetujui !!');
     }
 
-    public function prosesHapus(Request $request){
+    public function prosesHapus(RequestBarangRequest $request){
         RequestBarang::findOrFail($request->idhapus)->delete();
         return redirect()->route('request.index')->with('alert-class', 'alert-success')->with('flash_message', 'Data berhasil dihapus !!');
     }
