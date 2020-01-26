@@ -27,6 +27,7 @@
     <hr style="border-top: 1px solid black;">
 	<center>
 		<h4>Laporan Data Barang</h4>
+		<td>{{ date('d/m/Y', strtotime($request->mulai)) .' - '. date('d/m/Y', strtotime($request->akhir)) }}</td>
 	</center>
 
 	<table class='table table-bordered'>
@@ -47,9 +48,9 @@
 				<td>{{ $i++ }}</td>
 				<td>{{$barang->b_nama}}</td>
 				<td>{{$barang->b_stock}}</td>
-				<td>{{$barang->b_harga}}</td>
+				<td>Rp. {{$barang->b_harga ? number_format($barang->b_harga, 2 ,',','.') : '0,00' }}</td>
 				<td>{{$barang->b_satuan}}</td>
-				<td>{{$barang->created_at}}</td>
+				<td>{{$barang->created_at->format('d/m/Y')}}</td>
 			</tr>
 			@endforeach
 		</tbody>
