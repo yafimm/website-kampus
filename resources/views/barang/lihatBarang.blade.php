@@ -103,7 +103,7 @@
                         <div class="form-group">
 
                             <div class="col-sm-3">
-                                <a href="{{ url('/bagumum/barang') }}" class="btn btn-blue-alt"><i
+                                <a href="{{ route('barang.index') }}" class="btn btn-blue-alt"><i
                                         class="glyph-icon icon-arrow-left"></i> Kembali</a>
                             </div>
                         </div>

@@ -27,9 +27,8 @@
     <hr style="border-top: 1px solid black;">
 	<center>
 		<h4>Laporan Data Barang</h4>
-		<p>{{$data_status}}</p>
 	</center>
- 
+
 	<table class='table table-bordered'>
 		<thead>
 			<tr>
@@ -55,6 +54,6 @@
 			@endforeach
 		</tbody>
 	</table>
- 
+
 </body>
 </html>

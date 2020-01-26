@@ -24,14 +24,31 @@ Route::get('/logout', 'LoginController@postLogout');
 
 Route::get('/dashboard', 'UsersController@dashboard')->name('dashboard');
 
+Route::get('download/{filename}', function($filename)
+{
+    // Check if file exists in app/storage/file folder
+    $file_path = public_path('suratpeminjaman/'.$filename);
+    if (file_exists($file_path))
+    {
+        // Send Download
+        return Response::download($file_path, $filename, [
+            'Content-Length: '. filesize($file_path)
+        ]);
+    }
+    else
+    {
+        // Error
+        exit('Requested file does not exist on our server!');
+    }
+})
+->where('filename', '[A-Za-z0-9\-\_\.]+')->name('downloadsurat');
+
 Route::group(['middleware' => ['web','auth','role:admin,bagumum']], function() {
   // Modul Barang
   Route::get('/barang', 'BarangController@index')->name('barang.index');
   Route::post('/barang/restock', 'BarangController@prosesRestock')->name('barang.restock');
   Route::get('/barang/tambah', 'BarangController@tambah')->name('barang.tambah');
-  Route::post('/barang/cetaktahunan', 'BarangController@cetakTahunan')->name('barang.cetakTahunan');
-  Route::post('/barang/cetakBulanan', 'BarangController@cetakBulanan')->name('barang.cetakBulanan');
-  Route::post('/barang/cetakHarian', 'BarangController@cetakTanggal')->name('barang.cetakHarian');
+  Route::post('/barang/cetak', 'BarangController@cetak')->name('barang.cetak');
   Route::post('/barang', 'BarangController@prosesTambah')->name('barang.prosesTambah');
   Route::delete('/barang/{id}', 'BarangController@prosesHapus')->name('barang.prosesHapus');
   Route::get('/barang/{id}', 'BarangController@lihat')->name('barang.lihat');

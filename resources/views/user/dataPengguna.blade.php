@@ -46,7 +46,7 @@
       <div class="panel-body">
           <h3 class="title-hero">
               <a href="{{ route('user.tambah', 'bagumum') }}" class="btn btn-primary">
-                  <i class="glyph-icon icon-plus-circle"></i> Tambah Akun Bagian Umum
+                  <i class="glyph-icon icon-plus-circle"></i> Tambah Akun Staff Inventaris
               </a>
               <a href="{{ route('user.tambah', 'mahasiswa') }}" class="btn btn-primary">
                   <i class="glyph-icon icon-plus-circle"></i> Tambah Akun Mahasiswa

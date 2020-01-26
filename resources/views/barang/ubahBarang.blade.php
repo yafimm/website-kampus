@@ -128,7 +128,7 @@
                             <div class="col-sm-3">
                                 <button type="submit" class="btn btn-success">
                                     <i class="glyph-icon icon-file"></i> Simpan</button>
-                                <a href="{{ url('/bagumum/barang') }}" class="btn btn-blue-alt"><i class="glyph-icon icon-arrow-left"></i> Kembali</a>
+                                <a href="{{ route('barang.index') }}" class="btn btn-blue-alt"><i class="glyph-icon icon-arrow-left"></i> Kembali</a>
                             </div>
                         </div>
 

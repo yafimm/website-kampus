@@ -49,6 +49,8 @@
                             <input type="hidden" name="role" value="ormawa">
                         @elseif ($jenis == 'bagumum')
                             <input type="hidden" name="role" value="bagumum">
+                        @elseif ($jenis == 'yayasan')
+                            <input type="hidden" name="role" value="yayasan">
                         @endif
 
                         @if ($jenis == 'mahasiswa')
@@ -63,11 +65,15 @@
                             <input type="hidden" name="npm" value="0">
                         @elseif ($jenis == 'bagumum')
                             <input type="hidden" name="npm" value="0">
+                        @elseif ($jenis == 'yayasan')
+                            <input type="hidden" name="npm" value="0">
                         @endif
 
                         @if ($jenis == 'mahasiswa')
                             <input type="hidden" name="nip" value="0">
                         @elseif ($jenis == 'ormawa')
+                            <input type="hidden" name="nip" value="0">
+                        @elseif ($jenis == 'yayasan')
                             <input type="hidden" name="nip" value="0">
                         @elseif ($jenis == 'bagumum')
                             <div class="form-group">

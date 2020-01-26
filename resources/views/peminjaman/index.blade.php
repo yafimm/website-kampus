@@ -182,7 +182,7 @@
                             <td>{{date('d-m-Y', strtotime($peminjaman->p_date))}}</td>
                             <td>{{date('d-m-Y', strtotime($peminjaman->p_date_end))}}</td>
                             <td><a target="_blank"
-                                    href="{{ asset('suratpeminjaman/'.$peminjaman->p_scan_surat_peminjaman) }}">Download</a>
+                                    href="{{ route('downloadsurat', $peminjaman->p_scan_surat_peminjaman) }}">Download</a>
                             </td>
                             <td>
                                 @if ($peminjaman->p_status == 0)

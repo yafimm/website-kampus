@@ -94,7 +94,7 @@
                             <label class="col-sm-3 control-label">File Dokumen Peminjaman</label>
                             <div class="col-sm-6">
                                 <span class="bs-label label-default"><a target="_blank"
-                                        href="{{ asset('suratpeminjaman/'.$data_peminjaman[0]->p_scan_surat_peminjaman) }}">Download</a>
+                                        href="{{ route('downloadsurat', $data_peminjaman[0]->p_scan_surat_peminjaman) }}">Download</a>
                                 </span>
                             </div>
                         </div>

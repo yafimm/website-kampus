@@ -114,7 +114,7 @@
                         <div class="form-group">
 
                             <div class="col-sm-3">
-                                <a href="{{ url('/admin/inventaris') }}" class="btn btn-blue-alt"><i
+                                <a href="{{ route('inventaris.index') }}" class="btn btn-blue-alt"><i
                                         class="glyph-icon icon-arrow-left"></i> Kembali</a>
                             </div>
                         </div>

@@ -272,7 +272,7 @@
                 </div>
                 <form name="deleteForm" id="deleteForm" action="{{ route('request.prosesHapus') }}"
                     method="POST" class="form-horizontal">
-                    {{ csrf_field() }}
+                    @CSRF
                     <input type="hidden" name="idhapus" id="idhapus">
                     <div class="modal-body">
                         <p>Yakin ingin menghapus data request ?</p>

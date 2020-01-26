@@ -28,8 +28,8 @@ class BarangRequest extends FormRequest
         $foto = 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
         $kode = 'required|string|min:4|max:50|unique:barang,b_kode';
       }else{
-        $nama = 'required|string|min:5|max:50|unique:produk,b_nama,'.$this->get('id').',b_id';
-        $kode = 'required|string|min:5|max:50|unique:produk,b_kode,'.$this->get('id').',b_id';
+        $nama = 'required|string|min:5|max:50|unique:barang,b_nama,'.$this->get('id').',b_id';
+        $kode = 'sometimes|string|min:5|max:50|unique:barang,b_kode,'.$this->get('id').',b_id';
         $foto = 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
       }
 

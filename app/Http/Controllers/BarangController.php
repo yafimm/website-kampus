@@ -107,27 +107,12 @@ class BarangController extends Controller
          return redirect()->route('barang.index')->with('alert-class', 'alert-success')->with('flash_message','Data berhasil ditambah stoknya !!');
      }
 
-     public function cetakTahunan(Request $request){
-       $parameter= $request->post('tahunan')."%";
-       $data_barang = DB::table('barang')->where('created_at', 'like', $parameter)->get();
-       $pdf = PDF::loadview('barang.laporan_barang_pdf',['data_barang'=>$data_barang, 'data_status'=>$request->post('tahunan')]);
+     public function cetak(Request $request){
+       // $parameter= $request->post('tahunan')."%";
+       // $data_barang = DB::table('barang')->where('created_at', 'like', $parameter)->get();
+       $data_barang = Barang::where([['created_at','>=', date('Y-m-d', strtotime($request->mulai))], ['created_at','<=', date('Y-m-d', strtotime($request->akhir))]])->get();
+       $pdf = PDF::loadview('barang.laporan_barang_pdf', ['data_barang'=>$data_barang]);
        return $pdf->download('laporan-data-barang.pdf');
      }
-     public function cetakBulanan(Request $request){
-       $myArray = explode(' ', $request->post('bulanan'));
-       $parameter= $myArray[1]."-".$myArray[0]."%";
-       $bulan = $this->_getMonth($myArray[0]);
-       $data_barang = DB::table('barang')->where('created_at', 'like', $parameter)->get();
-       $pdf = PDF::loadview('barang.laporan_barang_pdf',['data_barang'=>$data_barang,'data_status'=>$bulan." ".$myArray[1]]);
-       return $pdf->download('laporan-data-barang.pdf');
-     }
-     public function cetakTanggal(Request $request){
-       $myArray = explode('-', $request->post('harian'));
-       $parameter= $myArray[2]."-".$myArray[0]."-".$myArray[1]."%";
-       $bulan = $this->_getMonth($myArray[0]);
-       $data_barang = DB::table('barang')->where('created_at', 'like', $parameter)->get();
-       dd($data_barang);
-       $pdf = PDF::loadview('barang.laporan_barang_pdf',['data_barang'=>$data_barang,'data_status'=>$myArray[1]." ".$bulan." ".$myArray[1]]);
-       return $pdf->download('laporan-data-barang.pdf');
-     }
+
 }

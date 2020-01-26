@@ -38,24 +38,31 @@ class RequestController extends Controller
 
     public function prosesKonfirmasi(RequestBarangRequest $request){
         if($request->post('jenis') == 1){
+            //Ini kalo ditolak
             $id = $request->post('idtolak');
             $jenis = 1;
+            $data_request = RequestBarang::find($id);
+            $data_request->update(['rb_status' => $jenis]);
+            return redirect()->route('request.index')->with('alert-class', 'alert-success')->with('flash_message', 'Data Request berhasil ditolak !!');
         }else if($request->post('jenis') == 2){
+            //Ini kalo data disetujui
             $id = $request->post('idsetuju');
             $jenis = 2;
             $data_request = RequestBarang::find($id);
             $data_barang = Barang::find($data_request->b_id);
             if($data_barang->b_stock < $data_request->rb_jumlah){
-              echo "<script>alert('Gagal, Stock barang tidak cukup')
-              ;window.location='".route('request.index')."'</script>";
+              // gagal disetujui karena stok habis
+              return redirect()->route('request.index')->with('alert-class', 'alert-danger')->with('flash_message', 'Gagal, Stock barang tidak mencukupi !!');
             }else{
+              //Ini berhasil disetujui, dibawah stock permintannnya
               $data_request->update(['rb_status' => $jenis]);
               $jumlah_barang = $data_barang->b_stock - $data_request->rb_jumlah;
               $data_barang->update(['b_stock' => $jumlah_barang]);
+              return redirect()->route('request.index')->with('alert-class', 'alert-success')->with('flash_message', 'Data Request berhasil disetujui !!');
             }
         }
-
-        return redirect()->route('request.index')->with('alert-class', 'alert-success')->with('flash_message', 'Data Request berhasil disetujui !!');
+        //Ini kalo ada kesalahan konfirmasi, penyebabnya dari id tolak dan disetujuinya
+        return redirect()->route('request.index')->with('alert-class', 'alert-danger')->with('flash_message', 'Data Request Gagal dikonfirmasi !!');
     }
 
     public function prosesHapus(RequestBarangRequest $request){
