@@ -27,7 +27,7 @@
     <hr style="border-top: 1px solid black;">
 	<center>
 		<h4>Laporan Data Barang</h4>
-		<td>{{ date('d/m/Y', strtotime($request->mulai)) .' - '. date('d/m/Y', strtotime($request->akhir)) }}</td>
+		<h6>{{ date('d/m/Y', strtotime($mulai)) .' - '. date('d/m/Y', strtotime($akhir)) }}</h6>
 	</center>
 
 	<table class='table table-bordered'>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Pengadaan;
+use PDF;
 
 class PengadaanController extends Controller
 {
@@ -97,6 +98,12 @@ class PengadaanController extends Controller
     public function destroy()
     {
 
+    }
+
+    public function cetak(Request $request){
+      $data_pengadaan = Pengadaan::where([['no_register','=', $request->no_register]])->get();
+      $pdf = PDF::loadview('pengadaan.laporan_pengadaan_pdf', ['data_pengadaan'=>$data_pengadaan]);
+      return $pdf->download('laporan-data-pengadaan'.$request->no_register.'.pdf');
     }
 
 }

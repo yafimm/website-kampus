@@ -1,0 +1,18 @@
+[26-Jan-2020 08:18:13 UTC] PHP Warning:  Uncaught ErrorException: require(/home/tikakusn/web_folder/web_stmik/vendor/composer/../../App/Yaff_helpers.php): failed to open stream: No such file or directory in /home/tikakusn/web_folder/web_stmik/vendor/composer/autoload_real.php:66
+Stack trace:
+#0 /home/tikakusn/web_folder/web_stmik/vendor/composer/autoload_real.php(66): Composer\Util\ErrorHandler::handle(2, 'require(/home/t...', '/home/tikakusn/...', 66, Array)
+#1 /home/tikakusn/web_folder/web_stmik/vendor/composer/autoload_real.php(66): require()
+#2 /home/tikakusn/web_folder/web_stmik/vendor/composer/autoload_real.php(56): composerRequiref359cdd1db796cda2a4beaf91e361074('6d09b293ba8d4dc...', '/home/tikakusn/...')
+#3 /home/tikakusn/web_folder/web_stmik/vendor/autoload.php(7): ComposerAutoloaderInitf359cdd1db796cda2a4beaf91e361074::getLoader()
+#4 /home/tikakusn/web_folder/web_stmik/vendor/laravel/framework/src/Illuminate/Foundation/ComposerScripts.php(43): require_once('/home/tikakusn/...')
+#5 phar:///opt/cpanel/composer/bin/composer/src/Composer/Event in /home/tikakusn/web_folder/web_stmik/vendor/composer/autoload_real.php on line 66
+[26-Jan-2020 08:18:13 UTC] PHP Fatal error:  composerRequiref359cdd1db796cda2a4beaf91e361074(): Failed opening required '/home/tikakusn/web_folder/web_stmik/vendor/composer/../../App/Yaff_helpers.php' (include_path='.:/opt/alt/php72/usr/share/pear') in /home/tikakusn/web_folder/web_stmik/vendor/composer/autoload_real.php on line 66
+[26-Jan-2020 08:24:17 UTC] PHP Warning:  Uncaught ErrorException: require(/home/tikakusn/web_folder/web_stmik/vendor/composer/../../App/Yaff_helpers.php): failed to open stream: No such file or directory in /home/tikakusn/web_folder/web_stmik/vendor/composer/autoload_real.php:66
+Stack trace:
+#0 /home/tikakusn/web_folder/web_stmik/vendor/composer/autoload_real.php(66): Composer\Util\ErrorHandler::handle(2, 'require(/home/t...', '/home/tikakusn/...', 66, Array)
+#1 /home/tikakusn/web_folder/web_stmik/vendor/composer/autoload_real.php(66): require()
+#2 /home/tikakusn/web_folder/web_stmik/vendor/composer/autoload_real.php(56): composerRequiref359cdd1db796cda2a4beaf91e361074('6d09b293ba8d4dc...', '/home/tikakusn/...')
+#3 /home/tikakusn/web_folder/web_stmik/vendor/autoload.php(7): ComposerAutoloaderInitf359cdd1db796cda2a4beaf91e361074::getLoader()
+#4 /home/tikakusn/web_folder/web_stmik/vendor/laravel/framework/src/Illuminate/Foundation/ComposerScripts.php(43): require_once('/home/tikakusn/...')
+#5 phar:///opt/cpanel/composer/bin/composer/src/Composer/Event in /home/tikakusn/web_folder/web_stmik/vendor/composer/autoload_real.php on line 66
+[26-Jan-2020 08:24:17 UTC] PHP Fatal error:  composerRequiref359cdd1db796cda2a4beaf91e361074(): Failed opening required '/home/tikakusn/web_folder/web_stmik/vendor/composer/../../App/Yaff_helpers.php' (include_path='.:/opt/alt/php72/usr/share/pear') in /home/tikakusn/web_folder/web_stmik/vendor/composer/autoload_real.php on line 66

@@ -99,13 +99,7 @@
                     <i class="glyphicon glyphicon-edit"></i> Ubah
                 </a>
                 <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportTahunan">
-                    <i class="glyph-icon icon-clipboard"></i> Cetak Laporan Tahunan
-                </button>
-                <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportBulanan">
-                    <i class="glyph-icon icon-clipboard"></i> Cetak Laporan Bulanan
-                </button>
-                <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportTanggal">
-                    <i class="glyph-icon icon-clipboard"></i> Cetak Laporan Harian
+                    <i class="glyph-icon icon-clipboard"></i> Cetak
                 </button>
             </h3>
 
@@ -160,5 +154,25 @@
         </div>
     </div>
 
+</div>
+<div class="modal fade" id="modalReportTahunan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><strong>Cetak Laporan</strong></h4>
+            </div>
+            <form name="reportTahunan" id="reportTahunan" action="{{ route('pengadaan.cetak') }}"
+                method="POST" class="form-horizontal bordered-row">
+                {{ csrf_field() }}
+                <input type="hidden" name="no_register" value="{{ $arr_pengadaan[0]->no_register }}">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-success" formtarget="_blank">Cetak</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 @endsection

@@ -108,8 +108,6 @@ class BarangController extends Controller
      }
 
      public function cetak(Request $request){
-       // $parameter= $request->post('tahunan')."%";
-       // $data_barang = DB::table('barang')->where('created_at', 'like', $parameter)->get();
        $data_barang = Barang::where([['created_at','>=', date('Y-m-d', strtotime($request->mulai))], ['created_at','<=', date('Y-m-d', strtotime($request->akhir))]])->get();
        $pdf = PDF::loadview('barang.laporan_barang_pdf', ['data_barang'=>$data_barang, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
        return $pdf->download('laporan-data-barang.pdf');

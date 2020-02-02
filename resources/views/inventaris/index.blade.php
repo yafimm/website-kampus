@@ -8,34 +8,18 @@
 
         $(function () {
             "use strict";
-            $('#tahunan').bsdatepicker({
-                autoclose: true,
-                format: " yyyy",
-                viewMode: "years",
-                minViewMode: "years",
-                startDate: '2019',
-                endDate: new Date(),
+            $('#dari-tanggal').bsdatepicker({
+                format: 'dd-mm-yyyy'
             });
         });
 
         $(function () {
             "use strict";
-            $('#bulanan').bsdatepicker({
-                autoclose: true,
-                format: " mm-yyyy",
-                viewMode: "months",
-                minViewMode: "months",
-                startDate: '2019',
-                endDate: new Date(),
+            $('#sampai-tanggal').bsdatepicker({
+                format: 'dd-mm-yyyy'
             });
         });
 
-        $(function () {
-            "use strict";
-            $('#harian').bsdatepicker({
-                format: 'mm-dd-yyyy'
-            });
-        });
 
     </script>
     <!-- Bootstrap Datepicker -->
@@ -95,15 +79,11 @@
                 <a href="{{ route('inventaris.tambah') }}" class="btn btn-primary">
                     <i class="glyph-icon icon-plus-circle"></i> Tambah
                 </a>
+                @if(Auth::user()->hasRole('admin'))
                 <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportTahunan">
-                    <i class="glyph-icon icon-clipboard"></i> Cetak Laporan Tahunan
+                    <i class="glyph-icon icon-clipboard"></i> Cetak Laporan
                 </button>
-                <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportBulanan">
-                    <i class="glyph-icon icon-clipboard"></i> Cetak Laporan Bulanan
-                </button>
-                <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportTanggal">
-                    <i class="glyph-icon icon-clipboard"></i> Cetak Laporan Harian
-                </button>
+                @endif
             </h3>
             <div class="example-box-wrapper">
                 <table id="dt_inventaris" class="table table-striped table-bordered" cellspacing="0"
@@ -205,21 +185,33 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title"><strong>Cetak Laporan Tahunan</strong></h4>
+                            <h4 class="modal-title"><strong>Cetak Laporan</strong></h4>
                         </div>
-                        <form name="reportTahunan" id="reportTahunan" action="{{ url('/admin/inventaris/cetakTahunan') }}"
+                        <form name="reportTahunan" id="reportTahunan" action="{{ route('inventaris.cetak') }}"
                             method="POST" class="form-horizontal bordered-row">
                             {{ csrf_field() }}
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">Pilih Tahun</label>
+                                    <label class="col-sm-3 control-label">Dari Tanggal</label>
                                     <div class="col-sm-6">
                                         <div class="input-prepend input-group">
                                             <span class="add-on input-group-addon">
                                                 <i class="glyph-icon icon-calendar"></i>
                                             </span>
-                                            <input id="tahunan" name="tahunan" type="text" class="bootstrap-datepicker form-control" value=""
-                                                data-date-format="yyyy">
+                                            <input id="dari-tanggal" name="mulai" type="text" class="bootstrap-datepicker form-control" value=""
+                                                data-date-format="dd-mm-yyyy">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Sampai Tanggal</label>
+                                    <div class="col-sm-6">
+                                        <div class="input-prepend input-group">
+                                            <span class="add-on input-group-addon">
+                                                <i class="glyph-icon icon-calendar"></i>
+                                            </span>
+                                            <input id="sampai-tanggal" name="akhir" type="text" class="bootstrap-datepicker form-control" value=""
+                                                data-date-format="dd-mm-yyyy">
                                         </div>
                                     </div>
                                 </div>
@@ -233,77 +225,6 @@
                     </div>
                 </div>
             </div>
+  </div>
 
-            <div class="modal fade" id="modalReportBulanan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title"><strong>Cetak Laporan Bulanan</strong></h4>
-                        </div>
-                        <form name="reportBulanan" id="reportBulanan" action="{{ url('/admin/inventaris/cetakBulanan') }}"
-                            method="POST" class="form-horizontal bordered-row">
-                            {{ csrf_field() }}
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">Pilih Bulan</label>
-                                    <div class="col-sm-6">
-                                        <div class="input-prepend input-group">
-                                            <span class="add-on input-group-addon">
-                                                <i class="glyph-icon icon-calendar"></i>
-                                            </span>
-                                            <input id="bulanan" name="bulanan" type="text" class="bootstrap-datepicker form-control" value=""
-                                                data-date-format="mm/yyyy">
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-success" formtarget="_blank">Cetak</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal fade" id="modalReportTanggal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title"><strong>Cetak Laporan Harian</strong></h4>
-                        </div>
-                        <form name="reportHarian" id="reportHarian" action="{{ url('/admin/inventaris/cetakHarian') }}"
-                            method="POST" class="form-horizontal bordered-row">
-                            {{ csrf_field() }}
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">Pilih Tanggal</label>
-                                    <div class="col-sm-6">
-                                        <div class="input-prepend input-group">
-                                            <span class="add-on input-group-addon">
-                                                <i class="glyph-icon icon-calendar"></i>
-                                            </span>
-                                            <input id="harian" name="harian" type="text" class="bootstrap-datepicker form-control" value=""
-                                                data-date-format="mm/dd/yyyy">
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-success" formtarget="_blank">Cetak</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-
-</div>
-@endsection
+  @endsection

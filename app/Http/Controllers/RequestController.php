@@ -108,42 +108,10 @@ class RequestController extends Controller
         return redirect()->route('request.index')->with('alert-class', 'alert-success')->with('flash_message', 'Data Request Barang berhasil diubah !!');
     }
 
-    public function cetakTahunan(Request $request){
-        $parameter= $request->post('tahunan')."%";
-        $data_request = DB::table('request_barang')
-        ->join('users', 'request_barang.user_id', '=', 'users.id')
-        ->join('barang', 'request_barang.b_id', '=', 'barang.b_id')
-        ->select('request_barang.rb_id', 'users.name', 'barang.b_nama', 'request_barang.rb_jumlah', 'request_barang.rb_status', 'request_barang.created_at','request_barang.updated_at')
-        ->where('request_barang.created_at', 'like', $parameter)
-        ->get();
-        $pdf = PDF::loadView('admin.laporan_request_pdf',['data_request'=>$data_request, 'data_status'=>$request->post('tahunan')]);
-    	return $pdf->download('laporan-data-request.pdf');
-    }
-    public function cetakBulanan(Request $request){
-        $myArray = explode(' ', $request->post('bulanan'));
-        $parameter= $myArray[1]."-".$myArray[0]."%";
-        $bulan = $this->getMonth($myArray[0]);
-        $data_request = DB::table('request_barang')
-        ->join('users', 'request_barang.user_id', '=', 'users.id')
-        ->join('barang', 'request_barang.b_id', '=', 'barang.b_id')
-        ->select('request_barang.rb_id', 'users.name', 'barang.b_nama', 'request_barang.rb_jumlah', 'request_barang.rb_status', 'request_barang.created_at','request_barang.updated_at')
-        ->where('request_barang.created_at', 'like', $parameter)
-        ->get();
-        $pdf = PDF::loadView('admin.laporan_request_pdf',['data_request'=>$data_request,'data_status'=>$bulan." ".$myArray[1]]);
-    	return $pdf->download('laporan-data-request.pdf');
-    }
-    public function cetakTanggal(Request $request){
-        $myArray = explode('-', $request->post('harian'));
-        $parameter= $myArray[2]."-".$myArray[0]."-".$myArray[1]."%";
-        $bulan = $this->getMonth($myArray[0]);
-        $data_request = DB::table('request_barang')
-        ->join('users', 'request_barang.user_id', '=', 'users.id')
-        ->join('barang', 'request_barang.b_id', '=', 'barang.b_id')
-        ->select('request_barang.rb_id', 'users.name', 'barang.b_nama', 'request_barang.rb_jumlah', 'request_barang.rb_status', 'request_barang.created_at','request_barang.updated_at')
-        ->where('request_barang.created_at', 'like', $parameter)
-        ->get();
-        $pdf = PDF::loadView('admin.laporan_request_pdf',['data_request'=>$data_request,'data_status'=>$myArray[1]." ".$bulan." ".$myArray[1]]);
-    	return $pdf->download('laporan-data-request.pdf');
+    public function cetak(Request $request){
+      $data_request = RequestBarang::where([['created_at','>=', date('Y-m-d', strtotime($request->mulai))], ['created_at','<=', date('Y-m-d', strtotime($request->akhir))]])->get();
+      $pdf = PDF::loadview('request.laporan_request_pdf', ['data_request'=>$data_request, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
+      return $pdf->download('laporan-data-request.pdf');
     }
 
 

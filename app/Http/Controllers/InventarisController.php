@@ -112,27 +112,18 @@ class InventarisController extends Controller
         return redirect()->route('inventaris.index')->with('alert-class', 'alert-success')->with('flash_message', 'Data berhasil dihapus dari database !!');
     }
 
-    public function cetakTahunan(Request $request){
-        $parameter= $request->post('tahunan')."%";
-        $data_inventaris = DB::table('inventaris')->where('created_at', 'like', $parameter)->get();
-        $pdf = PDF::loadView('inventaris.laporan_inventaris_pdf',['data_inventaris'=>$data_inventaris, 'data_status'=>$request->post('tahunan')]);
-      return $pdf->download('laporan-data-inventaris.pdf');
+    public function cetak(Request $request){
+        $data_inventaris = Inventaris::where([['created_at','>=', date('Y-m-d', strtotime($request->mulai))], ['created_at','<=', date('Y-m-d', strtotime($request->akhir))]])->get();
+        $pdf = PDF::loadview('inventaris.laporan_inventaris_pdf', ['data_inventaris'=>$data_inventaris, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
+        return $pdf->download('laporan-data-inventaris.pdf');
     }
-    public function cetakBulanan(Request $request){
-        $myArray = explode(' ', $request->post('bulanan'));
-        $parameter= $myArray[1]."-".$myArray[0]."%";
-        $bulan = $this->getMonth($myArray[0]);
-        $data_inventaris = DB::table('inventaris')->where('created_at', 'like', $parameter)->get();
-        $pdf = PDF::loadView('inventaris.laporan_inventaris_pdf',['data_inventaris'=>$data_inventaris,'data_status'=>$bulan." ".$myArray[1]]);
-      return $pdf->download('laporan-data-inventaris.pdf');
-    }
-    public function cetakTanggal(Request $request){
-        $myArray = explode('-', $request->post('harian'));
-        $parameter= $myArray[2]."-".$myArray[0]."-".$myArray[1]."%";
-        $bulan = $this->getMonth($myArray[0]);
-        $data_inventaris = DB::table('inventaris')->where('created_at', 'like', $parameter)->get();
-        $pdf = PDF::loadView('inventaris.laporan_inventaris_pdf',['data_inventaris'=>$data_inventaris,'data_status'=>$myArray[1]." ".$bulan." ".$myArray[1]]);
-      return $pdf->download('laporan-data-inventaris.pdf');
-    }
+    // public function cetakTanggal(Request $request){
+    //     $myArray = explode('-', $request->post('harian'));
+    //     $parameter= $myArray[2]."-".$myArray[0]."-".$myArray[1]."%";
+    //     $bulan = $this->getMonth($myArray[0]);
+    //     $data_inventaris = DB::table('inventaris')->where('created_at', 'like', $parameter)->get();
+    //     $pdf = PDF::loadView('inventaris.laporan_inventaris_pdf',['data_inventaris'=>$data_inventaris,'data_status'=>$myArray[1]." ".$bulan." ".$myArray[1]]);
+    //   return $pdf->download('laporan-data-inventaris.pdf');
+    // }
 
 }

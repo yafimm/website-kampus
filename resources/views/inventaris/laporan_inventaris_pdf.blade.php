@@ -27,7 +27,7 @@
     <hr style="border-top: 1px solid black;">
 	<center>
 		<h4>Laporan Data Inventaris </h4>
-		<p>{{$data_status}}</p>
+		<h6>{{ date('d/m/Y', strtotime($mulai)) .' - '. date('d/m/Y', strtotime($akhir)) }}</h6>
 	</center>
 	<table class='table table-bordered'>
 		<thead>
@@ -36,7 +36,7 @@
 				<th>Nama</th>
 				<th>Unit</th>
 				<th>Harga</th>
-                <th>Posisi</th>
+        <th>Posisi</th>
 				<th>Keterangan</th>
 				<th>Tanggal</th>
 			</tr>
@@ -48,14 +48,14 @@
 				<td>{{ $i++ }}</td>
 				<td>{{$inventaris->i_nama}}</td>
 				<td>{{$inventaris->i_unit}}</td>
-				<td>{{$inventaris->i_harga}}</td>
-                <td>{{$inventaris->i_posisi}}</td>
+				<td>Rp. {{$inventaris->i_harga ? number_format($inventaris->i_harga, 2, ',', '.') : '0,00'}}</td>
+        <td>{{$inventaris->i_posisi}}</td>
 				<td>{{$inventaris->i_keterangan}}</td>
-				<td>{{$inventaris->created_at}}</td>
+				<td>{{$inventaris->created_at->format('d/m/Y')}}</td>
 			</tr>
 			@endforeach
 		</tbody>
 	</table>
- 
+
 </body>
 </html>

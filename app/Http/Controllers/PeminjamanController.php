@@ -257,104 +257,36 @@ class PeminjamanController extends Controller
           return $fixDate;
       }
 
-      public function cetak($id){
-        $data_peminjaman = DB::table('peminjaman')
-        ->join('users', 'peminjaman.user_id', '=', 'users.id')
-        ->select('peminjaman.p_id', 'users.name', 'peminjaman.p_date',
-        'peminjaman.p_date_end', 'peminjaman.p_time_start', 'peminjaman.p_time_end',
-        'peminjaman.p_scan_surat_peminjaman', 'peminjaman.p_status', 'peminjaman.created_at',
-        'peminjaman.updated_at', 'peminjaman.p_nama_event','users.name', 'users.npm', 'users.nip', 'users.role')
-        ->where('peminjaman.p_id', $id)
-        ->get();
-        $data_peminjaman[0]->detail_peminjaman = DB::table('table_data_detail_peminjaman')
-        ->join('peminjaman', 'table_data_detail_peminjaman.p_id', '=', 'peminjaman.p_id')
-        ->join('inventaris', 'table_data_detail_peminjaman.i_id', '=', 'inventaris.i_id')
-        ->select('table_data_detail_peminjaman.i_id', 'peminjaman.p_id', 'inventaris.i_nama',
-        'table_data_detail_peminjaman.dp_jumlah', 'table_data_detail_peminjaman.created_at',
-        'table_data_detail_peminjaman.updated_at')
-        ->where('table_data_detail_peminjaman.p_id', $data_peminjaman[0]->p_id)
-        ->get();
-        $today = date("Y/m/d");
-        $string_split = explode("/", $today);
-        $get_data_tanggal_ttd = "".$string_split[2]." ".$this->getBulanHuruf($string_split[1])." ".$string_split[0];
-        $data_peminjaman[0]->nomor_surat = "SPB/".$today."/".$data_peminjaman[0]->p_id;
-        $data_peminjaman[0]->get_data_tanggal_ttd = $get_data_tanggal_ttd;
-        $pdf = PDF::loadView('templateSuratKonfirmasi',['data_peminjaman'=>$data_peminjaman]);
-    	return $pdf->download('surat_izin_peminjaman.pdf');
-    }
+    //   public function cetak($id){
+    //     $data_peminjaman = DB::table('peminjaman')
+    //     ->join('users', 'peminjaman.user_id', '=', 'users.id')
+    //     ->select('peminjaman.p_id', 'users.name', 'peminjaman.p_date',
+    //     'peminjaman.p_date_end', 'peminjaman.p_time_start', 'peminjaman.p_time_end',
+    //     'peminjaman.p_scan_surat_peminjaman', 'peminjaman.p_status', 'peminjaman.created_at',
+    //     'peminjaman.updated_at', 'peminjaman.p_nama_event','users.name', 'users.npm', 'users.nip', 'users.role')
+    //     ->where('peminjaman.p_id', $id)
+    //     ->get();
+    //     $data_peminjaman[0]->detail_peminjaman = DB::table('table_data_detail_peminjaman')
+    //     ->join('peminjaman', 'table_data_detail_peminjaman.p_id', '=', 'peminjaman.p_id')
+    //     ->join('inventaris', 'table_data_detail_peminjaman.i_id', '=', 'inventaris.i_id')
+    //     ->select('table_data_detail_peminjaman.i_id', 'peminjaman.p_id', 'inventaris.i_nama',
+    //     'table_data_detail_peminjaman.dp_jumlah', 'table_data_detail_peminjaman.created_at',
+    //     'table_data_detail_peminjaman.updated_at')
+    //     ->where('table_data_detail_peminjaman.p_id', $data_peminjaman[0]->p_id)
+    //     ->get();
+    //     $today = date("Y/m/d");
+    //     $string_split = explode("/", $today);
+    //     $get_data_tanggal_ttd = "".$string_split[2]." ".$this->getBulanHuruf($string_split[1])." ".$string_split[0];
+    //     $data_peminjaman[0]->nomor_surat = "SPB/".$today."/".$data_peminjaman[0]->p_id;
+    //     $data_peminjaman[0]->get_data_tanggal_ttd = $get_data_tanggal_ttd;
+    //     $pdf = PDF::loadView('templateSuratKonfirmasi',['data_peminjaman'=>$data_peminjaman]);
+    // 	return $pdf->download('surat_izin_peminjaman.pdf');
+    // }
 
-    public function cetakTahunan(Request $request){
-        $parameter= $request->post('tahunan')."%";
-        $data_peminjaman = DB::table('peminjaman')
-        ->join('users', 'peminjaman.user_id', '=', 'users.id')
-        ->select('peminjaman.p_id', 'users.name', 'peminjaman.p_date',
-        'peminjaman.p_date_end', 'peminjaman.p_time_start', 'peminjaman.p_time_end',
-        'peminjaman.p_scan_surat_peminjaman', 'peminjaman.p_status', 'peminjaman.created_at',
-        'peminjaman.updated_at')
-        ->where('peminjaman.created_at', 'like', $parameter)
-        ->get();
-        for($i = 0; $i < count($data_peminjaman); $i++){
-            $data_peminjaman[$i]->detail_peminjaman = DB::table('table_data_detail_peminjaman')
-            ->join('peminjaman', 'table_data_detail_peminjaman.p_id', '=', 'peminjaman.p_id')
-            ->join('inventaris', 'table_data_detail_peminjaman.i_id', '=', 'inventaris.i_id')
-            ->select('table_data_detail_peminjaman.i_id', 'peminjaman.p_id', 'inventaris.i_nama',
-            'table_data_detail_peminjaman.dp_jumlah', 'table_data_detail_peminjaman.created_at',
-            'table_data_detail_peminjaman.updated_at')
-            ->where('table_data_detail_peminjaman.p_id', $data_peminjaman[$i]->p_id)
-            ->get();
-        }
-        $pdf = PDF::loadView('admin.laporan_peminjaman_pdf',['data_peminjaman'=>$data_peminjaman, 'data_status'=>$request->post('tahunan')]);
-    	return $pdf->download('laporan-data-peminjaman.pdf');
-    }
-    public function cetakBulanan(Request $request){
-        $myArray = explode(' ', $request->post('bulanan'));
-        $parameter= $myArray[1]."-".$myArray[0]."%";
-        $bulan = $this->getMonth($myArray[0]);
-        $data_peminjaman = DB::table('peminjaman')
-        ->join('users', 'peminjaman.user_id', '=', 'users.id')
-        ->select('peminjaman.p_id', 'users.name', 'peminjaman.p_date',
-        'peminjaman.p_date_end', 'peminjaman.p_time_start', 'peminjaman.p_time_end',
-        'peminjaman.p_scan_surat_peminjaman', 'peminjaman.p_status', 'peminjaman.created_at',
-        'peminjaman.updated_at')
-        ->where('peminjaman.created_at', 'like', $parameter)
-        ->get();
-        for($i = 0; $i < count($data_peminjaman); $i++){
-            $data_peminjaman[$i]->detail_peminjaman = DB::table('table_data_detail_peminjaman')
-            ->join('peminjaman', 'table_data_detail_peminjaman.p_id', '=', 'peminjaman.p_id')
-            ->join('inventaris', 'table_data_detail_peminjaman.i_id', '=', 'inventaris.i_id')
-            ->select('table_data_detail_peminjaman.i_id', 'peminjaman.p_id', 'inventaris.i_nama',
-            'table_data_detail_peminjaman.dp_jumlah', 'table_data_detail_peminjaman.created_at',
-            'table_data_detail_peminjaman.updated_at')
-            ->where('table_data_detail_peminjaman.p_id', $data_peminjaman[$i]->p_id)
-            ->get();
-        }
-        $pdf = PDF::loadView('admin.laporan_peminjaman_pdf',['data_peminjaman'=>$data_peminjaman, 'data_status'=>$bulan." ".$myArray[1]]);
-    	return $pdf->download('laporan-data-peminjaman.pdf');
-    }
-    public function cetakTanggal(Request $request){
-        $myArray = explode('-', $request->post('harian'));
-        $parameter= $myArray[2]."-".$myArray[0]."-".$myArray[1]."%";
-        $bulan = $this->getMonth($myArray[0]);
-        $data_peminjaman = DB::table('peminjaman')
-        ->join('users', 'peminjaman.user_id', '=', 'users.id')
-        ->select('peminjaman.p_id', 'users.name', 'peminjaman.p_date',
-        'peminjaman.p_date_end', 'peminjaman.p_time_start', 'peminjaman.p_time_end',
-        'peminjaman.p_scan_surat_peminjaman', 'peminjaman.p_status', 'peminjaman.created_at',
-        'peminjaman.updated_at')
-        ->where('peminjaman.created_at', 'like', $parameter)
-        ->get();
-        for($i = 0; $i < count($data_peminjaman); $i++){
-            $data_peminjaman[$i]->detail_peminjaman = DB::table('table_data_detail_peminjaman')
-            ->join('peminjaman', 'table_data_detail_peminjaman.p_id', '=', 'peminjaman.p_id')
-            ->join('inventaris', 'table_data_detail_peminjaman.i_id', '=', 'inventaris.i_id')
-            ->select('table_data_detail_peminjaman.i_id', 'peminjaman.p_id', 'inventaris.i_nama',
-            'table_data_detail_peminjaman.dp_jumlah', 'table_data_detail_peminjaman.created_at',
-            'table_data_detail_peminjaman.updated_at')
-            ->where('table_data_detail_peminjaman.p_id', $data_peminjaman[$i]->p_id)
-            ->get();
-        }
-        $pdf = PDF::loadView('admin.laporan_peminjaman_pdf',['data_peminjaman'=>$data_peminjaman, 'data_status'=>$myArray[1]." ".$bulan." ".$myArray[1]]);
-    	return $pdf->download('laporan-data-peminjaman.pdf');
+    public function cetak(Request $request){
+      $data_peminjaman = Peminjaman::where([['created_at','>=', date('Y-m-d', strtotime($request->mulai))], ['created_at','<=', date('Y-m-d', strtotime($request->akhir))]])->get();
+      $pdf = PDF::loadview('peminjaman.laporan_peminjaman_pdf', ['data_peminjaman'=>$data_peminjaman, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
+      return $pdf->download('laporan-data-peminjaman.pdf');
     }
 
 

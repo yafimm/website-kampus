@@ -16,7 +16,7 @@ class Request extends Model
 
   public function barang()
   {
-      return $this->belongsTo('App\Barang', 'b_id');
+      return $this->belongsTo('App\Barang', 'b_id', 'b_id');
   }
 
   public function user()

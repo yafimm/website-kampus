@@ -8,34 +8,18 @@
 
         $(function () {
             "use strict";
-            $('#tahunan').bsdatepicker({
-                autoclose: true,
-                format: " yyyy",
-                viewMode: "years",
-                minViewMode: "years",
-                startDate: '2019',
-                endDate: new Date(),
+            $('#dari-tanggal').bsdatepicker({
+                format: 'dd-mm-yyyy'
             });
         });
 
         $(function () {
             "use strict";
-            $('#bulanan').bsdatepicker({
-                autoclose: true,
-                format: " mm-yyyy",
-                viewMode: "months",
-                minViewMode: "months",
-                startDate: '2019',
-                endDate: new Date(),
+            $('#sampai-tanggal').bsdatepicker({
+                format: 'dd-mm-yyyy'
             });
         });
 
-        $(function () {
-            "use strict";
-            $('#harian').bsdatepicker({
-                format: 'mm-dd-yyyy'
-            });
-        });
 
     </script>
 
@@ -127,19 +111,10 @@
 
     <div class="panel">
         <div class="panel-body">
-          @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('bagumum'))
-            <h3 class="title-hero">
-
-                <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportTahunan">
-                    <i class="glyph-icon icon-clipboard"></i> Cetak Laporan Tahunan
-                </button>
-                <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportBulanan">
-                    <i class="glyph-icon icon-clipboard"></i> Cetak Laporan Bulanan
-                </button>
-                <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportTanggal">
-                    <i class="glyph-icon icon-clipboard"></i> Cetak Laporan Harian
-                </button>
-            </h3>
+          @if(Auth::user()->hasRole('admin'))
+          <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportTahunan">
+              <i class="glyph-icon icon-clipboard"></i> Cetak Laporan
+          </button>
           @endif
             <div class="example-box-wrapper">
                 <table id="dt_peminjaman" class="table table-striped table-bordered" cellspacing="0"
@@ -199,7 +174,7 @@
                                     <i class="glyph-icon icon-eye"></i>
                                 </a>
 
-                                  @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('bagumum'))
+                                  @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff inventaris'))
                                   <button class="btn btn-primary btn-md" data-toggle="modal"
                                   data-target="#modalSetuju" data-peminjamanid="{{$peminjaman->p_id}}" data-toggle="tooltip" data-placement="top" title="Setuju">
                                   <i class="glyph-icon icon-check"></i>
@@ -255,7 +230,7 @@
     </div>
 
 
-    @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('bagumum'))
+    @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff inventaris'))
 
     <div class="panel">
         <div class="panel-body">
@@ -380,96 +355,33 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title"><strong>Cetak Laporan Tahunan</strong></h4>
+                    <h4 class="modal-title"><strong>Cetak Laporan</strong></h4>
                 </div>
-                <form name="reportTahunan" id="reportTahunan"
-                    action="{{ route('peminjaman.cetakTahunan') }}" method="POST"
-                    class="form-horizontal bordered-row">
-                    {{ csrf_field() }}
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">Pilih Tahun</label>
-                            <div class="col-sm-6">
-                                <div class="input-prepend input-group">
-                                    <span class="add-on input-group-addon">
-                                        <i class="glyph-icon icon-calendar"></i>
-                                    </span>
-                                    <input id="tahunan" name="tahunan" type="text"
-                                        class="bootstrap-datepicker form-control" value=""
-                                        data-date-format="yyyy">
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-success" formtarget="_blank">Cetak</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="modalReportBulanan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title"><strong>Cetak Laporan Bulanan</strong></h4>
-                </div>
-                <form name="reportBulanan" id="reportBulanan"
-                    action="{{ route('peminjaman.cetakBulanan') }}" method="POST"
-                    class="form-horizontal bordered-row">
-                    {{ csrf_field() }}
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">Pilih Bulan</label>
-                            <div class="col-sm-6">
-                                <div class="input-prepend input-group">
-                                    <span class="add-on input-group-addon">
-                                        <i class="glyph-icon icon-calendar"></i>
-                                    </span>
-                                    <input id="bulanan" name="bulanan" type="text"
-                                        class="bootstrap-datepicker form-control" value=""
-                                        data-date-format="mm/yyyy">
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-success" formtarget="_blank">Cetak</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="modalReportTanggal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title"><strong>Cetak Laporan Harian</strong></h4>
-                </div>
-                <form name="reportHarian" id="reportHarian" action="{{ route('peminjaman.cetakHarian') }}"
+                <form name="reportTahunan" id="reportTahunan" action="{{ route('peminjaman.cetak') }}"
                     method="POST" class="form-horizontal bordered-row">
                     {{ csrf_field() }}
                     <div class="modal-body">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Pilih Tanggal</label>
+                            <label class="col-sm-3 control-label">Dari Tanggal</label>
                             <div class="col-sm-6">
                                 <div class="input-prepend input-group">
                                     <span class="add-on input-group-addon">
                                         <i class="glyph-icon icon-calendar"></i>
                                     </span>
-                                    <input id="harian" name="harian" type="text"
-                                        class="bootstrap-datepicker form-control" value=""
-                                        data-date-format="mm/dd/yyyy">
+                                    <input id="dari-tanggal" name="mulai" type="text" class="bootstrap-datepicker form-control" value=""
+                                        data-date-format="dd-mm-yyyy">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Sampai Tanggal</label>
+                            <div class="col-sm-6">
+                                <div class="input-prepend input-group">
+                                    <span class="add-on input-group-addon">
+                                        <i class="glyph-icon icon-calendar"></i>
+                                    </span>
+                                    <input id="sampai-tanggal" name="akhir" type="text" class="bootstrap-datepicker form-control" value=""
+                                        data-date-format="dd-mm-yyyy">
                                 </div>
                             </div>
                         </div>

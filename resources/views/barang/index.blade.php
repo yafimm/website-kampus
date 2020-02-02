@@ -77,9 +77,11 @@
                   <a href="{{ route('barang.tambah') }}" class="btn btn-primary">
                       <i class="glyph-icon icon-plus-circle"></i> Tambah
                   </a>
+                  @if(Auth::user()->hasRole('admin'))
                   <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportTahunan">
                       <i class="glyph-icon icon-clipboard"></i> Cetak Laporan
                   </button>
+                  @endif
               </h3>
               <div class="example-box-wrapper">
                   <table id="dt_barang" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -182,7 +184,7 @@
               <div class="modal-content">
                   <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                      <h4 class="modal-title"><strong>Cetak Laporan Tahunan</strong></h4>
+                      <h4 class="modal-title"><strong>Cetak Laporan</strong></h4>
                   </div>
                   <form name="reportTahunan" id="reportTahunan" action="{{ route('barang.cetak') }}"
                       method="POST" class="form-horizontal bordered-row">

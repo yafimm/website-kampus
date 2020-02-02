@@ -27,7 +27,8 @@
     <hr style="border-top: 1px solid black;">
 	<center>
 		<h4>Laporan Data Inventaris</h4>
-		<p>{{$data_status}}</p>
+		<h6>{{ date('d/m/Y', strtotime($mulai)) .' - '. date('d/m/Y', strtotime($akhir)) }}</h6>
+
 	</center>
 	<table class='table table-bordered'>
 		<thead>
@@ -35,7 +36,7 @@
 				<th>No</th>
 				<th>Nama Pengguna</th>
 				<th>Nama Barang</th>
-                <th>Jumlah</th>
+        <th>Jumlah</th>
 				<th>Status</th>
 				<th>Tanggal</th>
 			</tr>
@@ -45,23 +46,23 @@
 			@foreach($data_request as $request)
 			<tr>
 				<td>{{ $i++ }}</td>
-				<td>{{$request->name}}</td>
-				<td>{{$request->b_nama}}</td>
-                <td>{{$request->rb_jumlah}}</td>
+				<td>{{$request->user->name}}</td>
+				<td>{{$request->barang ? $request->barang->b_nama : ' - '}}</td>
+        <td>{{$request->rb_jumlah}}</td>
 				<td>
                     @if ($request->rb_status == 0)
-                        Menunggu
+                        <span class="text-primary">Menunggu</span>
                     @elseif($request->rb_status == 1)
-                        Ditolak
+                        <span class="text-danger">Ditolak</span>
                     @elseif($request->rb_status == 2)
-                        Disetujui
+                        <span class="text-success">Disetujui</span>
                     @endif
                 </td>
-				<td>{{$request->created_at}}</td>
+				<td>{{$request->created_at->format('d/m/Y')}}</td>
 			</tr>
 			@endforeach
 		</tbody>
 	</table>
- 
+
 </body>
 </html>

@@ -27,7 +27,7 @@
     <hr style="border-top: 1px solid black;">
 	<center>
 		<h4>Laporan Data Peminjaman Inventaris</h4>
-		<p>{{$data_status}}</p>
+		<h6>{{ date('d/m/Y', strtotime($mulai)) .' - '. date('d/m/Y', strtotime($akhir)) }}</h6>
 	</center>
 	<table class='table table-bordered'>
 		<thead>
@@ -45,28 +45,35 @@
 			@foreach($data_peminjaman as $peminjaman)
 			<tr>
 				<td>{{ $i++ }}</td>
-				<td>{{$peminjaman->name}}</td>
-				<td>{{$peminjaman->p_date}}</td>
-                <td>{{$peminjaman->p_date_end}}</td>
+				<td>{{$peminjaman->user->name}}</td>
+				<td>{{ date('d/m/Y', strtotime($peminjaman->p_date)) }}</td>
+        <td>{{ date('d/m/Y', strtotime($peminjaman->p_date_end)) }}</td>
 				<td>
-                    @if ($peminjaman->p_status == 0)
-                        Menunggu
-                    @elseif($peminjaman->p_status == 1)
-                        Disetujui
-                    @elseif($peminjaman->p_status == 2)
-                        Ditolak
-                    @endif
-                </td>
+            @if ($peminjaman->p_status == 0)
+                <span class="text-prinary">Menunggu</span>
+            @elseif($peminjaman->p_status == 1)
+                <span class="text-success">Disetujui</span>
+            @elseif($peminjaman->p_status == 2)
+                <span class="text-danger">Ditolak</span>
+            @endif
+        </td>
 				<td>
-                    @php $j=1 @endphp
-                    @foreach ($peminjaman->detail_peminjaman as $detail_peminjaman)
-                        {{ $j++ }}. {{$detail_peminjaman->i_nama}} : {{$detail_peminjaman->dp_jumlah}}<hr>
-                    @endforeach
-                </td>
+					@if($peminjaman->inventaris)
+						@foreach($peminjaman->inventaris as $inventaris)
+							@if($loop->last)
+							{{ $inventaris->i_nama }}
+							@else
+							{{ $inventaris->i_nama }},
+							@endif
+						@endforeach
+					@else
+						-
+					@endif
+        </td>
 			</tr>
 			@endforeach
 		</tbody>
 	</table>
- 
+
 </body>
 </html>
