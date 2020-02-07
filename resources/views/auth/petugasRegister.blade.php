@@ -45,7 +45,7 @@
                             <input required type="email" class="form-control" id="email" name="email"
                                 placeholder="Masukkan Email">
                             <input type="hidden" class="form-control" id="role" name="role"
-                                value="bagumum">
+                                value="staff inventaris">
                             <input type="hidden" class="form-control" id="npm" name="npm"
                                 value="0">
                         </div>

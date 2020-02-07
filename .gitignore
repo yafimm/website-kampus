@@ -4,6 +4,7 @@
 /public/assets/images-resource/barang
 /public/assets/images-resource/inventaris
 /public/assets/document/peminjaman
+/public/suratpeminjaman
 /storage/*.key
 /vendor
 .env

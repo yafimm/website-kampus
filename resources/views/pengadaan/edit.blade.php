@@ -29,40 +29,32 @@
     $(document).ready(function(){
         var totalDetail = 0;
         $('#tambah-maintenance-detail').click(function(){
-            $html = '<h5>Data Detail ke - '+ (totalDetail + 1) +'</h5>'+
-              '<hr>'+
-              '<div class="row margin-bottom-sm" id="row'+ totalDetail++ +'">'+
-              '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
-                '<label class="col-12 control-label">Kode</label>'+
-                '<div class="col-12">'+
-                  '<input required name="kode[]" type="text" class="form-control" id="" placeholder="Kolom Kode">'+
-                '</div>'+
+          $html ='<div class="panel panel-default">'+
+            '<div class="panel-heading"><h5>Data Detail ke - '+ (totalDetail + 1) +'</h5></div>'+
+            '<div class="row panel-body" style="margin-bottom:10p" id="row'+ totalDetail++ +'">'+
+            '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
+              '<label for="exampleFormControlSelect1">Barang</label>'+
+              '<div class="col-12">'+
+                '<select required name="barang_id[]" type="text" class="form-control" id="" placeholder="Kolom Kode" required>'+
+                  @foreach($arr_barang as $barang)
+                    '<option value="{{ $barang->b_id }}" data-kode="{{ $barang->b_kode }}">{{$barang->b_nama}}</option>'+
+                  @endforeach
+                '</select>'+
               '</div>'+
-              '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
-                '<label for="exampleFormControlSelect1">Barang</label>'+
-                '<div class="col-12">'+
-                  '<input required name="barang_id[]" type="text" class="form-control" id="" placeholder="Kolom Kode">'+
-                '</div>'+
+            '</div>'+
+            '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
+              '<label class="col-12 control-label">Jumlah Barang</label>'+
+              '<div class="col-12">'+
+                '<input required name="qty[]" type="number" class="form-control" id="" placeholder="Jumlah Barang" required>'+
               '</div>'+
-              '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
-                '<label class="col-12 control-label">Jumlah Barang</label>'+
-                '<div class="col-12">'+
-                  '<input required name="qty[]" type="text" class="form-control" id="" placeholder="Kolom Posisi">'+
-                '</div>'+
+            '</div>'+
+            '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
+              '<label class="col-12 control-label">Biaya</label>'+
+              '<div class="col-12">'+
+                '<input required name="biaya[]" type="number" class="form-control" id="" placeholder="Kolom Biaya" required>'+
               '</div>'+
-              '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
-                '<label class="col-12 control-label">Biaya</label>'+
-                '<div class="col-12">'+
-                  '<input required name="biaya[]" type="text" class="form-control" id="" placeholder="Kolom Biaya">'+
-                '</div>'+
-              '</div>'+
-              '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
-                '<label class="col-12 control-label">Keterangan</label>'+
-                '<div class="col-12">'+
-                  '<input required name="keterangan[]" type="text" class="form-control" id=""placeholder="Kolom Keterangan">'+
-                '</div>'+
-              '</div>'+
-              '</div>';
+            '</div>'+
+            '</div>';
 
               $('#body-form-detail').append($html);
 

@@ -157,15 +157,17 @@
                             <td>{{date('d-m-Y', strtotime($peminjaman->p_date))}}</td>
                             <td>{{date('d-m-Y', strtotime($peminjaman->p_date_end))}}</td>
                             <td><a target="_blank"
-                                    href="{{ route('downloadsurat', $peminjaman->p_scan_surat_peminjaman) }}">Download</a>
+                                    href="{{ route('downloadsurat', $peminjaman->p_scan_surat_peminjaman) }}"><u>Download</u></a>
                             </td>
                             <td>
                                 @if ($peminjaman->p_status == 0)
-                                    <span class="bs-label label-primary">Menunggu</span>
+                                    <span class="bs-label label-warning">Menunggu</span>
                                 @elseif($peminjaman->p_status == 1)
-                                    <span class="bs-label label-success">Diterima</span>
-                                @else
+                                    <span class="bs-label label-primary">Diterima</span>
+                                @elseif($peminjaman->p_status == 2)
                                     <span class="bs-label label-danger">Ditolak</span>
+                                @else
+                                    <span class="bs-label label-success">Selesai</span>
                                 @endif
                             </td>
                             <td>
@@ -204,20 +206,43 @@
                                     <i class="glyph-icon icon-eye"></i>
                                 </a>
                                   @if(Auth::user()->hasRole('dosen') || Auth::user()->hasRole('mahasiswa'))
-                                  <a href="{{ route('peminjaman.cetak', $peminjaman->p_id) }}"
+                                  <a href="{{ route('peminjaman.ubah',$peminjaman->p_id) }}"
+                                      class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Ubah Data">
+                                      <i class="glyph-icon icon-edit"></i>
+                                  </a>
+                                  @endif
+                                  @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff inventaris'))
+                                    <button class="btn btn-success btn-md" data-toggle="modal"
+                                    data-target="#modalSelesai" data-peminjamanid="{{$peminjaman->p_id}}" data-toggle="tooltip" data-placement="top" title="Selesai">
+                                    <i class="glyph-icon icon-check"></i>
+                                    </button>
+                                  @endif
+
+                                  @if(Auth::user()->hasRole('dosen') || Auth::user()->hasRole('mahasiswa'))
+                                  <a href="{{ route('peminjaman.cetak.user', $peminjaman->p_id) }}"
                                     class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Cetak">
                                     <i class="glyph-icon icon-print"></i>
                                   </a>
                                   @endif
 
+                                @elseif($peminjaman->p_status == 2)
+                                  <a href="{{ route('peminjaman.lihat', $peminjaman->p_id) }}" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Lihat Data">
+                                      <i class="glyph-icon icon-eye"></i>
+                                  </a>
+                                  <button class="btn btn-danger btn-md" data-toggle="modal"
+                                  data-target="#modalHapus" data-peminjamanid="{{$peminjaman->p_id}}">
+                                  <i class="glyph-icon icon-trash"></i>
+                                  </button>
                                 @else
                                 <a href="{{ route('peminjaman.lihat', $peminjaman->p_id) }}" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Lihat Data">
                                     <i class="glyph-icon icon-eye"></i>
                                 </a>
-                                <button class="btn btn-danger btn-md" data-toggle="modal"
-                                data-target="#modalHapus" data-peminjamanid="{{$peminjaman->p_id}}">
-                                <i class="glyph-icon icon-trash"></i> Hapus
-                                </button>
+                                  @if(Auth::user()->hasRole('dosen') || Auth::user()->hasRole('mahasiswa'))
+                                  <a href="{{ route('peminjaman.cetak.user', $peminjaman->p_id) }}"
+                                    class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Cetak">
+                                    <i class="glyph-icon icon-print"></i>
+                                  </a>
+                                  @endif
                                 @endif
 
                             </td>
@@ -264,8 +289,33 @@
                         <p>Yakin ingin Konfirmasi Setuju ?</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-success">Setuju</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalSelesai" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#079bef;color:#fff">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Konfirmasi Setuju</h4>
+                </div>
+                <form name="setujuForm" id="setujuForm" action="{{ route('peminjaman.prosesKonfirmasi') }}"
+                    method="POST" class="form-horizontal">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="idsetuju" id="idsetuju">
+                    <input type="hidden" name="jenis" id="jenis" value="3">
+                    <div class="modal-body">
+                        <p>Yakin ingin Konfirmasi Selesai Peminjaman ?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-success">Selesai</button>
                     </div>
                 </form>
             </div>
@@ -274,6 +324,13 @@
 
     <script type="text/javascript">
         $('#modalSetuju').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('peminjamanid');
+            var modal = $(this);
+            modal.find('#idsetuju').val(id);
+        });
+
+        $('#modalSelesai').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget);
             var id = button.data('peminjamanid');
             var modal = $(this);

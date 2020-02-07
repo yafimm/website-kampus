@@ -14,7 +14,7 @@
 Route::get('/','WelcomeController@index');
 
 //authentikasi user - V
-Route::get('/register/bagumum','RegisterController@getRegisterBagUmum');
+Route::get('/register/staff_inventaris','RegisterController@getRegisterstaff_inventaris');
 Route::get('register/mahasiswa', 'RegisterController@getRegisterMahasiswa');
 Route::get('register/dosen', 'RegisterController@getRegisterDosen');
 Route::post('/register/regist', 'RegisterController@postRegister');
@@ -43,7 +43,7 @@ Route::get('download/{filename}', function($filename)
 })
 ->where('filename', '[A-Za-z0-9\-\_\.]+')->name('downloadsurat');
 
-Route::group(['middleware' => ['web','auth','role:admin,bagumum']], function() {
+Route::group(['middleware' => ['web','auth','role:admin,staff_inventaris']], function() {
   // Modul Barang
   Route::get('/barang', 'BarangController@index')->name('barang.index');
   Route::post('/barang/restock', 'BarangController@prosesRestock')->name('barang.restock');
@@ -62,6 +62,7 @@ Route::group(['middleware' => ['web','auth','role:admin,bagumum']], function() {
   Route::get('/inventaris/{id}', 'InventarisController@lihat')->name('inventaris.lihat');
   Route::put('/inventaris/{id}', 'InventarisController@prosesUbah')->name('inventaris.prosesUbah');
   Route::get('/inventaris/{id}/edit', 'InventarisController@ubah')->name('inventaris.ubah');
+  Route::post('/request/cetak', 'RequestController@cetak')->name('request.cetak');
 });
 
 
@@ -71,19 +72,15 @@ Route::group(['middleware' => ['web', 'auth', 'role:dosen,mahasiswa']], function
   Route::post('/peminjaman/prosesPinjam', 'PeminjamanController@prosesPinjam')->name('peminjaman.prosesPinjam');
   Route::post('/peminjaman/prosesUbah', 'PeminjamanController@prosesUbah')->name('peminjaman.prosesUbah');
   Route::put('/peminjaman/{id}', 'PeminjamanController@prosesUbah')->name('peminjaman.prosesUbah');
-  Route::get('/peminjaman/{id}/cetak', 'PeminjamanController@cetak')->name('peminjaman.cetak');
   Route::get('/peminjaman/{id}/edit', 'PeminjamanController@ubah')->name('peminjaman.ubah');
-  Route::get('/peminjaman/cetak/{id}', 'PeminjamanController@cetak')->name('peminjaman.cetak');
+  Route::get('/peminjaman/cetak/{id}', 'PeminjamanController@cetak')->name('peminjaman.cetak.user');
 });
 
-Route::group(['middleware' => ['web', 'auth', 'role:admin,bagumum']], function() {
+Route::group(['middleware' => ['web', 'auth', 'role:admin,staff_inventaris']], function() {
   Route::post('/peminjaman/konfirmasi', 'PeminjamanController@prosesKonfirmasi')->name('peminjaman.prosesKonfirmasi');
-  Route::post('/peminjaman/cetakTahunan', 'PeminjamanController@cetakTahunan')->name('peminjaman.cetakTahunan');
-  Route::post('/peminjaman/cetakBulanan', 'PeminjamanController@cetakBulanan')->name('peminjaman.cetakBulanan');
-  Route::post('/peminjaman/cetakHarian', 'PeminjamanController@cetakTanggal')->name('peminjaman.cetakHarian');
 });
 
-Route::group(['middleware' => ['web', 'auth', 'role:admin,bagumum,dosen,mahasiswa']], function() {
+Route::group(['middleware' => ['web', 'auth', 'role:admin,staff_inventaris,dosen,mahasiswa']], function() {
   Route::get('/peminjaman', 'PeminjamanController@index')->name('peminjaman.index');
   Route::get('/peminjaman/{id}', 'PeminjamanController@lihat')->name('peminjaman.lihat');
   Route::post('/peminjaman/prosesHapus', 'PeminjamanController@prosesHapus')->name('peminjaman.prosesHapus');
@@ -95,9 +92,11 @@ Route::group(['middleware' => ['web', 'auth', 'role:admin,bagumum,dosen,mahasisw
 Route::group(['middleware' => ['web', 'auth', 'role:admin']], function() {
     Route::post('/barang/cetak', 'BarangController@cetak')->name('barang.cetak');
     Route::post('/inventaris/cetak', 'InventarisController@cetak')->name('inventaris.cetak');
-    Route::post('/request/cetak', 'RequestController@cetak')->name('request.cetak');
-    Route::post('/peminjaman/cetak', 'PeminjamanController@cetak')->name('peminjaman.cetak');
+    Route::post('/peminjaman/cetak', 'PeminjamanController@cetakTanggal')->name('peminjaman.cetak');
     Route::post('/pengadaan/cetak', 'PengadaanController@cetak')->name('pengadaan.cetak');
+    Route::post('/pengadaan/cetakTanggal', 'PengadaanController@cetakTanggal')->name('pengadaan.cetakTanggal');
+    Route::post('/maintenance/cetak', 'MaintenanceController@cetak')->name('maintenance.cetak');
+    Route::post('/maintenance/cetakTanggal', 'MaintenanceController@cetakTanggal')->name('maintenance.cetakTanggal');
 
     Route::get('/pengguna', 'UsersController@index')->name('user.index');
     Route::get('/pengguna/tambah/{role}', 'UsersController@tambah')->name('user.tambah');
@@ -126,7 +125,7 @@ Route::group(['middleware' => ['web', 'auth', 'role:admin']], function() {
 });
 
 // Modul request
-Route::group(['middleware' => ['web', 'auth', 'role:dosen,admin,bagumum']], function() {
+Route::group(['middleware' => ['web', 'auth', 'role:dosen,admin,staff_inventaris']], function() {
   Route::get('/request', 'RequestController@index')->name('request.index');
   Route::post('/request', 'RequestController@prosesTambah')->name('request.prosesTambah');
   Route::get('/request/tambah', 'RequestController@tambah')->name('request.tambah');

@@ -57,7 +57,7 @@ class BarangController extends Controller
          return redirect()->route('barang.index')->with('alert-class', 'alert-success')->with('flash_message','Data Barang berhasil ditambah ke database !!');
      }
 
-     public function prosesUbah(BarangRequest $request){
+     public function prosesUbah(BarangRequest $request, $id){
          $data = ['b_nama' => $request->nama,
                   'b_stock' => $request->stock,
                   'b_satuan' => $request->satuan,
@@ -76,7 +76,7 @@ class BarangController extends Controller
              $canvas->save($url_resize_image);
 
              $b_foto->move(public_path('assets/images-resource/barang'), $imageName);
-             $data_barang = DB::table('barang')->where('b_id',$b_id)->get();
+             $data_barang = DB::table('barang')->where('b_id',$id)->get();
 
              $filename = public_path('/assets/images-resource/barang/'.$data_barang[0]->b_foto);
              $filename2 = public_path('/assets/images-resource/barang/resize_'.$data_barang[0]->b_foto);

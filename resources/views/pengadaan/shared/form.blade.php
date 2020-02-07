@@ -3,20 +3,17 @@
     @if(!empty($arr_pengadaan))
       <!-- Kalo gak edit bakal nampilin edit -->
       @foreach($arr_pengadaan as $no => $pengadaan)
-
-      <hr>
-      <h5>Data Detail ke - {{ $no + 1 }}</h5>
-        <div class="row margin-bottom-sm" id="row'+ totalDetail++ +'">
-        <div class="col-md-4 col-sm-4 col-6 form-controll">
-          <label class="col-12 control-label">Kode</label>
-          <div class="col-12">
-            <input required name="kode[]" type="text" value="{{ old('kode', $pengadaan->kode) }}" class="form-control" id="" placeholder="Kolom Kode">
-          </div>
-        </div>
+      <div class="panel panel-default">
+        <div class="panel-heading"><h5>Data Detail ke - {{ $no + 1 }}</h5></div>
+        <div class="row panel-body" id="row'+ totalDetail++ +'">
         <div class="col-md-4 col-sm-4 col-6 form-controll">
           <label for="exampleFormControlSelect1">Barang</label>
           <div class="col-12">
-            <input required name="barang_id[]" type="text" value="{{ old('barang_id', $pengadaan->barang_id) }}" class="form-control" id="" placeholder="Kolom Kode">
+            <select required name="barang_id[]" class="form-control" id="" placeholder="Kolom Kode">
+                @foreach($arr_barang as $barang)
+                  <option value="{{ $barang->b_id }}" {{ $pengadaan->barang ? ($pengadaan->barang->b_id == $barang->b_id ? 'selected': '-' ) : '-' }}> {{ $barang->b_nama }}</option>
+                @endforeach
+            </select>
           </div>
         </div>
         <div class="col-md-4 col-sm-4 col-6 form-controll">
@@ -32,7 +29,7 @@
           </div>
         </div>
         </div>
-
+      </div>
       @endforeach
 
     @endif

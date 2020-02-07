@@ -4,20 +4,22 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Pengadaan;
+use App\Barang;
 use PDF;
 
 class PengadaanController extends Controller
 {
     public function index()
     {
-        $arr_pengadaan = Pengadaan::select('no_register', 'tanggal', 'supplier', \DB::raw("SUM(biaya) as totalkeseluruhan"))->groupBy('no_register', 'tanggal', 'supplier')->get();
+        $arr_pengadaan = Pengadaan::select('no_register', 'tanggal', 'supplier', \DB::raw("SUM(biaya) as totalkeseluruhan"))->groupBy('no_register', 'tanggal', 'supplier')->orderBy('tanggal','desc')->get();
         return view('pengadaan.index', compact('arr_pengadaan'));
     }
 
     public function create()
     {
         $arr_pengadaan = collect(new Pengadaan);
-        return view('pengadaan.create', compact('arr_pengadaan'));
+        $arr_barang = Barang::all();
+        return view('pengadaan.create', compact('arr_pengadaan','arr_barang'));
     }
 
     public function show($id)
@@ -90,7 +92,8 @@ class PengadaanController extends Controller
         $arr_pengadaan = Pengadaan::where('no_register', $id)->get();
         if(!$arr_pengadaan->isEmpty())
         {
-            return view('pengadaan.edit', compact('arr_pengadaan'));
+            $arr_barang = Barang::all();
+            return view('pengadaan.edit', compact('arr_pengadaan', 'arr_barang'));
         }
         return abort(404);
     }
@@ -104,6 +107,15 @@ class PengadaanController extends Controller
       $data_pengadaan = Pengadaan::where([['no_register','=', $request->no_register]])->get();
       $pdf = PDF::loadview('pengadaan.laporan_pengadaan_pdf', ['data_pengadaan'=>$data_pengadaan]);
       return $pdf->download('laporan-data-pengadaan'.$request->no_register.'.pdf');
+    }
+
+    public function cetakTanggal(Request $request){
+      $data_pengadaan = Pengadaan::where([['tanggal','>=', date('Y-m-d', strtotime($request->mulai))], ['tanggal','<=', date('Y-m-d', strtotime($request->akhir))]])->orderBy('tanggal', 'asc')->get();
+      $data_pengadaan = $data_pengadaan->mapToGroups(function ($item, $key) {
+          return [$item['no_register'] => $item];
+      });
+      $pdf = PDF::loadview('pengadaan.laporan_pengadaan_tanggal_pdf', ['data_pengadaan'=>$data_pengadaan, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
+      return $pdf->download('laporan-data-pengadaan-'.$request->mulai.'_'.$request->mulai.'.pdf');
     }
 
 }

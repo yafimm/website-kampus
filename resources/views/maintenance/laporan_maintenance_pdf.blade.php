@@ -27,9 +27,9 @@
     <hr style="border-top: 1px solid black;">
 	<center>
 		<h4>Laporan Data Pengadaan</h4>
-		<p>No Register #{{ $data_pengadaan[0]->no_register }}</p>
-		<p>{{ date('d-m-Y', strtotime($data_pengadaan[0]->tanggal)) }}</p>
-		<p>{{ $data_pengadaan[0]->supplier }}</p>
+		<p>No Register #{{ $data_maintenance[0]->no_register }}</p>
+		<p>{{ date('d-m-Y', strtotime($data_maintenance[0]->tanggal_maintenance)) }}</p>
+		<p>Rp. {{ number_format($data_maintenance->sum('biaya'), 2, ',', '.')  }}</p>
 	</center>
 
 	<table class='table table-bordered'>
@@ -38,21 +38,31 @@
 				<th>No</th>
 				<th>Kode</th>
 				<th>Nama Barang</th>
-				<th>Jumlah</th>
+				<th>Posisi</th>
 				<th>Biaya</th>
-				<th>Total</th>
+				<th>Keterangan</th>
+				<th>Status</th>
 			</tr>
 		</thead>
 		<tbody>
 			@php $i=1 @endphp
-			@foreach($data_pengadaan as $pengadaan)
+			@foreach($data_maintenance as $maintenance)
 			<tr>
 				<td>{{ $i++ }}</td>
-				<td>{{$pengadaan->barang->b_kode}}</td>
-				<td>{{$pengadaan->barang->b_nama}}</td>
-				<td>{{$pengadaan->qty}}</td>
-				<td>Rp. {{number_format($pengadaan->biaya, 2, ',', '.')}}</td>
-				<td>Rp. {{number_format($pengadaan->total, 2, ',','.')}}</td>
+				<td>{{$maintenance->barang ? $maintenance->barang->b_kode : 'Data Barang sudah dihapus'}}</td>
+				<td>{{$maintenance->barang ? $maintenance->barang->b_nama : 'Data Barang sudah dihapus'}}</td>
+				<td>{{$maintenance->posisi}}</td>
+				<td>Rp. {{number_format($maintenance->biaya, 2, ',', '.')}}</td>
+				<td>{{$maintenance->keterangan}}</td>
+				<td>
+					@if ($maintenance->status == 'BELUM MULAI')
+							<span class="text-danger">Belum Mulai</span>
+					@elseif($maintenance->status == 'SEDANG BERJALAN')
+							<span class="text-warning">Sedang Berjalan</span>
+					@elseif($maintenance->status == 'SELESAI')
+							<span class="text-success">Selesai</span>
+					@endif
+				</td>
 			</tr>
 			@endforeach
 		</tbody>

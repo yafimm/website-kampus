@@ -49,7 +49,7 @@
     <script type="text/javascript" src="{{ asset('assets/widgets/charts/piegage/piegage-demo.js') }}"></script>
 
     <div id="page-title">
-        <h2>Halaman Lihat Data Pengguna</h2>
+        <h2>Halaman Lihat Data Peminjaman</h2>
         <p>Selamat Datang {{Auth::user()->name}} | <strong>{{Auth::user()->role}}</strong></p>
     </div>
 
@@ -65,12 +65,14 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Status</label>
                             <div class="col-sm-6">
-                                @if ($data_peminjaman[0]->p_status == 0)
-                                <span class="bs-label label-primary">Menunggu</span>
-                                @elseif ($data_peminjaman[0]->p_status == 2)
-                                <span class="bs-label label-warning">Ditolak</span>
+                                @if ($data_peminjaman->p_status == 0)
+                                <span class="bs-label label-warning">Menunggu</span>
+                                @elseif ($data_peminjaman->p_status == 1)
+                                <span class="bs-label label-primary">Disetujui</span>
+                                @elseif ($data_peminjaman->p_status == 2)
+                                <span class="bs-label label-danger">Ditolak</span>
                                 @else
-                                <span class="bs-label label-success">Disetujui</span>
+                                <span class="bs-label label-success">Selesai</span>
                                 @endif
                             </div>
                         </div>
@@ -79,14 +81,14 @@
                             <label class="col-sm-3 control-label">Nama Peminjam</label>
                             <div class="col-sm-6">
                                 <input disabled name="nama" type="text" class="form-control" id="nama"
-                                    placeholder="Kolom Nama Pengguna" value="{{$data_peminjaman[0]->name}}">
+                                    placeholder="Kolom Nama Pengguna" value="{{$data_peminjaman->user->name}}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Periode Peminjaman</label>
                             <div class="col-sm-6">
-                                <span class="bs-label label-primary">{{$data_peminjaman[0]->p_date}}</span> |
-                                <span class="bs-label label-primary">{{$data_peminjaman[0]->p_date_end}}</span>
+                                <span class="bs-label label-primary">{{$data_peminjaman->p_date}}</span> |
+                                <span class="bs-label label-primary">{{$data_peminjaman->p_date_end}}</span>
                             </div>
                         </div>
 
@@ -94,7 +96,7 @@
                             <label class="col-sm-3 control-label">File Dokumen Peminjaman</label>
                             <div class="col-sm-6">
                                 <span class="bs-label label-default"><a target="_blank"
-                                        href="{{ route('downloadsurat', $data_peminjaman[0]->p_scan_surat_peminjaman) }}">Download</a>
+                                        href="{{ route('downloadsurat', $data_peminjaman->p_scan_surat_peminjaman) }}">Download</a>
                                 </span>
                             </div>
                         </div>
@@ -127,14 +129,14 @@
                                 @php
                                 $count = 0;
                                 @endphp
-                                @foreach ($data_peminjaman[0]->detail_peminjaman as $detail_peminjaman)
+                                @foreach ($data_peminjaman->inventaris as $inventaris)
                                 @php
                                 $count = $count + 1;
                                 @endphp
                                 <tr>
                                     <td>{{$count}}</td>
-                                    <td>{{$detail_peminjaman->i_nama}}</td>
-                                    <td>{{$detail_peminjaman->dp_jumlah}}</td>
+                                    <td>{{$inventaris->i_nama}}</td>
+                                    <td>{{$inventaris->pivot->dp_jumlah}}</td>
                                 </tr>
                                 @endforeach
                             </tbody>

@@ -11,12 +11,6 @@ use App\Barang;
 
 class RequestController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        // $this->middleware('role:admin');
-    }
-
     public function index(){
         $data_request = DB::table('request_barang')
         ->join('users', 'request_barang.user_id', '=', 'users.id')

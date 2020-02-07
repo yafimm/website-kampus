@@ -27,51 +27,29 @@
     <hr style="border-top: 1px solid black;">
 	<center>
 		<h4>Laporan Data Peminjaman Inventaris</h4>
-		<h6>{{ date('d/m/Y', strtotime($mulai)) .' - '. date('d/m/Y', strtotime($akhir)) }}</h6>
 	</center>
+	<p><b>Nama Peminjaman : </b>{{ $data_peminjaman->user->name }}</p>
+	<p><b>Tanggal Mulai : </b>{{ date('d/m/Y', strtotime($data_peminjaman->p_date)) }}</p>
+	<p><b>Tanggal Berakhir : </b>{{ date('d/m/Y', strtotime($data_peminjaman->p_date_end)) }}</p>
+	<p><b>Status : </b>{{ $data_peminjaman->user->name }}</p>
 	<table class='table table-bordered'>
 		<thead>
 			<tr>
-				<th>No</th>
-				<th>Nama Pengguna</th>
-                <th>Tanggal Mulai Peminjaman</th>
-                <th>Tanggal Berakhir Peminjaman</th>
-				<th>Status</th>
-                <th>Daftar Inventaris</th>
+				<th>No </th>
+        <th>Nama Barang</th>
+        <th>Jumlah</th>
 			</tr>
 		</thead>
 		<tbody>
-			@php $i=1 @endphp
-			@foreach($data_peminjaman as $peminjaman)
-			<tr>
-				<td>{{ $i++ }}</td>
-				<td>{{$peminjaman->user->name}}</td>
-				<td>{{ date('d/m/Y', strtotime($peminjaman->p_date)) }}</td>
-        <td>{{ date('d/m/Y', strtotime($peminjaman->p_date_end)) }}</td>
-				<td>
-            @if ($peminjaman->p_status == 0)
-                <span class="text-prinary">Menunggu</span>
-            @elseif($peminjaman->p_status == 1)
-                <span class="text-success">Disetujui</span>
-            @elseif($peminjaman->p_status == 2)
-                <span class="text-danger">Ditolak</span>
-            @endif
-        </td>
-				<td>
-					@if($peminjaman->inventaris)
-						@foreach($peminjaman->inventaris as $inventaris)
-							@if($loop->last)
-							{{ $inventaris->i_nama }}
-							@else
-							{{ $inventaris->i_nama }},
-							@endif
-						@endforeach
-					@else
-						-
-					@endif
-        </td>
-			</tr>
-			@endforeach
+			@if($data_peminjaman->inventaris)
+				@foreach($data_peminjaman->inventaris as $key => $invenvaris)
+				<tr>
+					<td>{{ $key + 1 }}</td>
+					<td>{{ $invenvaris->i_nama }}</td>
+					<td>{{ $invenvaris->pivot->dp_jumlah }}</td>
+				</tr>
+				@endforeach
+			@endif
 		</tbody>
 	</table>
 

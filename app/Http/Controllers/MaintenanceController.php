@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Maintenance;
 use App\Barang;
+use PDF;
 
 class MaintenanceController extends Controller
 {
@@ -99,5 +100,21 @@ class MaintenanceController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function cetak(Request $request){
+      $data_maintenance = Maintenance::where([['no_register','=', $request->no_register]])->get();
+      $pdf = PDF::loadview('maintenance.laporan_maintenance_pdf', ['data_maintenance'=>$data_maintenance]);
+      return $pdf->download('laporan-data-maintenance'.$request->no_register.'.pdf');
+    }
+
+    public function cetakTanggal(Request $request){
+      $data_maintenance = Maintenance::where([['tanggal_maintenance','>=', date('Y-m-d', strtotime($request->mulai))], ['tanggal_maintenance','<=', date('Y-m-d', strtotime($request->akhir))]])->orderBy('tanggal_maintenance', 'asc')->get();
+      $data_maintenance = $data_maintenance->mapToGroups(function ($item, $key) {
+          return [$item['no_register'] => $item];
+      });
+
+      $pdf = PDF::loadview('maintenance.laporan_maintenance_tanggal_pdf', ['data_maintenance'=>$data_maintenance, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
+      return $pdf->download('laporan-data-maintenance-'.$request->mulai.'_'.$request->mulai.'.pdf');
     }
 }

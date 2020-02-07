@@ -24,7 +24,8 @@ class Peminjaman extends Model
       return $this->belongsTo('App\User', 'user_id');
   }
 
-  public function inventaris(){
-      return $this->belongsToMany('App\Inventaris', 'table_data_detail_peminjaman', 'p_id', 'i_id');
+  public function inventaris()
+  {
+      return $this->belongsToMany('App\Inventaris', 'table_data_detail_peminjaman', 'p_id', 'i_id')->withPivot(['dp_jumlah']);
   }
 }

@@ -20,7 +20,7 @@ class PeminjamanController extends Controller
         ->select('peminjaman.p_id', 'users.name', 'peminjaman.p_date',
         'peminjaman.p_date_end', 'peminjaman.p_time_start', 'peminjaman.p_time_end',
         'peminjaman.p_scan_surat_peminjaman', 'peminjaman.p_status', 'peminjaman.created_at',
-        'peminjaman.updated_at')->orderBy('p_id', 'desc')
+        'peminjaman.updated_at')->orderBy('p_status', 'asc')->orderBy('created_at', 'desc')
         ->get();
 
         $data_peminjaman_sukses = DB::table('peminjaman')
@@ -36,22 +36,23 @@ class PeminjamanController extends Controller
     }
 
     public function lihat($id){
-        $data_peminjaman = DB::table('peminjaman')
-        ->join('users', 'peminjaman.user_id', '=', 'users.id')
-        ->select('peminjaman.p_id', 'users.name', 'peminjaman.p_date',
-        'peminjaman.p_date_end', 'peminjaman.p_time_start', 'peminjaman.p_time_end',
-        'peminjaman.p_scan_surat_peminjaman', 'peminjaman.p_status', 'peminjaman.created_at',
-        'peminjaman.updated_at')
-        ->where('peminjaman.p_id', $id)
-        ->get();
-        $data_peminjaman[0]->detail_peminjaman = DB::table('table_data_detail_peminjaman')
-        ->join('peminjaman', 'table_data_detail_peminjaman.p_id', '=', 'peminjaman.p_id')
-        ->join('inventaris', 'table_data_detail_peminjaman.i_id', '=', 'inventaris.i_id')
-        ->select('table_data_detail_peminjaman.i_id', 'peminjaman.p_id', 'inventaris.i_nama',
-        'table_data_detail_peminjaman.dp_jumlah', 'table_data_detail_peminjaman.created_at',
-        'table_data_detail_peminjaman.updated_at')
-        ->where('table_data_detail_peminjaman.p_id', $data_peminjaman[0]->p_id)
-        ->get();
+        // $data_peminjaman = DB::table('peminjaman')
+        // ->join('users', 'peminjaman.user_id', '=', 'users.id')
+        // ->select('peminjaman.p_id', 'users.name', 'peminjaman.p_date',
+        // 'peminjaman.p_date_end', 'peminjaman.p_time_start', 'peminjaman.p_time_end',
+        // 'peminjaman.p_scan_surat_peminjaman', 'peminjaman.p_status', 'peminjaman.created_at',
+        // 'peminjaman.updated_at')
+        // ->where('peminjaman.p_id', $id)
+        // ->get();
+        // $data_peminjaman[0]->detail_peminjaman = DB::table('table_data_detail_peminjaman')
+        // ->join('peminjaman', 'table_data_detail_peminjaman.p_id', '=', 'peminjaman.p_id')
+        // ->join('inventaris', 'table_data_detail_peminjaman.i_id', '=', 'inventaris.i_id')
+        // ->select('table_data_detail_peminjaman.i_id', 'peminjaman.p_id', 'inventaris.i_nama',
+        // 'table_data_detail_peminjaman.dp_jumlah', 'table_data_detail_peminjaman.created_at',
+        // 'table_data_detail_peminjaman.updated_at')
+        // ->where('table_data_detail_peminjaman.p_id', $data_peminjaman[0]->p_id)
+        // ->get();
+        $data_peminjaman = Peminjaman::find($id);
         return view('peminjaman.lihatPeminjaman', compact('data_peminjaman'));
     }
 
@@ -64,6 +65,10 @@ class PeminjamanController extends Controller
         }else if($request->post('jenis') == 2){
             $id = $request->post('idsetuju');
             $jenis = 1;
+        }
+        else if($request->post('jenis') == 3){
+            $id = $request->post('idsetuju');
+            $jenis = 3;
         }
         DB::table('peminjaman')->where('p_id',$id)->update([
             'p_status' => $jenis
@@ -100,7 +105,7 @@ class PeminjamanController extends Controller
         if($request->exists('idinventaris') && $request->exists('jumlahinventaris')){
              $inp_idinventaris = $request->post('idinventaris');
              $inp_jumlahinventaris = $request->post('jumlahinventaris');
-             $id = DB::table('peminjaman')->insertGetId(
+             $peminjaman = Peminjaman::create(
                 ['user_id' => $inp_iduser,
                 'p_nama_event' => $inp_namaevent,
                 'p_date' => $inp_datestart,
@@ -115,7 +120,7 @@ class PeminjamanController extends Controller
             $i = 0;
             foreach($inp_idinventaris as $idinventaris){
                 DB::table('table_data_detail_peminjaman')->insert(
-                    ['p_id' => $id,
+                    ['p_id' => $peminjaman->p_id,
                     'i_id' => $idinventaris,
                     'dp_jumlah' => $inp_jumlahinventaris[$i],
                     'created_at' => now(),
@@ -283,10 +288,20 @@ class PeminjamanController extends Controller
     // 	return $pdf->download('surat_izin_peminjaman.pdf');
     // }
 
-    public function cetak(Request $request){
-      $data_peminjaman = Peminjaman::where([['created_at','>=', date('Y-m-d', strtotime($request->mulai))], ['created_at','<=', date('Y-m-d', strtotime($request->akhir))]])->get();
-      $pdf = PDF::loadview('peminjaman.laporan_peminjaman_pdf', ['data_peminjaman'=>$data_peminjaman, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
-      return $pdf->download('laporan-data-peminjaman.pdf');
+    public function cetakTanggal(Request $request){
+        $data_peminjaman = Peminjaman::where([['created_at','>=', date('Y-m-d', strtotime($request->mulai))], ['created_at','<=', date('Y-m-d', strtotime($request->akhir))]])->get();
+        $pdf = PDF::loadview('peminjaman.laporan_peminjaman_tanggal_pdf', ['data_peminjaman'=>$data_peminjaman, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
+        return $pdf->download('laporan-data-peminjaman.pdf');
+    }
+
+    public function cetak($id)
+    {
+        $data_peminjaman = Peminjaman::find($id);
+        if(\Auth::user()->id == $data_peminjaman->user_id)
+        {
+            $pdf = PDF::loadview('peminjaman.laporan_peminjaman_pdf', ['data_peminjaman'=>$data_peminjaman]);
+            return $pdf->download('laporan-data-peminjaman.pdf');
+        }
     }
 
 

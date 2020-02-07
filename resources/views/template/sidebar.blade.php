@@ -10,7 +10,7 @@
                 </a>
             </li>
             <li class="divider"></li>
-            @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('bagumum'))
+            @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris'))
             <li class="no-menu">
                 <a href="{{ route('barang.index') }}" title="Frontend template">
                     <i class="glyph-icon icon-typicons-popup" style="color:#337ab7"></i>
@@ -23,9 +23,23 @@
                     <span>Data Inventaris</span>
                 </a>
             </li>
+
+            <li class="no-menu">
+                <a href="{{ route('pengadaan.index') }}" title="Frontend template">
+                    <i class="glyph-icon icon-typicons-popup" style="color:#337ab7"></i>
+                    <span>Data Pengadaan</span>
+                </a>
+            </li>
+
+            <li class="no-menu">
+                <a href="{{ route('maintenance.index') }}" title="Frontend template">
+                    <i class="glyph-icon icon-typicons-popup" style="color:#337ab7"></i>
+                    <span>Data Maintenance</span>
+                </a>
+            </li>
             @endif
 
-            @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('bagumum') || Auth::user()->hasRole('dosen'))
+            @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris') || Auth::user()->hasRole('dosen'))
             <li class="no-menu">
               <a href="{{ route('request.index') }}" title="Frontend template">
                 <i class="glyph-icon icon-typicons-popup" style="color:#337ab7"></i>
@@ -50,20 +64,6 @@
             </li>
 
             <li class="no-menu">
-                <a href="{{ route('pengadaan.index') }}" title="Frontend template">
-                    <i class="glyph-icon icon-typicons-popup" style="color:#337ab7"></i>
-                    <span>Data Pengadaan</span>
-                </a>
-            </li>
-
-            <li class="no-menu">
-                <a href="{{ route('maintenance.index') }}" title="Frontend template">
-                    <i class="glyph-icon icon-typicons-popup" style="color:#337ab7"></i>
-                    <span>Data Maintenance</span>
-                </a>
-            </li>
-
-            <li class="no-menu">
                 <a href="{{ route('report.index') }}" title="Frontend template">
                     <i class="glyph-icon icon-typicons-popup" style="color:#337ab7"></i>
                     <span>Executive Dashboard</span>
@@ -74,7 +74,7 @@
 
             <li class="header"><span>Shortcut</span></li>
 
-            @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('bagumum'))
+            @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris'))
             <li class="btn-primary">
                 <a href="{{ route('barang.tambah') }}" style="text-decoration: none;color:#fff">
                     <i class="glyph-icon icon-typicons-upload" style="color:#fff"></i>

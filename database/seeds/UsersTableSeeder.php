@@ -33,7 +33,7 @@ class UsersTableSeeder extends Seeder
         'name' => 'bagumum',
         'email' => 'bagumum@gmail.com',
         'password' => bcrypt('bagumum'),
-        'role' => 'bagumum',
+        'role' => 'staff_inventaris',
         'nip' => '12202020',
         'npm' => '1222',
       ]);

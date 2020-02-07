@@ -141,7 +141,7 @@
                         <tr>
                           @foreach($arr_pengadaan as $key => $pengadaan)
                             <td>{{ $key + 1 }}</td>
-                            <td>{{$pengadaan->kode}}</td>
+                            <td>{{ $pengadaan->barang ? $pengadaan->barang->b_kode : ' - Data Barang sudah dihapus -'}}</td>
                             <td>{{ ($pengadaan->barang ? $pengadaan->barang->b_nama : '- Data Barang sudah dihapus -')}}</td>
                             <td>{{$pengadaan->qty}}</td>
                             <td>{{$pengadaan->biaya != 0 ? 'Rp. '. number_format($pengadaan->biaya, 2, ',', '.') : 'Free'}}</td>
