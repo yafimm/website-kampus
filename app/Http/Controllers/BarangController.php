@@ -87,8 +87,8 @@ class BarangController extends Controller
          return redirect()->route('barang.index')->with('alert-class', 'alert-success')->with('flash_message', 'Data berhasil diubah !!');
      }
 
-     public function prosesHapus($id){
-         $data_barang = Barang::where('b_id',$id)->first();
+     public function prosesHapus(Request $request){
+         $data_barang = Barang::where('b_id',$request->id)->first();
          $filename = public_path('/assets/images-resource/barang/'.$data_barang->b_foto);
          $filename2 = public_path('/assets/images-resource/barang/resize_'.$data_barang->b_foto);
          File::delete($filename, $filename2);

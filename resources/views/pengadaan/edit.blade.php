@@ -35,10 +35,14 @@
             '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
               '<label for="exampleFormControlSelect1">Barang</label>'+
               '<div class="col-12">'+
-                '<select required name="barang_id[]" type="text" class="form-control" id="" placeholder="Kolom Kode" required>'+
-                  @foreach($arr_barang as $barang)
-                    '<option value="{{ $barang->b_id }}" data-kode="{{ $barang->b_kode }}">{{$barang->b_nama}}</option>'+
-                  @endforeach
+                '<select required name="barang_inventaris[]" type="text" class="form-control" id="" placeholder="Kolom Kode" required>'+
+                @foreach($arr_barang_inventaris as $barang_inventaris)
+                  @if(isset($barang_inventaris->b_id))
+                    '<option value="BRG{{ $barang_inventaris->b_id }}"> {{ $barang_inventaris->b_nama }}</option>'+
+                  @else
+                    '<option value="INV{{ $barang_inventaris->i_id }}"> {{ $barang_inventaris->i_nama }}</option>'+
+                  @endif
+                @endforeach
                 '</select>'+
               '</div>'+
             '</div>'+
@@ -110,7 +114,7 @@
                         </div>
 
                         <div class="form-group">
-                          <label class="col-sm-3 control-label">Tanggal Maintenance </label>
+                          <label class="col-sm-3 control-label">Tanggal Pengadaan </label>
                           <div class="col-sm-6">
                               <div class="input-prepend input-group">
                                   <span class="add-on input-group-addon">

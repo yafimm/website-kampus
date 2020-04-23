@@ -6,36 +6,6 @@
     <script type="text/javascript">
         /* Datepicker bootstrap */
 
-        $(function () {
-            "use strict";
-            $('#tahunan').bsdatepicker({
-                autoclose: true,
-                format: " yyyy",
-                viewMode: "years",
-                minViewMode: "years",
-                startDate: '2019',
-                endDate: new Date(),
-            });
-        });
-
-        $(function () {
-            "use strict";
-            $('#bulanan').bsdatepicker({
-                autoclose: true,
-                format: " mm-yyyy",
-                viewMode: "months",
-                minViewMode: "months",
-                startDate: '2019',
-                endDate: new Date(),
-            });
-        });
-
-        $(function () {
-            "use strict";
-            $('#harian').bsdatepicker({
-                format: 'mm-dd-yyyy'
-            });
-        });
 
     </script>
     <!-- Bootstrap Datepicker -->
@@ -61,7 +31,12 @@
 
             $('.dataTables_filter input').attr("placeholder", "Search...");
 
+            $('.btn-cetak').click(function(){
+              alert($(this).data('no_register'));
+              $('#no_register').val($(this).data('no_register'));
+            });
         });
+
 
     </script>
     <!-- Sparklines charts -->
@@ -98,15 +73,12 @@
                 <a href="{{ route('maintenance.edit', $arr_maintenance[0]->no_register) }}" class="btn btn-primary">
                     <i class="glyphicon glyphicon-edit"></i> Ubah
                 </a>
-                <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportTahunan">
-                    <i class="glyph-icon icon-clipboard"></i> Cetak Laporan Tahunan
+                @if(Auth::user()->hasRole('admin'))
+                <button class="btn btn-primary btn-md btn-cetak" data-no_register="{{ $arr_maintenance[0]->no_register }}" data-toggle="modal" data-target="#modalReportTahunan">
+                    <i class="glyph-icon icon-clipboard"></i> Cetak
                 </button>
-                <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportBulanan">
-                    <i class="glyph-icon icon-clipboard"></i> Cetak Laporan Bulanan
-                </button>
-                <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportTanggal">
-                    <i class="glyph-icon icon-clipboard"></i> Cetak Laporan Harian
-                </button>
+                @endif
+
             </h3>
 
             <h3 class="title-hero">
@@ -151,7 +123,14 @@
                           @foreach($arr_maintenance as $key => $maintenance)
                             <td>{{ $key + 1 }}</td>
                             <td>{{$maintenance->kode}}</td>
-                            <td>{{ $maintenance->barang ? $maintenance->barang->b_nama : '- Data barang sudah dihapus -'  }}</td>
+                            <td>@if($maintenance->barang)
+                                  {{$maintenance->barang->b_nama}}
+                                @elseif($maintenance->inventaris)
+                                  {{$maintenance->inventaris->i_nama}}
+                                @else
+                                  - Data Barang / Inventaris sudah dihapus -
+                                @endif
+                            </td>
                             <td>{{$maintenance->posisi}}</td>
                             <td>{{date('d-m-Y', strtotime($maintenance->tanggal_maintenance))}}</td>
                             <td>{{$maintenance->biaya != 0 ? 'Rp. '. number_format($maintenance->biaya, 2, ',', '.') : 'Free'}}</td>
@@ -165,5 +144,30 @@
         </div>
     </div>
 
+</div>
+
+<div class="modal fade" id="modalReportTahunan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><strong>Cetak Laporan</strong></h4>
+            </div>
+            <form name="reportTahunan" id="reportTahunan" action="{{ route('maintenance.cetak') }}"
+                method="POST" class="form-horizontal bordered-row">
+                {{ csrf_field() }}
+                <input type="hidden" id="no_register" name="no_register" value="">
+                <div class="modal-body">
+                    Apakah anda yakin akan mencetak Data ?
+                    <br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-success" formtarget="_blank">Cetak</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 @endsection

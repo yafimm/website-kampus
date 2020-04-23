@@ -10,9 +10,9 @@
                 <th>Nama</th>
                 <th>Posisi</th>
                 <th>Tanggal</th>
-                <th>Status</th>
                 <th>Biaya</th>
                 <th>Keterangan</th>
+                <th>Status</th>
             </tr>
         </thead>
 
@@ -24,9 +24,9 @@
               <th>Nama</th>
               <th>Posisi</th>
               <th>Tanggal</th>
-              <th>Status</th>
               <th>Biaya</th>
               <th>Keterangan</th>
+              <th>Status</th>
             </tr>
         </tfoot>
 
@@ -36,12 +36,20 @@
                 <td>{{$key + 1}}</td>
                 <td>{{ $maintenance->no_register }}</td>
                 <td>{{$maintenance->kode}}</td>
-                <td>{{$maintenance->barang->b_nama}}</td>
+                <td>@if($maintenance->barang)
+                      {{$maintenance->barang->b_nama}}
+                    @elseif($maintenance->inventaris)
+                      {{$maintenance->inventaris->i_nama}}
+                    @else
+                      - Data Barang / Inventaris sudah dihapus -
+                    @endif
+                </td>
                 <td>{{$maintenance->posisi}}</td>
                 <td>{{date('d-m-Y', strtotime($maintenance->tanggal_maintenance))}}</td>
-                <td>{{$maintenance->status}}</td>
-                <td>{{$maintenance->biaya}}</td>
+                <td>{{$maintenance->biaya != 0 ? 'Rp. '. number_format($maintenance->biaya, 2, ',', '.') : 'Free'}}</td>
                 <td>{{$maintenance->keterangan}}</td>
+                <td>{!! ($maintenance->status == 'SELESAI' ? '<span class="label label-success">'.$maintenance->status.'</span>' : ($maintenance->status == 'SEDANG BERJALAN' ? '<span class="label label-warning">'.$maintenance->status.'</span>': '<span class="label label-danger">'.$maintenance->status.'</span>'))!!}</td>
+
             </tr>
             @endforeach
         </tbody>

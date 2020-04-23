@@ -9,9 +9,13 @@
         <div class="col-md-4 col-sm-4 col-6 form-controll">
           <label for="exampleFormControlSelect1">Barang</label>
           <div class="col-12">
-            <select required name="barang_id[]" class="form-control" id="" placeholder="Kolom Kode">
-                @foreach($arr_barang as $barang)
-                  <option value="{{ $barang->b_id }}" {{ $pengadaan->barang ? ($pengadaan->barang->b_id == $barang->b_id ? 'selected': '-' ) : '-' }}> {{ $barang->b_nama }}</option>
+            <select required name="barang_inventaris[]" class="form-control" id="" placeholder="Kolom Kode">
+                @foreach($arr_barang_inventaris as $barang_inventaris)
+                  @if(isset($barang_inventaris->b_id))
+                    <option value="BRG{{ $barang_inventaris->b_id }}" {{ $pengadaan->barang ? ($pengadaan->barang->b_id == $barang_inventaris->b_id ? 'selected': '-' ) : '-' }}> {{ $barang_inventaris->b_nama }}</option>
+                  @else
+                    <option value="INV{{ $barang_inventaris->i_id }}" {{ $pengadaan->inventaris ? ($pengadaan->inventaris->b_id == $barang_inventaris->i_id ? 'selected': '-' ) : '-' }}> {{ $barang_inventaris->i_nama }}</option>
+                  @endif
                 @endforeach
             </select>
           </div>

@@ -98,9 +98,11 @@
                 <a href="{{ route('pengadaan.edit', $arr_pengadaan[0]->no_register) }}" class="btn btn-primary">
                     <i class="glyphicon glyphicon-edit"></i> Ubah
                 </a>
-                <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportTahunan">
-                    <i class="glyph-icon icon-clipboard"></i> Cetak
-                </button>
+                @if(Auth::user()->hasRole('admin'))
+                  <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportTahunan">
+                      <i class="glyph-icon icon-clipboard"></i> Cetak
+                  </button>
+                @endif
             </h3>
 
             <h3 class="title-hero">
@@ -119,7 +121,7 @@
                         <tr>
                             <th></th>
                             <th>Kode</th>
-                            <th>Nama Barang</th>
+                            <th>Nama Barang / Inventaris</th>
                             <th>Qty</th>
                             <th>Biaya</th>
                             <th>Total</th>
@@ -130,7 +132,7 @@
                         <tr>
                           <th></th>
                           <th>Kode</th>
-                          <th>Nama Barang</th>
+                          <th>Nama Barang / Inventaris</th>
                           <th>Qty</th>
                           <th>Biaya</th>
                           <th>Total</th>
@@ -141,8 +143,22 @@
                         <tr>
                           @foreach($arr_pengadaan as $key => $pengadaan)
                             <td>{{ $key + 1 }}</td>
-                            <td>{{ $pengadaan->barang ? $pengadaan->barang->b_kode : ' - Data Barang sudah dihapus -'}}</td>
-                            <td>{{ ($pengadaan->barang ? $pengadaan->barang->b_nama : '- Data Barang sudah dihapus -')}}</td>
+                            <td>@if($pengadaan->barang)
+                                  {{$pengadaan->barang->b_kode}}
+                                @elseif($pengadaan->inventaris)
+                                  {{$pengadaan->inventaris->i_kode}}
+                                @else
+                                  - Data Barang / Inventaris sudah dihapus -
+                                @endif
+                            </td>
+                            <td>@if($pengadaan->barang)
+                                  {{$pengadaan->barang->b_nama}}
+                                @elseif($pengadaan->inventaris)
+                                  {{$pengadaan->inventaris->i_nama}}
+                                @else
+                                  - Data Barang / Inventaris sudah dihapus -
+                                @endif
+                            </td>
                             <td>{{$pengadaan->qty}}</td>
                             <td>{{$pengadaan->biaya != 0 ? 'Rp. '. number_format($pengadaan->biaya, 2, ',', '.') : 'Free'}}</td>
                             <td>{{'Rp. '.number_format($pengadaan->total, 2, ',','.')}}</td>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Laporan Data pengadaan</title>
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css') }}">
 </head>
@@ -14,7 +14,7 @@
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td align="center" width="10%"><img src="{{ asset('assets/images-resource/apple-icon-72x72.png') }}"></td>
-            <td align="center" width="80%" style="font-size:20px;">Bagian Umum<strong><br>
+            <td align="center" width="80%" style="font-size:20px;"><strong><br>
                     <span style="font-size:20px">Sekolah Tinggi Manajemen Informatika dan Komputer
                         AMIKBANDUNG</span></strong>
             </td>
@@ -48,8 +48,22 @@
 			@foreach($data_pengadaan as $pengadaan)
 			<tr>
 				<td>{{ $i++ }}</td>
-				<td>{{$pengadaan->barang->b_kode}}</td>
-				<td>{{$pengadaan->barang->b_nama}}</td>
+				<td>@if($pengadaan->barang)
+							{{$pengadaan->barang->b_kode}}
+						@elseif($pengadaan->inventaris)
+							{{$pengadaan->inventaris->i_kode}}
+						@else
+							- Data Barang / Inventaris sudah dihapus -
+						@endif
+				</td>
+				<td>@if($pengadaan->barang)
+							{{$pengadaan->barang->b_nama}}
+						@elseif($pengadaan->inventaris)
+							{{$pengadaan->inventaris->i_nama}}
+						@else
+							- Data Barang / Inventaris sudah dihapus -
+						@endif
+				</td>
 				<td>{{$pengadaan->qty}}</td>
 				<td>Rp. {{number_format($pengadaan->biaya, 2, ',', '.')}}</td>
 				<td>Rp. {{number_format($pengadaan->total, 2, ',','.')}}</td>

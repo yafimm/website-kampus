@@ -17,7 +17,8 @@ class CreateMaintenanceTable extends Migration
             $table->bigIncrements('id');
             $table->string('no_register');
             $table->string('kode');
-            $table->integer('barang_id')->unsigned();
+            $table->integer('barang_id')->nullable();
+            $table->integer('inventaris_id')->nullable();
             $table->string('posisi');
             $table->date('tanggal_maintenance');
             $table->integer('biaya')->nullable();

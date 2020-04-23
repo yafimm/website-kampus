@@ -47,10 +47,10 @@
                         <input type="hidden" name="id" value="{{$data_pengguna[0]->id}}">
                         @if ($data_pengguna[0]->role == 'mahasiswa')
                             <input type="hidden" name="role" value="mahasiswa">
-                        @elseif ($data_pengguna[0]->role == 'ormawa')
-                            <input type="hidden" name="role" value="ormawa">
-                        @elseif ($data_pengguna[0]->role == 'bagumum')
-                            <input type="hidden" name="role" value="bagumum">
+                        @elseif ($data_pengguna[0]->role == 'yayasan')
+                            <input type="hidden" name="role" value="yayasan">
+                        @elseif ($data_pengguna[0]->role == 'staff_inventaris')
+                            <input type="hidden" name="role" value="staff_inventaris">
                         @endif
 
                         @if ($data_pengguna[0]->role == 'mahasiswa')
@@ -61,17 +61,17 @@
                                         placeholder="Kolom NPM" value="{{$data_pengguna[0]->npm}}">
                                 </div>
                             </div>
-                        @elseif ($data_pengguna[0]->role == 'ormawa')
+                        @elseif ($data_pengguna[0]->role == 'yayasan')
                             <input type="hidden" name="npm" value="0">
-                        @elseif ($data_pengguna[0]->role == 'bagumum')
+                        @elseif ($data_pengguna[0]->role == 'staff_inventaris')
                             <input type="hidden" name="npm" value="0">
                         @endif
 
                         @if ($data_pengguna[0]->role == 'mahasiswa')
                             <input type="hidden" name="nip" value="0">
-                        @elseif ($data_pengguna[0]->role == 'ormawa')
+                        @elseif ($data_pengguna[0]->role == 'yayasan')
                             <input type="hidden" name="nip" value="0">
-                        @elseif ($data_pengguna[0]->role == 'bagumum')
+                        @elseif ($data_pengguna[0]->role == 'staff_inventaris')
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">NIP</label>
                                 <div class="col-sm-6">

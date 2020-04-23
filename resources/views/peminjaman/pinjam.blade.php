@@ -219,7 +219,7 @@
                             '<div class="col-sm-3">' +
                             '<input type="hidden" name="idinventaris[]" value="' + id + '">' +
                             '<input required name="jumlahinventaris[]" type="number" class="form-control"' +
-                            'id="" placeholder="Jumlah">' +
+                            'id="" placeholder="Jumlah barang">' +
                             '</div></div>');
                     }
                 });

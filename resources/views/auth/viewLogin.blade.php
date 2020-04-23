@@ -19,6 +19,7 @@
                 <div class="content-box-wrapper pad20A">
                     <img class="mrg25B center-margin display-block" src="{{ asset('assets/images-resource/logo.png') }}"
                         alt="">
+                    @include('_partial.flash_message')
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon addon-inside bg-gray">

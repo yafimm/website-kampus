@@ -128,7 +128,7 @@
                                     <i class="glyph-icon icon-pencil"></i>
                                 </a>
                                 @if(Auth::user()->hasRole('admin'))
-                                <button class="btn btn-primary btn-md btn-cetak" data-no_register="{{ $pengadaan->no_register }}" data-toggle="modal" data-target="#modalReportTanggal" data-toggle="tooltip" data-placement="top" title="Cetak">
+                                <button class="btn btn-primary btn-md btn-cetak" data-no_register="{{ $pengadaan->no_register }}" data-toggle="modal" data-target="#modalReportSatuan" data-toggle="tooltip" data-placement="top" title="Cetak">
                                     <i class="glyph-icon icon-clipboard"></i>
                                 </button>
                                 @endif
@@ -190,7 +190,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modalReportTanggal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<div class="modal fade" id="modalReportSatuan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

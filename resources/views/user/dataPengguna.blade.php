@@ -45,7 +45,7 @@
   <div class="panel">
       <div class="panel-body">
           <h3 class="title-hero">
-              <a href="{{ route('user.tambah', 'bagumum') }}" class="btn btn-primary">
+              <a href="{{ route('user.tambah', 'staff_inventaris') }}" class="btn btn-primary">
                   <i class="glyph-icon icon-plus-circle"></i> Tambah Akun Staff Inventaris
               </a>
               <a href="{{ route('user.tambah', 'mahasiswa') }}" class="btn btn-primary">
@@ -90,7 +90,7 @@
                           <td>{{$count}}</td>
                           <td>{{$pengguna->name}}</td>
                           <td>{{$pengguna->email}}</td>
-                          <td><span class="bs-label label-primary">{{$pengguna->role}}</span></td>
+                          <td><span class="bs-label label-primary">{{str_replace('_',' ',$pengguna->role)}}</span></td>
                           <td>
                               <a href="{{ route('user.lihat', $pengguna->id) }}" class="btn btn-info"  data-toggle="tooltip" data-placement="top" title="Lihat Data">
                                   <i class="glyph-icon icon-eye"></i>

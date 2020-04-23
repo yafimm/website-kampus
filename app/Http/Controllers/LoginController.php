@@ -45,7 +45,7 @@ class LoginController extends Controller
             // }
             return redirect('dashboard');
          }else{
-            return redirect('/');
+            return redirect()->route('login')->with('alert-class', 'alert-danger')->with('flash_message', 'Email atau password salah !!');
          }
     }
 

@@ -268,7 +268,7 @@
                             <div class="col-sm-3">
                             </div>
                             <div class="col-sm-3">
-                                <a href="{{ url('/user/peminjaman') }}" class="btn btn-blue-alt"><i
+                                <a href="{{ route('peminjaman.index') }}" class="btn btn-blue-alt"><i
                                         class="glyph-icon icon-arrow-left"></i> Kembali</a>
                                 <button type="submit" class="btn btn-success">
                                     <i class="glyph-icon icon-check"></i> Simpan</button>

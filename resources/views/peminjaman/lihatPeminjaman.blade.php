@@ -81,7 +81,7 @@
                             <label class="col-sm-3 control-label">Nama Peminjam</label>
                             <div class="col-sm-6">
                                 <input disabled name="nama" type="text" class="form-control" id="nama"
-                                    placeholder="Kolom Nama Pengguna" value="{{$data_peminjaman->user->name}}">
+                                    placeholder="Kolom Nama Pengguna" value="{{$data_peminjaman->user ? $data_peminjaman->user->name : '- Data pengguna sudah dihapus -'}}">
                             </div>
                         </div>
                         <div class="form-group">

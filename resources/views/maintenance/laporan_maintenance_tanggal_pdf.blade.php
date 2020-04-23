@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Laporan Data pengadaan</title>
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Laporan Data Maintenance</title>
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css') }}">
 </head>
 <body>
@@ -14,7 +14,7 @@
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td align="center" width="10%"><img src="{{ asset('assets/images-resource/apple-icon-72x72.png') }}"></td>
-            <td align="center" width="80%" style="font-size:20px;">Bagian Umum<strong><br>
+            <td align="center" width="80%" style="font-size:20px;"><strong><br>
                     <span style="font-size:20px">Sekolah Tinggi Manajemen Informatika dan Komputer
                         AMIKBANDUNG</span></strong>
             </td>
@@ -26,7 +26,7 @@
     </table>
     <hr style="border-top: 1px solid black;">
 	<center>
-		<h4>Laporan Data Pengadaan</h4>
+		<h4>Laporan Data Maintenance</h4>
 		<p>{{ date('d/m/Y', strtotime($mulai)) }} - {{ date('d/m/Y', strtotime($akhir)) }}</p>
 	</center>
 
@@ -39,7 +39,7 @@
   			<tr>
   				<th>No</th>
   				<th>Kode</th>
-  				<th>Nama Barang</th>
+  				<th>Nama Barang/Inventaris</th>
   				<th>Biaya</th>
 					<th>Keterangan</th>
 					<th>Status</th>
@@ -50,8 +50,15 @@
   			@foreach($maintenance as $maintenance_detail)
   			<tr>
   				<td>{{ $i++ }}</td>
-  				<td>{{ $maintenance_detail->barang ? $maintenance_detail->barang->b_kode : '- Data sudah dihapus -' }}</td>
-  				<td>{{ $maintenance_detail->barang ? $maintenance_detail->barang->b_nama : '- Data sudah dihapus -' }}</td>
+  				<td>{{ $maintenance_detail->kode }}</td>
+					<td>@if($maintenance_detail->barang)
+								{{$maintenance_detail->barang->b_nama}}
+							@elseif($maintenance_detail->inventaris)
+								{{$maintenance_detail->inventaris->i_nama}}
+							@else
+								- Data Barang / Inventaris sudah dihapus -
+							@endif
+					</td>
   				<td>Rp. {{number_format($maintenance_detail->biaya, 2, ',', '.')}}</td>
 					<td>{{ $maintenance_detail->keterangan }}</td>
 					<td>

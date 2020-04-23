@@ -32,9 +32,9 @@
             @foreach ($arr_request as $key => $request)
             <tr>
                 <td>{{$key + 1}}</td>
-                <td>{{$request->user->npm}}</td>
-                <td>{{$request->user->nama}}</td>
-                <td>{{$request->barang->nama}}</td>
+                <td>{{$request->user ? $request->user->npm ? $request->user->npm : ($request->user->npk ? $request->user->npk  : '-') : '- Data Pengguna sudah dihapus -'}}</td>
+                <td>{{$request->user ? $request->user->nama : '- Data Pengguna sudah dihapus -'}}</td>
+                <td>{{$request->barang ? $request->barang->nama : '- Data Barang sudah dihapus -'}}</td>
                 <td>{{$request->rb_jumlah}}</td>
                 <td>{{$request->created_at->format('d-m-Y') }}</td>
                 <td>{{$request->status}}</td>

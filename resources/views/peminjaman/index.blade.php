@@ -125,7 +125,7 @@
                             <th>Nama User</th>
                             <th>Tanggal Peminjaman Mulai</th>
                             <th>Tanggal Peminjaman Berakhir</th>
-                            <th>File Surat Peminjaman</th>
+                            <th>File Surat Peminjaman/Pengembalian</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
@@ -137,7 +137,7 @@
                             <th>Nama User</th>
                             <th>Tanggal Peminjaman Mulai</th>
                             <th>Tanggal Peminjaman Berakhir</th>
-                            <th>File Surat Peminjaman</th>
+                            <th>File Surat Peminjaman/Pengembalian</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
@@ -153,11 +153,16 @@
                         @endphp
                         <tr>
                             <td>{{$count}}</td>
-                            <td>{{$peminjaman->name}}</td>
+                            <td>{{$peminjaman->user ? $peminjaman->user->name : '- Data Pengguna sudah dihapus -'}}</td>
                             <td>{{date('d-m-Y', strtotime($peminjaman->p_date))}}</td>
                             <td>{{date('d-m-Y', strtotime($peminjaman->p_date_end))}}</td>
-                            <td><a target="_blank"
+                            <td>@if($peminjaman->p_status == 1 || $peminjaman->p_status == 3)
+                                <a target="_blank"
+                                    href="{{ route('peminjaman.cetaksuratpengembalian', $peminjaman->p_id) }}"><u>Download</u></a>
+                                @else
+                                <a target="_blank"
                                     href="{{ route('downloadsurat', $peminjaman->p_scan_surat_peminjaman) }}"><u>Download</u></a>
+                                @endif
                             </td>
                             <td>
                                 @if ($peminjaman->p_status == 0)
@@ -189,10 +194,11 @@
                                   @endif
 
                                   @if(Auth::user()->hasRole('dosen') || Auth::user()->hasRole('mahasiswa'))
-                                  <a href="{{ route('peminjaman.ubah',$peminjaman->p_id) }}"
-                                      class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Ubah Data">
-                                      <i class="glyph-icon icon-edit"></i>
-                                  </a>
+                                    <a href="{{ route('peminjaman.ubah',$peminjaman->p_id) }}"
+                                        class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Ubah Data">
+                                        <i class="glyph-icon icon-edit"></i>
+                                    </a>
+
                                   @endif
 
                                 <button class="btn btn-danger btn-md" data-toggle="modal"
@@ -205,12 +211,6 @@
                                 <a href="{{ route('peminjaman.lihat', $peminjaman->p_id) }}" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Lihat Data">
                                     <i class="glyph-icon icon-eye"></i>
                                 </a>
-                                  @if(Auth::user()->hasRole('dosen') || Auth::user()->hasRole('mahasiswa'))
-                                  <a href="{{ route('peminjaman.ubah',$peminjaman->p_id) }}"
-                                      class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Ubah Data">
-                                      <i class="glyph-icon icon-edit"></i>
-                                  </a>
-                                  @endif
                                   @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff inventaris'))
                                     <button class="btn btn-success btn-md" data-toggle="modal"
                                     data-target="#modalSelesai" data-peminjamanid="{{$peminjaman->p_id}}" data-toggle="tooltip" data-placement="top" title="Selesai">

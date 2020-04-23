@@ -16,8 +16,9 @@ class CreatePengadaanTable extends Migration
         Schema::create('pengadaan', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('no_register');
-            $table->string('kode');
-            $table->integer('barang_id')->unsigned();
+            $table->string('kode')->nullable();
+            $table->integer('barang_id')->nullable();
+            $table->integer('inventaris_id')->nullable();
             $table->string('qty');
             $table->integer('biaya');
             $table->string('supplier');

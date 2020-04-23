@@ -151,7 +151,7 @@
                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                       <h4 class="modal-title">Hapus Data</h4>
                   </div>
-                  <form name="deleteForm" id="deleteForm" action="{{ route('barang.prosesHapus', $barang->b_id) }}"
+                  <form name="deleteForm" id="deleteForm" action="{{ route('barang.prosesHapus') }}"
                       method="POST" class="form-horizontal">
                       @CSRF
                       @method('DELETE')

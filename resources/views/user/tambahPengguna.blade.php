@@ -47,8 +47,8 @@
                             <input type="hidden" name="role" value="mahasiswa">
                         @elseif ($jenis == 'ormawa')
                             <input type="hidden" name="role" value="ormawa">
-                        @elseif ($jenis == 'bagumum')
-                            <input type="hidden" name="role" value="bagumum">
+                        @elseif ($jenis == 'staff_inventaris')
+                            <input type="hidden" name="role" value="staff_inventaris">
                         @elseif ($jenis == 'yayasan')
                             <input type="hidden" name="role" value="yayasan">
                         @endif
@@ -63,7 +63,7 @@
                             </div>
                         @elseif ($jenis == 'ormawa')
                             <input type="hidden" name="npm" value="0">
-                        @elseif ($jenis == 'bagumum')
+                        @elseif ($jenis == 'staff_inventaris')
                             <input type="hidden" name="npm" value="0">
                         @elseif ($jenis == 'yayasan')
                             <input type="hidden" name="npm" value="0">
@@ -75,7 +75,7 @@
                             <input type="hidden" name="nip" value="0">
                         @elseif ($jenis == 'yayasan')
                             <input type="hidden" name="nip" value="0">
-                        @elseif ($jenis == 'bagumum')
+                        @elseif ($jenis == 'staff_inventaris')
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">NIP</label>
                                 <div class="col-sm-6">

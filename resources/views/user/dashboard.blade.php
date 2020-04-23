@@ -20,6 +20,19 @@
             });
         });
 
+        $(function () {
+            "use strict";
+            $('#datestart').bsdatepicker({
+                format: 'dd-mm-yyyy'
+            });
+        });
+        $(function () {
+            "use strict";
+            $('#dateend').bsdatepicker({
+                format: 'dd-mm-yyyy'
+            });
+        });
+
     </script>
     <!-- Bootstrap Datepicker -->
     <script type="text/javascript" src="{{ asset('assets/widgets/datepicker-ui/datepicker.js') }}"></script>
@@ -74,12 +87,65 @@
         <p>Selamat Datang {{Auth::user()->name}} | <strong>{{ ucwords(str_replace('_', ' ',Auth::user()->role)) }}</strong></p>
     </div>
 
+
+        @if(Auth::user()->hasRole('yayasan'))
+        <div class="panel">
+            <div class="panel-body">
+              <form class="" action="{{ route('report.index') }}" method="get">
+                    <div class="form-group col-12 col-sm-4 col-md-3">
+                      <label class="col-sm-12 control-label">Jenis Report</label>
+                      <select class="form-controll" name="jenis">
+                        <option  name="jenis" value="datapengadaan" {{ Request::get("jenis") == 'datapengadaan' ? 'selected' : ''}}>Data Pengadaan</option>
+                        <option name="jenis" value="datainventaris" {{ Request::get("jenis") == 'datainventaris' ? 'selected' : ''}}>Data Inventaris</option>
+                        <option name="jenis" value="databarang" {{ Request::get("jenis") == 'databarang' ? 'selected' : ''}}>Data Barang</option>
+                        <option name="jenis" value="datapeminjaman" {{ Request::get("jenis") == 'datapeminjaman' ? 'selected' : ''}}>Data Peminjaman</option>
+                        <option name="jenis" value="datapengguna" {{ Request::get("jenis") == 'datapengguna' ? 'selected' : ''}}>Data Pengguna</option>
+                        <option name="jenis" value="datarequest" {{ Request::get("jenis") == 'datarequest' ? 'selected' : ''}}>Data Request Barang</option>
+                        <option value="datamaintenance" {{ Request::get("jenis") == 'datamaintenance' ? 'selected' : ''}}>Data Maintenance</option>
+                      </select>
+                    </div>
+                    <div class="form-group col-12 col-sm-4 col-md-3">
+                      <label class="col-sm-12 control-label">Dari Tanggal </label>
+                      <div class="col-sm-12">
+                          <div class="input-prepend input-group">
+                              <span class="add-on input-group-addon">
+                                  <i class="glyph-icon icon-calendar"></i>
+                              </span>
+                              <input required id="datestart" name="mulai" type="text"
+                                  class="bootstrap-datepicker form-control" value="{{ Request::get('mulai') }}"
+                                  data-date-format="mm/dd/yyyy">
+                          </div>
+                      </div>
+                    </div>
+                    <div class="form-group col-12 col-sm-4 col-md-3">
+                      <label class="col-sm-12 control-label">Sampai Tanggal</label>
+                      <div class="col-sm-12">
+                          <div class="input-prepend input-group">
+                              <span class="add-on input-group-addon">
+                                  <i class="glyph-icon icon-calendar"></i>
+                              </span>
+                              <input required id="dateend" name="akhir" type="text"
+                                  class="bootstrap-datepicker form-control" value="{{ Request::get('akhir') }}"
+                                  data-date-format="mm/dd/yyyy">
+                          </div>
+                      </div>
+                    </div>
+
+
+                    <button class="btn btn-primary btn-md col-12 col-sm-4 col-md-3">
+                      <i class="glyph-icon icon-clipboard"></i> Proses
+                    </button>
+                  </form>
+            </div>
+        </div>
+        @endif
+
     @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris') || Auth::user()->hasRole('dosen'))
     <div class="panel">
         <div class="panel-body">
             <h3 class="title-hero">
                 <p>Data Request</p>
-                @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris'))
+                @if(Auth::user()->hasRole('admin'))
                   <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportRequest">
                       <i class="glyph-icon icon-clipboard"></i> Cetak
                   </button>
@@ -94,6 +160,7 @@
                             <th>Barang</th>
                             <th>Jumlah</th>
                             <th>Status</th>
+                            <th>Tanggal</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -105,6 +172,7 @@
                             <th>Barang</th>
                             <th>Jumlah</th>
                             <th>Status</th>
+                            <th>Tanggal</th>
                             <th>Aksi</th>
                         </tr>
                     </tfoot>
@@ -118,18 +186,21 @@
                             <td>{{$request->rb_jumlah}}</td>
                             <td>
                                 @if ($request->rb_status == 0)
-                                <span class="bs-label label-blue-alt">Menunggu</span>
+                                <span class="bs-label label-warning">Menunggu</span>
                                 @elseif($request->rb_status == 1)
                                 <span class="bs-label label-danger">Ditolak</span>
                                 @elseif($request->rb_status == 2)
-                                <span class="bs-label label-success">Disetujui</span>
+                                <span class="bs-label label-primary">Disetujui</span>
+                                @else
+                                <span class="bs-label label-success">Selesai</span>
                                 @endif
                             </td>
+                            <td>{{ date('d/m/Y', strtotime($request->created_at)) }}</td>
                             <td>
                                 @if ($request->rb_status == 0)
                                 <a href="{{ route('request.lihat', $request->rb_id) }}"
-                                    class="btn btn-info">
-                                    <i class="glyph-icon icon-circle-o"></i> Lihat
+                                    class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Lihat Data">
+                                    <i class="glyph-icon icon-eye"></i>
                                 </a>
 
                                   @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris'))
@@ -153,19 +224,24 @@
                                     class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Lihat Data">
                                     <i class="glyph-icon icon-eye"></i>
                                 </a>
-                                  @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris'))
-                                    <button class="btn btn-primary btn-md" data-toggle="modal"
-                                        data-target="#modalSetujuRequest" data-requestid="{{$request->rb_id}}" data-toggle="tooltip" data-placement="top" title="Setuju">
-                                        <i class="glyph-icon icon-check"></i>
-                                    </button>
-                                  @endif
 
                                 <button class="btn btn-danger btn-md" data-toggle="modal"
                                     data-target="#modalHapusRequest" data-requestid="{{$request->rb_id}}" data-toggle="tooltip" data-placement="top" title="Hapus Data">
                                     <i class="glyph-icon icon-trash"></i>
                                 </button>
                                 @elseif($request->rb_status == 2)
-                                <a href="{{ url('/admin/request/lihat/'.$request->rb_id) }}"
+                                <a href="{{ route('request.lihat',$request->rb_id) }}"
+                                    class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Lihat Data">
+                                    <i class="glyph-icon icon-eye"></i>
+                                </a>
+                                  @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris'))
+                                  <button class="btn btn-success btn-md" data-toggle="modal"
+                                    data-target="#modalSetujuRequest" data-requestid="{{$request->rb_id}}" data-toggle="tooltip" data-placement="top" title="Selesai">
+                                    <i class="glyph-icon icon-check"></i>
+                                  </button>
+                                  @endif
+                                @else
+                                <a href="{{ route('request.lihat',$request->rb_id) }}"
                                     class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Lihat Data">
                                     <i class="glyph-icon icon-eye"></i>
                                 </a>
@@ -297,22 +373,33 @@
                     {{ csrf_field() }}
                     <div class="modal-body">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Pilih Tahun</label>
+                            <label class="col-sm-3 control-label">Dari Tanggal</label>
                             <div class="col-sm-6">
                                 <div class="input-prepend input-group">
                                     <span class="add-on input-group-addon">
                                         <i class="glyph-icon icon-calendar"></i>
                                     </span>
-                                    <input id="tahunan" name="tahunan" type="text"
-                                        class="bootstrap-datepicker form-control" value=""
-                                        data-date-format="yyyy">
+                                    <input id="dari-tanggal" name="mulai" type="text" class="bootstrap-datepicker form-control" value=""
+                                        data-date-format="dd-mm-yyyy">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Sampai Tanggal</label>
+                            <div class="col-sm-6">
+                                <div class="input-prepend input-group">
+                                    <span class="add-on input-group-addon">
+                                        <i class="glyph-icon icon-calendar"></i>
+                                    </span>
+                                    <input id="sampai-tanggal" name="akhir" type="text" class="bootstrap-datepicker form-control" value=""
+                                        data-date-format="dd-mm-yyyy">
                                 </div>
                             </div>
                         </div>
                         <br>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-success" formtarget="_blank">Cetak</button>
                     </div>
                 </form>
@@ -322,11 +409,12 @@
 
     @endif
 
+    @if(!Auth::user()->hasRole('yayasan'))
     <div class="panel">
         <div class="panel-body">
             <h3 class="title-hero">
                 <p>Data Peminjaman</p>
-                @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris'))
+                @if(Auth::user()->hasRole('admin'))
                   <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportTahunanPeminjaman">
                       <i class="glyph-icon icon-clipboard"></i> Cetak
                   </button>
@@ -433,6 +521,7 @@
             </div>
         </div>
     </div>
+    @endif
 
     <!-- Kumpulan Modal -->
 

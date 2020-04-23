@@ -16,7 +16,7 @@ class Peminjaman extends Model
 
   public function barang()
   {
-      return $this->belongsTo('App\Barang', 'id');
+      return $this->belongsTo('App\Barang', 'b_id','id');
   }
 
   public function user()

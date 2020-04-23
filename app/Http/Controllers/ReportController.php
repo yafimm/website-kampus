@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Pembelian;
 use App\Barang;
 use App\Inventaris;
 use App\Peminjaman;
 use App\User;
 use App\Maintenance;
+use App\Pengadaan;
 use App\Request as RequestBarang;
 
 class ReportController extends Controller
@@ -19,7 +19,8 @@ class ReportController extends Controller
         {
             if($request->jenis == 'datapengadaan')
             {
-
+                $arr_pengadaan = Pengadaan::where([['tanggal', '>=', date('Y-m-d', strtotime($request->mulai))], ['tanggal', '<=', date('Y-m-d', strtotime($request->akhir))]])->get();
+                return view('report.reportmodul.pengadaanindex', compact('arr_pengadaan'));
             }
             else if($request->jenis == 'datainventaris')
             {
@@ -49,7 +50,6 @@ class ReportController extends Controller
             else if($request->jenis == 'datamaintenance')
             {
                 $arr_maintenance = Maintenance::whereDate('tanggal_maintenance', '>=', date('Y-m-d', strtotime($request->mulai)))->whereDate('tanggal_maintenance', '<=', date('Y-m-d', strtotime($request->akhir)))->orderBy('no_register', 'asc')->get();
-                // dd($arr_maintenance);
                 return view('report.reportmodul.maintenanceindex', compact('arr_maintenance'));
             }
         }

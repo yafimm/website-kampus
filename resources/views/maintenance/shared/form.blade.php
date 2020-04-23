@@ -15,10 +15,14 @@
           </div>
         </div>
         <div class="col-md-4 col-sm-4 col-6 form-controll">
-          <label for="exampleFormControlSelect1">Barang</label>
-          <select class="form-control" name="barang_id[]" value"{{ old('barang_id', $maintenance->barang_id) }}" id="exampleFormControlSelect1">
-            @foreach($arr_barang as $barang)
-            <option value="{{ $barang->b_id }}" {{ $maintenance->barang_id == $barang->b_id ? 'selected' : '' }}>{{ $barang->b_nama }}</option>
+          <label for="exampleFormControlSelect1">Barang/Inventaris</label>
+          <select class="form-control" name="barang_inventaris[]" value"{{ old('barang_id', $maintenance->barang_id) }}" id="exampleFormControlSelect1">
+            @foreach($arr_barang_inventaris as $barang_inventaris)
+              @if(isset($barang_inventaris->b_id))
+                <option value="BRG{{ $barang_inventaris->b_id }}" {{ $maintenance->barang ? ($maintenance->barang->b_id == $barang_inventaris->b_id ? 'selected': '-' ) : '-' }}> {{ $barang_inventaris->b_nama }}</option>
+              @else
+                <option value="INV{{ $barang_inventaris->i_id }}" {{ $maintenance->inventaris ? ($maintenance->inventaris->i_id == $barang_inventaris->i_id ? 'selected': '-' ) : '-' }}> {{ $barang_inventaris->i_nama }}</option>
+              @endif
             @endforeach
           </select>
         </div>

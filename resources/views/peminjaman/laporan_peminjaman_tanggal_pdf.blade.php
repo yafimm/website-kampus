@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Laporan Data Peminjaman Inventaris</title>
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css') }}">
 </head>
@@ -14,7 +14,7 @@
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td align="center" width="10%"><img src="{{ asset('assets/images-resource/apple-icon-72x72.png') }}"></td>
-            <td align="center" width="80%" style="font-size:20px;">Bagian Umum<strong><br>
+            <td align="center" width="80%" style="font-size:20px;"><strong><br>
                     <span style="font-size:20px">Sekolah Tinggi Manajemen Informatika dan Komputer
                         AMIKBANDUNG</span></strong>
             </td>
@@ -45,16 +45,18 @@
 			@foreach($data_peminjaman as $peminjaman)
 			<tr>
 				<td>{{ $i++ }}</td>
-				<td>{{$peminjaman->user->name}}</td>
+				<td>{{$peminjaman->user ? $peminjaman->user->name : '- Data pengguna sudah dihapus -'}}</td>
 				<td>{{ date('d/m/Y', strtotime($peminjaman->p_date)) }}</td>
         <td>{{ date('d/m/Y', strtotime($peminjaman->p_date_end)) }}</td>
 				<td>
             @if ($peminjaman->p_status == 0)
-                <span class="text-prinary">Menunggu</span>
+                <span class="text-warning">Menunggu</span>
             @elseif($peminjaman->p_status == 1)
-                <span class="text-success">Disetujui</span>
+                <span class="text-primary">Disetujui</span>
             @elseif($peminjaman->p_status == 2)
                 <span class="text-danger">Ditolak</span>
+						@else
+								<span class="text-success">Selesai</span>
             @endif
         </td>
 				<td>

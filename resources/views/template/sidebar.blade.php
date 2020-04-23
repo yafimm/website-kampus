@@ -9,7 +9,9 @@
                     <span>Beranda</span>
                 </a>
             </li>
+
             <li class="divider"></li>
+
             @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris'))
             <li class="no-menu">
                 <a href="{{ route('barang.index') }}" title="Frontend template">
@@ -48,12 +50,6 @@
             </li>
             @endif
 
-            <li class="no-menu">
-                <a href="{{ route('peminjaman.index') }}" title="Frontend template">
-                    <i class="glyph-icon icon-typicons-popup" style="color:#337ab7"></i>
-                    <span>Data Peminjaman</span>
-                </a>
-            </li>
 
             @if(Auth::user()->hasRole('admin'))
             <li class="no-menu">
@@ -63,15 +59,27 @@
                 </a>
             </li>
 
+
+            @endif
+
+            @if(!(Auth::user()->hasRole('yayasan')))
             <li class="no-menu">
-                <a href="{{ route('report.index') }}" title="Frontend template">
+                <a href="{{ route('peminjaman.index') }}" title="Frontend template">
                     <i class="glyph-icon icon-typicons-popup" style="color:#337ab7"></i>
-                    <span>Executive Dashboard</span>
+                    <span>Data Peminjaman</span>
                 </a>
             </li>
 
             @endif
 
+            @if(Auth::user()->hasRole('yayasan'))
+              <li class="no-menu">
+                <a href="{{ route('report.index') }}" title="Frontend template">
+                  <i class="glyph-icon icon-typicons-popup" style="color:#337ab7"></i>
+                  <span>Executive Dashboard</span>
+                </a>
+              </li>
+            @endif
             <li class="header"><span>Shortcut</span></li>
 
             @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris'))

@@ -27,8 +27,7 @@
     <hr style="border-top: 1px solid black;">
 	<center>
 		<h4>Laporan Data Request Barang</h4>
-		<p>No Register #{{ $data_request->no_register }}</p>
-		<p>{{ date('d-m-Y', strtotime($data_request->created_at)) }}</p>
+		<h6>{{ date('d/m/Y', strtotime($mulai)) .' - '. date('d/m/Y', strtotime($akhir)) }}</h6>
 
 	</center>
 	<table class='table table-bordered'>
@@ -44,24 +43,27 @@
 		</thead>
 		<tbody>
 			@php $i=1 @endphp
+			@foreach($data_request as $request)
 			<tr>
 				<td>{{ $i++ }}</td>
-				<td>{{$data_request->user->name}}</td>
-				<td>{{$data_request->barang ? $data_request->barang->b_nama : ' - '}}</td>
-        <td>{{$data_request->rb_jumlah}}</td>
+				<td>{{$request->user->name}}</td>
+				<td>{{$request->barang ? $request->barang->b_nama : ' - '}}</td>
+        <td>{{$request->rb_jumlah}}</td>
 				<td>
-                    @if ($data_request->rb_status == 0)
+                    @if ($request->rb_status == 0)
                         <span class="text-warning">Menunggu</span>
-                    @elseif($data_request->rb_status == 1)
+                    @elseif($request->rb_status == 1)
                         <span class="text-danger">Ditolak</span>
-                    @elseif($data_request->rb_status == 2)
+                    @elseif($request->rb_status == 2)
                         <span class="text-primary">Disetujui</span>
 										@else
 												<span class="text-success">Selesai</span>
                     @endif
                 </td>
-				<td>{{$data_request->created_at->format('d/m/Y')}}</td>
+				<td>{{$request->created_at->format('d/m/Y')}}</td>
 			</tr>
+			@endforeach
+		</tbody>
 	</table>
 
 </body>

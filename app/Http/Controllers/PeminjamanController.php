@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Peminjaman;
 use PDF;
 use DB;
+use Auth;
+use File;
+use Storage;
 
 class PeminjamanController extends Controller
 {
@@ -15,23 +18,30 @@ class PeminjamanController extends Controller
     }
 
     public function index(){
-        $data_peminjaman = DB::table('peminjaman')
-        ->join('users', 'peminjaman.user_id', '=', 'users.id')
-        ->select('peminjaman.p_id', 'users.name', 'peminjaman.p_date',
-        'peminjaman.p_date_end', 'peminjaman.p_time_start', 'peminjaman.p_time_end',
-        'peminjaman.p_scan_surat_peminjaman', 'peminjaman.p_status', 'peminjaman.created_at',
-        'peminjaman.updated_at')->orderBy('p_status', 'asc')->orderBy('created_at', 'desc')
-        ->get();
+        if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris')){
+          $data_peminjaman = Peminjaman::orderBy('created_at','desc')->orderBy('p_status', 'asc')->get();
+          $data_peminjaman_sukses = DB::table('peminjaman')
+          ->join('users', 'peminjaman.user_id', '=', 'users.id')
+          ->select('peminjaman.p_id', 'users.name', 'peminjaman.p_date',
+          'peminjaman.p_date_end', 'peminjaman.p_time_start', 'peminjaman.p_time_end',
+          'peminjaman.p_scan_surat_peminjaman', 'peminjaman.p_status', 'peminjaman.created_at',
+          'peminjaman.updated_at', 'peminjaman.p_nama_event')
+          ->where('peminjaman.p_status','1')
+          ->get();
+          $today = date("Y-m-d");
+        }else{
+          $data_peminjaman = Peminjaman::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->orderBy('p_status', 'asc')->get();
+          $data_peminjaman_sukses = DB::table('peminjaman')
+          ->join('users', 'peminjaman.user_id', '=', 'users.id')
+          ->select('peminjaman.p_id', 'users.name', 'peminjaman.p_date',
+          'peminjaman.p_date_end', 'peminjaman.p_time_start', 'peminjaman.p_time_end',
+          'peminjaman.p_scan_surat_peminjaman', 'peminjaman.p_status', 'peminjaman.created_at',
+          'peminjaman.updated_at', 'peminjaman.p_nama_event')
+          ->where('peminjaman.p_status','1')
+          ->get();
+          $today = date("Y-m-d");
+        }
 
-        $data_peminjaman_sukses = DB::table('peminjaman')
-        ->join('users', 'peminjaman.user_id', '=', 'users.id')
-        ->select('peminjaman.p_id', 'users.name', 'peminjaman.p_date',
-        'peminjaman.p_date_end', 'peminjaman.p_time_start', 'peminjaman.p_time_end',
-        'peminjaman.p_scan_surat_peminjaman', 'peminjaman.p_status', 'peminjaman.created_at',
-        'peminjaman.updated_at', 'peminjaman.p_nama_event')
-        ->where('peminjaman.p_status','1')
-        ->get();
-        $today = date("Y-m-d");
         return view('peminjaman.index', compact('data_peminjaman', 'data_peminjaman_sukses', 'today'));
     }
 
@@ -302,6 +312,17 @@ class PeminjamanController extends Controller
             $pdf = PDF::loadview('peminjaman.laporan_peminjaman_pdf', ['data_peminjaman'=>$data_peminjaman]);
             return $pdf->download('laporan-data-peminjaman.pdf');
         }
+    }
+
+    public function cetakSuratPengembalian($id)
+    {
+        $data_peminjaman = Peminjaman::findOrFail($id);
+        if($data_peminjaman->p_status == 1 || $data_peminjaman->p_status == 3){
+          $pdf = PDF::loadview('peminjaman.surat_pengembalian_pdf', ['data_peminjaman' => $data_peminjaman]);
+          return $pdf->download('surat_pengembalian_'.$data_peminjaman->p_id.'.pdf');
+        }
+        return abort(404);
+
     }
 
 

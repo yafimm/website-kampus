@@ -5,7 +5,7 @@
         <thead>
             <tr>
                 <th></th>
-                <th>NPM/NPK</th>
+                <th>NPM/NIP</th>
                 <th>NAMA</th>
                 <th>TGL PINJAM</th>
                 <th>TGL KEMBALI</th>
@@ -17,12 +17,12 @@
         <tfoot>
             <tr>
                 <th></th>
-                <th>NPM/NPK<</th>
+                <th>NPM/NIP</th>
                 <th>NAMA</th>
                 <th>TGL PINJAM</th>
                 <th>TGL KEMBALI</th>
                 <th>NAMA BARANG</th>
-                <th>STATUS/th>
+                <th>STATUS</th>
             </tr>
         </tfoot>
 
@@ -30,12 +30,21 @@
             @foreach ($arr_peminjaman as $key => $peminjaman)
             <tr>
                 <td>{{$key + 1}}</td>
-                <td>{{$peminjaman->user->npm}}</td>
-                <td>{{$peminjaman->user->name}}</td>
+                <td>{{$peminjaman->user ? $peminjaman->user->npm ? $peminjaman->user->npm : ($peminjaman->user->nip ? $peminjaman->user->nip : '-') : '- Data Pengguna sudah dihapus -' }}</td>
+                <td>{{$peminjaman->user ? $peminjaman->user->name : '- Data Pengguna sudah dihapus -' }}</td>
                 <td>{{$peminjaman->p_time_start}}</td>
                 <td>{{$peminjaman->p_time_end}}</td>
-                <td>{{ $peminjaman->barang->b_nama }}</td>
-                <td>{{ $peminjaman->status }}</td>
+                <td>{{$peminjaman->barang ? $peminjaman->barang->b_nama : '- Data Barang sudah dihapus -' }}</td>
+                <td>@if ($peminjaman->p_status == 0)
+                                    <span class="bs-label label-warning">Menunggu</span>
+                                @elseif($peminjaman->p_status == 1)
+                                    <span class="bs-label label-primary">Diterima</span>
+                                @elseif($peminjaman->p_status == 2)
+                                    <span class="bs-label label-danger">Ditolak</span>
+                                @else
+                                    <span class="bs-label label-success">Selesai</span>
+                                @endif
+                </td>
                 
             </tr>
             @endforeach

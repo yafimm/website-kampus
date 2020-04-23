@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Laporan Data pengadaan</title>
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css') }}">
 </head>
@@ -14,7 +14,7 @@
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <td align="center" width="10%"><img src="{{ asset('assets/images-resource/apple-icon-72x72.png') }}"></td>
-            <td align="center" width="80%" style="font-size:20px;">Bagian Umum<strong><br>
+            <td align="center" width="80%" style="font-size:20px;"><strong><br>
                     <span style="font-size:20px">Sekolah Tinggi Manajemen Informatika dan Komputer
                         AMIKBANDUNG</span></strong>
             </td>
@@ -31,6 +31,7 @@
 	</center>
 
   @foreach($data_pengadaan as $pengadaan)
+			<p><b>No Register : </b> {{ $pengadaan[0]->no_register }}</p>
       <p><b>Toko/Supplier : </b> {{ $pengadaan[0]->supplier }}</p>
       <p><b>Tanggal : </b>{{ date('d/m/Y', strtotime($pengadaan[0]->tanggal)) }}</p>
       <p><b>Total : </b>Rp. {{ number_format($pengadaan->sum('total'), 2 ,',','.') }}</p>
@@ -39,7 +40,7 @@
   			<tr>
   				<th>No</th>
   				<th>Kode</th>
-  				<th>Nama Barang</th>
+  				<th>Nama Barang/Inventaris</th>
   				<th>Jumlah</th>
   				<th>Biaya</th>
   				<th>Total</th>
@@ -50,8 +51,22 @@
   			@foreach($pengadaan as $pengadaan_detail)
   			<tr>
   				<td>{{ $i++ }}</td>
-  				<td>{{$pengadaan_detail->barang->b_kode}}</td>
-  				<td>{{$pengadaan_detail->barang->b_nama}}</td>
+					<td>@if($pengadaan_detail->barang)
+								{{$pengadaan_detail->barang->b_kode}}
+							@elseif($pengadaan_detail->inventaris)
+								{{$pengadaan_detail->inventaris->i_kode}}
+							@else
+								- Data Barang / Inventaris sudah dihapus -
+							@endif
+					</td>
+					<td>@if($pengadaan_detail->barang)
+								{{$pengadaan_detail->barang->b_nama}}
+							@elseif($pengadaan_detail->inventaris)
+								{{$pengadaan_detail->inventaris->i_nama}}
+							@else
+								- Data Barang / Inventaris sudah dihapus -
+							@endif
+					</td>
   				<td>{{$pengadaan_detail->qty}}</td>
   				<td>Rp. {{number_format($pengadaan_detail->biaya, 2, ',', '.')}}</td>
   				<td>Rp. {{number_format($pengadaan_detail->total, 2, ',','.')}}</td>
