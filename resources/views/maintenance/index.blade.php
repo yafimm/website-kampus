@@ -89,53 +89,60 @@
                 @endif
             </h3>
             <div class="example-box-wrapper">
-                <table id="dt_maintenance" class="table table-striped table-bordered" cellspacing="0"
-                    width="100%">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>No Register</th>
-                            <th>Total Keseluruhan</th>
-                            <th>Tanggal</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
+                <div class="container" style="overflow: auto">
+                    <table id="dt_maintenance" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>No Register</th>
+                                <th>Total Keseluruhan</th>
+                                <th>Tanggal</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
 
-                    <tfoot>
-                        <tr>
-                            <th></th>
-                            <th>No Register</th>
-                            <th>Total Keseluruhan</th>
-                            <th>Tanggal</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </tfoot>
+                        <tfoot>
+                            <tr>
+                                <th></th>
+                                <th>No Register</th>
+                                <th>Total Keseluruhan</th>
+                                <th>Tanggal</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </tfoot>
 
-                    <tbody>
-                        <tr>
-                          @foreach($arr_maintenance as $key => $maintenance)
-                            <td>{{ $key + 1 }}</td>
-                            <td>{{$maintenance->no_register}}</td>
-                            <td>Rp. {{number_format($maintenance->total, 2,',','.')}}</td>
-                            <td>{{date('d-m-Y', strtotime($maintenance->tanggal_maintenance))}}</td>
-                            <td>
-                                <a href="{{ route('maintenance.show', $maintenance->no_register) }}" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Lihat Data">
-                                    <i class="glyph-icon icon-eye"></i>
-                                </a>
-                                <a href="{{ route('maintenance.edit', $maintenance->no_register) }}"
-                                    class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Ubah Data">
-                                    <i class="glyph-icon icon-pencil"></i>
-                                </a>
-                                @if(Auth::user()->hasRole('admin'))
-                                <button class="btn btn-primary btn-md btn-cetak" data-no_register="{{ $maintenance->no_register }}" data-toggle="modal" data-target="#modalReportTahunan" data-toggle="tooltip" data-placement="top" title="Cetak">
-                                    <i class="glyph-icon icon-clipboard"></i>
-                                </button>
-                                @endif
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        <tbody>
+                            <tr>
+                                @foreach($arr_maintenance as $key => $maintenance)
+                                <td>{{ $key + 1 }}</td>
+                                <td>{{$maintenance->no_register}}</td>
+                                <td>Rp. {{number_format($maintenance->total, 2,',','.')}}</td>
+                                <td>{{date('d-m-Y', strtotime($maintenance->tanggal_maintenance))}}</td>
+                                <td>
+                                    <a href="{{ route('maintenance.show', $maintenance->no_register) }}"
+                                        class="btn btn-info" data-toggle="tooltip" data-placement="top"
+                                        title="Lihat Data">
+                                        <i class="glyph-icon icon-eye"></i>
+                                    </a>
+                                    <a href="{{ route('maintenance.edit', $maintenance->no_register) }}"
+                                        class="btn btn-warning" data-toggle="tooltip" data-placement="top"
+                                        title="Ubah Data">
+                                        <i class="glyph-icon icon-pencil"></i>
+                                    </a>
+                                    @if(Auth::user()->hasRole('admin'))
+                                    <button class="btn btn-primary btn-md btn-cetak"
+                                        data-no_register="{{ $maintenance->no_register }}" data-toggle="modal"
+                                        data-target="#modalReportTahunan" data-toggle="tooltip" data-placement="top"
+                                        title="Cetak">
+                                        <i class="glyph-icon icon-clipboard"></i>
+                                    </button>
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -150,8 +157,8 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"><strong>Cetak Laporan</strong></h4>
             </div>
-            <form name="reportTahunan" id="reportTahunan" action="{{ route('maintenance.cetakTanggal') }}"
-                method="POST" class="form-horizontal bordered-row">
+            <form name="reportTahunan" id="reportTahunan" action="{{ route('maintenance.cetakTanggal') }}" method="POST"
+                class="form-horizontal bordered-row">
                 {{ csrf_field() }}
                 <div class="modal-body">
                     <div class="form-group">
@@ -161,8 +168,8 @@
                                 <span class="add-on input-group-addon">
                                     <i class="glyph-icon icon-calendar"></i>
                                 </span>
-                                <input id="dari-tanggal" name="mulai" type="text" class="bootstrap-datepicker form-control" value=""
-                                    data-date-format="dd-mm-yyyy">
+                                <input id="dari-tanggal" name="mulai" type="text"
+                                    class="bootstrap-datepicker form-control" value="" data-date-format="dd-mm-yyyy">
                             </div>
                         </div>
                     </div>
@@ -173,8 +180,8 @@
                                 <span class="add-on input-group-addon">
                                     <i class="glyph-icon icon-calendar"></i>
                                 </span>
-                                <input id="sampai-tanggal" name="akhir" type="text" class="bootstrap-datepicker form-control" value=""
-                                    data-date-format="dd-mm-yyyy">
+                                <input id="sampai-tanggal" name="akhir" type="text"
+                                    class="bootstrap-datepicker form-control" value="" data-date-format="dd-mm-yyyy">
                             </div>
                         </div>
                     </div>
@@ -198,8 +205,8 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"><strong>Cetak Laporan</strong></h4>
             </div>
-            <form name="reportTahunan" id="reportTahunan" action="{{ route('maintenance.cetak') }}"
-                method="POST" class="form-horizontal bordered-row">
+            <form name="reportTahunan" id="reportTahunan" action="{{ route('maintenance.cetak') }}" method="POST"
+                class="form-horizontal bordered-row">
                 {{ csrf_field() }}
                 <input type="hidden" id="no_register" name="no_register" value="">
                 <div class="modal-body">
