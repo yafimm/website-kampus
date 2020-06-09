@@ -43,6 +43,19 @@
               var tt = new $.fn.dataTable.TableTools(table);
               $('.dataTables_filter input').attr("placeholder", "Search...");
 
+              // function sum total harga
+              let startPage = table.page.info().start;
+              let endPage = table.page.info().end;
+              let totalHarga = 0;
+              // console.log(table.page.info().start);
+              for (let i = startPage; i < endPage; i++) {
+                  row = table.rows(i).data();
+                  // Karena kolom 5 menyesuaikan dengan kolom didatatable, untuk 0 adalah data dari dalam datatable
+                  totalHarga += convertRupiahToNumber(row[0][5]);
+              }
+              $('#totalPage').html(table.page.info().recordsDisplay);
+              $('#totalHarga').html(convertNumberToRupiah(totalHarga));
+
           });
 
       </script>
@@ -87,7 +100,7 @@
                   <table id="dt_barang" class="table table-striped table-bordered" cellspacing="0" width="100%">
                       <thead>
                           <tr>
-                              <th></th>
+                              <th width="10%"></th>
                               <th>Kode</th>
                               <th>Nama</th>
                               <th>Stock</th>
@@ -98,20 +111,21 @@
                       </thead>
 
                       <tfoot>
-                          <tr>
-                              <th></th>
-                              <th>Kode</th>
-                              <th>Nama</th>
-                              <th>Stock</th>
-                              <th>Satuan</th>
-                              <th>Harga</th>
-                              <th width="20%">Aksi</th>
+                          <tr class="table-info">
+                            <th colspan="5" class="text-center">Total <br><small class="text-info text-sm">*Untuk <span id="totalPage"></span> Data</small></th>
+                            <th colspan="2" class="text-center" id="totalHarga"></th>
+                          </tr>
+                          <tr class="table-primary">
+                            <th colspan="5" class="text-center">Total Keseluruhan <br><small class="text-info text-sm">*Total Seluruh data.</small></th>
+                            <th colspan="2" class="text-center">
+                                Rp. {{ number_format($data_barang->sum('b_harga'), 2, ',', '.') }}
+                            </th>
                           </tr>
                       </tfoot>
 
                       <tbody>
                           @foreach ($data_barang as $key => $barang)
-                          <tr>
+                          <tr class="table-primary">
                               <td>{{$key + 1}}</td>
                               <td>{{$barang->b_kode}}</td>
                               <td>{{$barang->b_nama}}</td>
@@ -264,6 +278,10 @@
               var modal = $(this);
               modal.find('#id').val(id);
           });
+      </script>
+
+      <script type="text/javascript">
+
       </script>
 
 

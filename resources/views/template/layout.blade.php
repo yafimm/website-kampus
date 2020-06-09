@@ -367,6 +367,7 @@
 
         <script type="text/javascript" src="{{ asset('assets/widgets/theme-switcher/themeswitcher.js') }}"></script>
 
+        <script type="text/javascript" src="{{ asset('js/yaff_helper.js') }}"></script>
     </div>
 </body>
 
