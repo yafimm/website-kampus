@@ -71,6 +71,16 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
+    <!-- Font -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,800;1,100&display=swap"
+        rel="stylesheet">
+
     <!-- Favicons -->
 
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="">
@@ -161,7 +171,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/widgets/range-slider/rangeslider.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/widgets/slidebars/slidebars.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/widgets/slider-ui/slider.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/widgets/summernote-wysiwyg/summernote-wysiwyg.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('assets/widgets/summernote-wysiwyg/summernote-wysiwyg.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/widgets/tabs-ui/tabs.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/widgets/theme-switcher/themeswitcher.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/widgets/timepicker/timepicker.css') }}">
@@ -231,16 +242,138 @@
             <div class="bounce3"></div>
         </div>
     </div>
-    <style type="text/css">
+    {{-- <style type="text/css">
         html,
         body {
             height: 100%;
             background: url("{{ asset('assets/images-resource/bgLogin.jpg') }}") no-repeat 50% 0;
+    }
+    </style> --}}
+
+    <style type="text/css">
+        html,
+        body {
+            height: 100%;
+            /* background: url("{{ asset('assets/images-resource/bgLogin.jpg') }}") no-repeat 50% 0; */
+            background: url("{{ asset('assets/images-resource/bg.png') }}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+        }
+
+        /* section left */
+        .section-left {
+            margin-top: 200px;
+            width: 572px;
+            height: 298px;
+        }
+
+        .section-left h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-style: normal;
+            font-weight: 800;
+            font-size: 48px;
+            line-height: 59px;
+        }
+
+        .section-left p {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 200;
+            font-size: 15px;
+            line-height: 28px;
+        }
+
+        .section-left .button {
+            margin-top: 20px;
+            margin-left: 2px;
+        }
+
+        .section-left .mahasiswa {
+            margin-right: 20px;
+            height: 33px;
+        }
+
+        .section-left .dosen {
+            height: 33px;
+        }
+
+
+        /* section right */
+        .section-right {
+            margin-top: 100px;
+        }
+
+        .section-right .form-group {
+            margin-top: 30px;
+        }
+
+        .section-right .link-back {
+            margin-top: 40px;
+        }
+
+        .section-right .card-login {
+            width: 420px;
+            height: 480px;
+            background: rgba(68, 68, 68, 0.6);
+            border-radius: 5px;
+            color: white;
+        }
+
+        .section-right .logo {
+            width: 100px;
+            margin-top: 40px;
+            margin-left: 150px;
+        }
+
+        /* register */
+        .section-content {
+            margin-top: 100px;
+        }
+
+        .section-content .form-group {
+            margin-top: 30px;
+        }
+
+        .section-content .link-back {
+            margin-top: 40px;
+        }
+
+        .section-content .card-login {
+            width: 420px;
+            height: 480px;
+            background: rgba(68, 68, 68, 0.6);
+            border-radius: 5px;
+            color: white;
+        }
+
+        .section-content .logo {
+            width: 100px;
+            margin-top: 40px;
+            margin-left: 150px;
+        }
+
+        .section-content .card-register {
+            width: 420px;
+            height: 550px;
+            background: rgba(68, 68, 68, 0.6);
+            border-radius: 5px;
+            color: white;
+        }
+
+        .card-details {
+            width: 420px;
+            background: rgba(68, 68, 68, 0.6);
+            border-radius: 5px;
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            padding-top: 10px;
+            padding-bottom: 10px;
         }
     </style>
-    <!-- background: #fff; -->
     @yield('content')
-    
+
 
 
 

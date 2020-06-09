@@ -1,6 +1,8 @@
 @extends('template.layout')
 @section('content')
-<div class="container">
+<main class="mt-5">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <script type="text/javascript" src="{{ asset('assets/widgets/datepicker/datepicker.js') }}"></script>
     <script type="text/javascript">
@@ -70,55 +72,158 @@
 
     <div class="panel">
         <div class="panel-body">
-          <form class="" action="" method="get">
-                <div class="form-group col-12 col-sm-4 col-md-3">
-                  <label class="col-sm-12 control-label">Jenis Report</label>
-                  <select class="form-controll" name="jenis">
-                    <option  name="jenis" value="datapengadaan" {{ Request::get("jenis") == 'datapengadaan' ? 'selected' : ''}}>Data Pengadaan</option>
-                    <option name="jenis" value="datainventaris" {{ Request::get("jenis") == 'datainventaris' ? 'selected' : ''}}>Data Inventaris</option>
-                    <option name="jenis" value="databarang" {{ Request::get("jenis") == 'databarang' ? 'selected' : ''}}>Data Barang</option>
-                    <option name="jenis" value="datapeminjaman" {{ Request::get("jenis") == 'datapeminjaman' ? 'selected' : ''}}>Data Peminjaman</option>
-                    <option name="jenis" value="datapengguna" {{ Request::get("jenis") == 'datapengguna' ? 'selected' : ''}}>Data Pengguna</option>
-                    <option name="jenis" value="datarequest" {{ Request::get("jenis") == 'datarequest' ? 'selected' : ''}}>Data Request Barang</option>
-                    <option value="datamaintenance" {{ Request::get("jenis") == 'datamaintenance' ? 'selected' : ''}}>Data Maintenance</option>
-                  </select>
+            <form class="" action="" method="get">
+                <div class="form-group col-sm-12 col-md-8 col-lg-3">
+                    <label class="col-sm-12 control-label">Jenis Report</label>
+                    <select class="col-lg-11 form-control" name="jenis" style="height:33px">
+                        <option name="jenis" value="datapengadaan"
+                            {{ Request::get("jenis") == 'datapengadaan' ? 'selected' : ''}}>Data Pengadaan</option>
+                        <option name="jenis" value="datainventaris"
+                            {{ Request::get("jenis") == 'datainventaris' ? 'selected' : ''}}>Data Inventaris</option>
+                        <option name="jenis" value="databarang"
+                            {{ Request::get("jenis") == 'databarang' ? 'selected' : ''}}>Data Barang</option>
+                        <option name="jenis" value="datapeminjaman"
+                            {{ Request::get("jenis") == 'datapeminjaman' ? 'selected' : ''}}>Data Peminjaman</option>
+                        <option name="jenis" value="datapengguna"
+                            {{ Request::get("jenis") == 'datapengguna' ? 'selected' : ''}}>Data Pengguna</option>
+                        <option name="jenis" value="datarequest"
+                            {{ Request::get("jenis") == 'datarequest' ? 'selected' : ''}}>Data Request Barang</option>
+                        <option value="datamaintenance"
+                            {{ Request::get("jenis") == 'datamaintenance' ? 'selected' : ''}}>Data Maintenance</option>
+                    </select>
                 </div>
-                <div class="form-group col-12 col-sm-4 col-md-3">
-                  <label class="col-sm-12 control-label">Dari Tanggal </label>
-                  <div class="col-sm-12">
-                      <div class="input-prepend input-group">
-                          <span class="add-on input-group-addon">
-                              <i class="glyph-icon icon-calendar"></i>
-                          </span>
-                          <input required id="datestart" name="mulai" type="text"
-                              class="bootstrap-datepicker form-control" value="{{ Request::get('mulai') }}"
-                              data-date-format="mm/dd/yyyy">
-                      </div>
-                  </div>
+                <div class="form-group col-sm-12 col-md-8 col-lg-3">
+                    <label class="col-sm-12 control-label">Dari Tanggal </label>
+                    <div class="col-sm-12">
+                        <div class="input-prepend input-group">
+                            <span class="add-on input-group-addon" style="width:50px;">
+                                <i class="glyph-icon icon-calendar"></i>
+                            </span>
+                            <input required id="datestart" name="mulai" type="text"
+                                class="bootstrap-datepicker form-control" value="{{ Request::get('mulai') }}"
+                                data-date-format="mm/dd/yyyy">
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group col-12 col-sm-4 col-md-3">
-                  <label class="col-sm-12 control-label">Sampai Tanggal</label>
-                  <div class="col-sm-12">
-                      <div class="input-prepend input-group">
-                          <span class="add-on input-group-addon">
-                              <i class="glyph-icon icon-calendar"></i>
-                          </span>
-                          <input required id="dateend" name="akhir" type="text"
-                              class="bootstrap-datepicker form-control" value="{{ Request::get('akhir') }}"
-                              data-date-format="mm/dd/yyyy">
-                      </div>
-                  </div>
+                <div class="form-group col-sm-12 col-md-8 col-lg-3">
+                    <label class="col-sm-12 control-label">Sampai Tanggal</label>
+                    <div class="col-sm-12">
+                        <div class="input-prepend input-group">
+                            <span class="add-on input-group-addon" style="width:50px;">
+                                <i class="glyph-icon icon-calendar"></i>
+                            </span>
+                            <input required id="dateend" name="akhir" type="text"
+                                class="bootstrap-datepicker form-control" value="{{ Request::get('akhir') }}"
+                                data-date-format="mm/dd/yyyy">
+                        </div>
+                    </div>
                 </div>
 
+                <div class="container pt-4">
+                    <button class="btn btn-primary col-sm-12 col-md-2 col-lg-2 mt-1 ml-lg-4">
+                        <i class="glyph-icon icon-clipboard"></i> Proses
+                    </button>
+                </div>
 
-                <button class="btn btn-primary btn-md col-12 col-sm-4 col-md-3">
-                  <i class="glyph-icon icon-clipboard"></i> Proses
-                </button>
-              </form>
+            </form>
         </div>
     </div>
+
+    <section class="section-chart">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 mt-5 mb-5">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h2>Laporan Data Inventaris</h2>
+                        <hr>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="myChart" width="160" height="100"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-table-inventaris">
+        <div class="container mt-5 mb-5">
+            <div class="table-responsive-sm table-bordered text-center">
+                <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Kode</th>
+                            <th scope="col">Nama</th>
+                            <th scope="col">Unit</th>
+                            <th scope="col">Harga</th>
+                            <th scope="col">Tanggal</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>lorem</td>
+                            <td>@mdo</td>
+                            <td>lorem</td>
+                            <td>lorem asasasasa</td>
+                            <td>lorem</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                            <td>lorem</td>
+                            <td>lorem</td>
+                            <td>lorem</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>Larry</td>
+                            <td>the Bird</td>
+                            <td>@twitter</td>
+                            <td>lorem</td>
+                            <td>lorem</td>
+                            <td>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Asperiores</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+    </section>
+
     @yield('contentreport')
 
+    {{-- chartjs --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'bar',
 
-</div>
+            // The data for our dataset
+            data: {
+                labels: ['19/08/2020', '20/10/2020', '20/10/2020', '20/10/2020', '20/10/2020', '20/10/2020',
+                    '20/10/2020'
+                ],
+                datasets: [{
+                    label: 'Data Inventaris',
+                    backgroundColor: 'rgb(63, 63, 191)',
+                    borderColor: 'rgb(63, 127, 191)',
+                    data: [0, 10, 5, 2, 20, 30, 45]
+                }]
+            },
+
+            // Configuration options go here
+            options: {}
+        });
+    </script>
+
+</main>
 @endsection

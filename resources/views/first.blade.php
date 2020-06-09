@@ -9,6 +9,9 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
     <!-- Favicons -->
 
     <link rel="apple-touch-icon-precomposed" sizes="144x144"
@@ -226,55 +229,104 @@
         </div>
     </div>
     <div id="page-wrapper">
-        <div class="top-bar bg-topbar">
+        {{-- <div class="top-bar bg-topbar">
             <div class="container">
                 <div class="float-left">
                 </div>
-                <div class="float-right user-account-btn dropdown">
+                <div class="float-right user-account-btn dropdown mt-sm-5">
                     <a href="{{ url('/login') }}" title="Sistem Inventory Online"
-                        class="btn btn-sm float-left btn-alt btn-hover mrg10R btn-default">
-                        <span>Login</span>
-                        <i class="glyph-icon icon-arrow-right"></i>
-                    </a>
-                </div>
-            </div><!-- .container -->
-        </div><!-- .top-bar -->
-        <div class="main-header bg-header wow fadeInDown">
+        class="btn btn-sm float-left btn-alt btn-hover mrg10R btn-default">
+        <span>Login</span>
+        <i class="glyph-icon icon-arrow-right"></i>
+        </a>
+    </div>
+    </div><!-- .container -->
+    </div><!-- .top-bar --> --}}
+    {{-- <nav class="navbar navbar-light bg-light">
+            <div class="container">
+                <div class="user-account-btn dropdown mt-5 mb-5 ">
+                    <a href="{{ url('/login') }}" title="Sistem Inventory Online"
+    class="btn btn-sm btn-alt btn-hover mrg10R btn-default">
+    <span>Login</span>
+    <i class="glyph-icon icon-arrow-right"></i>
+    </a>
+    <form class="form-inline my-2 my-lg-0">
+        <a href="{{ url('/login') }}" title="Sistem Inventory Online"
+            class="btn btn-sm btn-alt btn-hover mrg10R btn-default">
+            <span>Login</span>
+            <i class="glyph-icon icon-arrow-right"></i>
+        </a>
+    </form>
+    </div>
+    </div><!-- .container -->
+    </nav><!-- .top-bar --> --}}
+
+    {{-- navbar --}}
+    <div class="container">
+        <nav class="row navbar navbar-expand-lg navbar-light bg-white">
+            <a href="{{ url('/login') }}" title="Sistem Inventory Online"
+                class="btn btn-sm navbar-brand ml-auto mt-4 btn-hover mrg10R btn-default">
+                <span>Login</span>
+                <i class="glyph-icon icon-arrow-right"></i>
+            </a>
+        </nav>
+    </div>
+
+    <hr>
+
+    {{-- <div class="main-header bg-header wow fadeInDown">
             <div class="container">
                 <a href="{{ url('/') }}" class="header-logo" title="Sistem Inventory Online | STMIK AMIKBANDUNG"></a>
-                <!-- .header-logo -->
-                <ul class="header-nav collapse">
-                    <li>
-                        <a href="{{ url('/login') }}" title="Pinjam Barang">
-                            Pinjam Barang
-                        </a>
-                    </li>
-                </ul><!-- .header-nav -->
-            </div><!-- .container -->
-        </div><!-- .main-header -->
-        <div class="hero-box hero-box-smaller full-bg-13 font-inverse" data-top-bottom="background-position: 50% 0px;"
-            data-bottom-top="background-position: 50% -600px;">
-            <div class="container">
-                <h1 class="hero-heading wow fadeInDown" data-wow-duration="0.6s">Sistem Inventory Online | STMIK
-                    AMIKBANDUNG</h1>
-                <p class="hero-text wow bounceInUp" data-wow-duration="0.9s" data-wow-delay="0.2s">Cara mudah dan cepat
-                    meminjam inventaris</p>
-            </div>
-            <div class="hero-overlay bg-black"></div>
-        </div>
+    <!-- .header-logo -->
+    <ul class="header-nav collapse">
+        <li>
+            <a href="{{ url('/login') }}" title="Pinjam Barang">
+                Pinjam Barang
+            </a>
+        </li>
+    </ul><!-- .header-nav -->
+    </div><!-- .container -->
+    </div><!-- .main-header --> --}}
 
-        <div id="page-content" class="col-md-10 center-margin frontend-components mrg25T">
-            <div class="panel">
-                <div class="panel-body">
-                    <h3 class="title-hero">
-                        Data Peminjaman Sudah Disetujui
-                    </h3>
-                    <div class="example-box-wrapper row">
-                        <div id="calendar-peminjaman-1" class="col-md-10 center-margin"></div>
+    <section class="main-header">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <a href="{{ url('/') }}" class="header-logo"
+                        title="Sistem Inventory Online | STMIK AMIKBANDUNG"></a>
+                </div>
+                <div class="col pt-sm-4 align-self-center">
+                    <div class="alert text-right" role="alert">
+                        <a href="{{ url('/login') }}" class="alert-link" title="Pinjam Barang">Pinjam Barang</a>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
+
+    <div class="hero-box hero-box-smaller full-bg-13 font-inverse" data-top-bottom="background-position: 50% 0px;"
+        data-bottom-top="background-position: 50% -600px;">
+        <div class="container">
+            <h1 class="hero-heading wow fadeInDown" data-wow-duration="0.6s">Sistem Inventory Online | STMIK
+                AMIKBANDUNG</h1>
+            <p class="hero-text wow bounceInUp" data-wow-duration="0.9s" data-wow-delay="0.2s">Cara mudah dan cepat
+                meminjam inventaris</p>
+        </div>
+        <div class="hero-overlay bg-black"></div>
+    </div>
+
+    <div id="page-content" class="col-md-10 center-margin frontend-components mrg25T">
+        <div class="panel">
+            <div class="panel-body">
+                <h3 class="title-hero">
+                    Data Peminjaman Sudah Disetujui
+                </h3>
+                <div class="example-box-wrapper row">
+                    <div id="calendar-peminjaman-1" class="col-md-10 center-margin"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
     <div class="col-md-10">
 
