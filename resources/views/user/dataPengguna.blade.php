@@ -55,68 +55,66 @@
                     <i class="glyph-icon icon-plus-circle"></i> Tambah Akun Yayasan
                 </a>
             </h3>
-            <div class="example-box-wrapper">
-                <div class="container" style="overflow: auto">
-                    <table id="dt_pengguna" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Nama</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
+            <div class="example-box-wrapper" style="overflow: auto">
+                <table id="dt_pengguna" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Nama</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
 
-                        <tfoot>
-                            <tr>
-                                <th></th>
-                                <th>Nama</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </tfoot>
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            <th>Nama</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </tfoot>
 
-                        <tbody>
-                            @php
-                            $count = 0;
-                            @endphp
-                            @foreach ($data_pengguna as $pengguna)
-                            @php
-                            $count = $count + 1;
-                            @endphp
-                            <tr>
-                                <td>{{$count}}</td>
-                                <td>{{$pengguna->name}}</td>
-                                <td>{{$pengguna->email}}</td>
-                                <td><span class="bs-label label-primary">{{str_replace('_',' ',$pengguna->role)}}</span>
-                                </td>
-                                <td>
-                                    <a href="{{ route('user.lihat', $pengguna->id) }}" class="btn btn-info"
-                                        data-toggle="tooltip" data-placement="top" title="Lihat Data">
-                                        <i class="glyph-icon icon-eye"></i>
-                                    </a>
-                                    <a href="{{ route('user.ubah', $pengguna->id) }}" class="btn btn-warning"
-                                        data-toggle="tooltip" data-placement="top" title="Ubah Data">
-                                        <i class="glyph-icon icon-pencil"></i>
-                                    </a>
-                                    <button class="btn btn-danger btn-md" data-toggle="modal" data-target="#modalHapus"
-                                        data-userid="{{$pengguna->id}}" data-toggle="tooltip" data-placement="top"
-                                        title="Hapus Data">
-                                        <i class="glyph-icon icon-trash"></i>
-                                    </button>
-                                    <button class="btn btn-info btn-md" data-toggle="modal" data-target="#modalPassword"
-                                        data-userid="{{$pengguna->id}}" data-toggle="tooltip" data-placement="top"
-                                        title="Ubah Sandi Data">
-                                        <i class="glyph-icon icon-circle-o"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                    <tbody>
+                        @php
+                        $count = 0;
+                        @endphp
+                        @foreach ($data_pengguna as $pengguna)
+                        @php
+                        $count = $count + 1;
+                        @endphp
+                        <tr>
+                            <td>{{$count}}</td>
+                            <td>{{$pengguna->name}}</td>
+                            <td>{{$pengguna->email}}</td>
+                            <td><span class="bs-label label-primary">{{str_replace('_',' ',$pengguna->role)}}</span>
+                            </td>
+                            <td>
+                                <a href="{{ route('user.lihat', $pengguna->id) }}" class="btn btn-info"
+                                    data-toggle="tooltip" data-placement="top" title="Lihat Data">
+                                    <i class="glyph-icon icon-eye"></i>
+                                </a>
+                                <a href="{{ route('user.ubah', $pengguna->id) }}" class="btn btn-warning"
+                                    data-toggle="tooltip" data-placement="top" title="Ubah Data">
+                                    <i class="glyph-icon icon-pencil"></i>
+                                </a>
+                                <button class="btn btn-danger btn-md" data-toggle="modal" data-target="#modalHapus"
+                                    data-userid="{{$pengguna->id}}" data-toggle="tooltip" data-placement="top"
+                                    title="Hapus Data">
+                                    <i class="glyph-icon icon-trash"></i>
+                                </button>
+                                <button class="btn btn-info btn-md" data-toggle="modal" data-target="#modalPassword"
+                                    data-userid="{{$pengguna->id}}" data-toggle="tooltip" data-placement="top"
+                                    title="Ubah Sandi Data">
+                                    <i class="glyph-icon icon-circle-o"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

@@ -242,13 +242,6 @@
             <div class="bounce3"></div>
         </div>
     </div>
-    {{-- <style type="text/css">
-        html,
-        body {
-            height: 100%;
-            background: url("{{ asset('assets/images-resource/bgLogin.jpg') }}") no-repeat 50% 0;
-    }
-    </style> --}}
 
     <style type="text/css">
         html,
@@ -262,9 +255,8 @@
             color: white;
         }
 
-        /* section left */
         .section-left {
-            margin-top: 200px;
+            margin-top: 50px;
             width: 572px;
             height: 298px;
         }
@@ -317,7 +309,9 @@
             height: 480px;
             background: rgba(68, 68, 68, 0.6);
             border-radius: 5px;
+            box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.5);
             color: white;
+            margin-bottom: 50px;
         }
 
         .section-right .logo {
@@ -328,7 +322,7 @@
 
         /* register */
         .section-content {
-            margin-top: 100px;
+            margin-top: 70px;
         }
 
         .section-content .form-group {
@@ -349,15 +343,16 @@
 
         .section-content .logo {
             width: 100px;
-            margin-top: 40px;
-            margin-left: 150px;
+            margin-left: 135px;
         }
 
         .section-content .card-register {
             width: 420px;
             height: 550px;
+            padding: 30px;
             background: rgba(68, 68, 68, 0.6);
             border-radius: 5px;
+            box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.5);
             color: white;
         }
 
@@ -367,7 +362,6 @@
             border-radius: 5px;
             color: white;
             text-align: center;
-            margin-bottom: 20px;
             padding-top: 10px;
             padding-bottom: 10px;
         }

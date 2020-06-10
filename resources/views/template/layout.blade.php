@@ -160,7 +160,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/widgets/range-slider/rangeslider.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/widgets/slidebars/slidebars.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/widgets/slider-ui/slider.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/widgets/summernote-wysiwyg/summernote-wysiwyg.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('assets/widgets/summernote-wysiwyg/summernote-wysiwyg.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/widgets/tabs-ui/tabs.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/widgets/theme-switcher/themeswitcher.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/widgets/timepicker/timepicker.css') }}">
@@ -285,10 +286,10 @@
             </div>
             @include('template.sidebar')
             <div id="page-content-wrapper">
-              <div id="page-content">
-                @include('_partial.flash_message')
-                @yield('content')
-              </div>
+                <div id="page-content">
+                    @include('_partial.flash_message')
+                    @yield('content')
+                </div>
             </div>
         </div>
 

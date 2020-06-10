@@ -115,151 +115,150 @@
             <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportTahunan">
                 <i class="glyph-icon icon-clipboard"></i> Cetak Laporan
             </button>
+            <br>
             @endif
-            <div class="example-box-wrapper">
-                <div class="container" style="overflow: auto">
-                    <table id="dt_peminjaman" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Nama User</th>
-                                <th>Tanggal Peminjaman Mulai</th>
-                                <th>Tanggal Peminjaman Berakhir</th>
-                                <th>File Surat Peminjaman/Pengembalian</th>
-                                <th>Status</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
+            <div class="example-box-wrapper" style="overflow: auto; margin-top: 10px">
+                <table id="dt_peminjaman" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nama User</th>
+                            <th>Tanggal Peminjaman Mulai</th>
+                            <th>Tanggal Peminjaman Berakhir</th>
+                            <th>File Surat Peminjaman/Pengembalian</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
 
-                        <tfoot>
-                            <tr>
-                                <th>#</th>
-                                <th>Nama User</th>
-                                <th>Tanggal Peminjaman Mulai</th>
-                                <th>Tanggal Peminjaman Berakhir</th>
-                                <th>File Surat Peminjaman/Pengembalian</th>
-                                <th>Status</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </tfoot>
+                    <tfoot>
+                        <tr>
+                            <th>#</th>
+                            <th>Nama User</th>
+                            <th>Tanggal Peminjaman Mulai</th>
+                            <th>Tanggal Peminjaman Berakhir</th>
+                            <th>File Surat Peminjaman/Pengembalian</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </tfoot>
 
-                        <tbody>
-                            @php
-                            $count = 0;
-                            @endphp
-                            @foreach ($data_peminjaman as $peminjaman)
-                            @php
-                            $count = $count + 1;
-                            @endphp
-                            <tr>
-                                <td>{{$count}}</td>
-                                <td>{{$peminjaman->user ? $peminjaman->user->name : '- Data Pengguna sudah dihapus -'}}
-                                </td>
-                                <td>{{date('d-m-Y', strtotime($peminjaman->p_date))}}</td>
-                                <td>{{date('d-m-Y', strtotime($peminjaman->p_date_end))}}</td>
-                                <td>@if($peminjaman->p_status == 1 || $peminjaman->p_status == 3)
-                                    <a target="_blank"
-                                        href="{{ route('peminjaman.cetaksuratpengembalian', $peminjaman->p_id) }}"><u>Download</u></a>
-                                    @else
-                                    <a target="_blank"
-                                        href="{{ route('downloadsurat', $peminjaman->p_scan_surat_peminjaman) }}"><u>Download</u></a>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($peminjaman->p_status == 0)
-                                    <span class="bs-label label-warning">Menunggu</span>
-                                    @elseif($peminjaman->p_status == 1)
-                                    <span class="bs-label label-primary">Diterima</span>
-                                    @elseif($peminjaman->p_status == 2)
-                                    <span class="bs-label label-danger">Ditolak</span>
-                                    @else
-                                    <span class="bs-label label-success">Selesai</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($peminjaman->p_status == 0)
-                                    <a href="{{ route('peminjaman.lihat', $peminjaman->p_id) }}" class="btn btn-info"
-                                        data-toggle="tooltip" data-placement="top" title="Lihat Data">
-                                        <i class="glyph-icon icon-eye"></i>
-                                    </a>
+                    <tbody>
+                        @php
+                        $count = 0;
+                        @endphp
+                        @foreach ($data_peminjaman as $peminjaman)
+                        @php
+                        $count = $count + 1;
+                        @endphp
+                        <tr>
+                            <td>{{$count}}</td>
+                            <td>{{$peminjaman->user ? $peminjaman->user->name : '- Data Pengguna sudah dihapus -'}}
+                            </td>
+                            <td>{{date('d-m-Y', strtotime($peminjaman->p_date))}}</td>
+                            <td>{{date('d-m-Y', strtotime($peminjaman->p_date_end))}}</td>
+                            <td>@if($peminjaman->p_status == 1 || $peminjaman->p_status == 3)
+                                <a target="_blank"
+                                    href="{{ route('peminjaman.cetaksuratpengembalian', $peminjaman->p_id) }}"><u>Download</u></a>
+                                @else
+                                <a target="_blank"
+                                    href="{{ route('downloadsurat', $peminjaman->p_scan_surat_peminjaman) }}"><u>Download</u></a>
+                                @endif
+                            </td>
+                            <td>
+                                @if ($peminjaman->p_status == 0)
+                                <span class="bs-label label-warning">Menunggu</span>
+                                @elseif($peminjaman->p_status == 1)
+                                <span class="bs-label label-primary">Diterima</span>
+                                @elseif($peminjaman->p_status == 2)
+                                <span class="bs-label label-danger">Ditolak</span>
+                                @else
+                                <span class="bs-label label-success">Selesai</span>
+                                @endif
+                            </td>
+                            <td>
+                                @if ($peminjaman->p_status == 0)
+                                <a href="{{ route('peminjaman.lihat', $peminjaman->p_id) }}" class="btn btn-info"
+                                    data-toggle="tooltip" data-placement="top" title="Lihat Data">
+                                    <i class="glyph-icon icon-eye"></i>
+                                </a>
 
-                                    @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff inventaris'))
-                                    <button class="btn btn-primary btn-md" data-toggle="modal"
-                                        data-target="#modalSetuju" data-peminjamanid="{{$peminjaman->p_id}}"
-                                        data-toggle="tooltip" data-placement="top" title="Setuju">
-                                        <i class="glyph-icon icon-check"></i>
-                                    </button>
+                                @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff inventaris'))
+                                <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalSetuju"
+                                    data-peminjamanid="{{$peminjaman->p_id}}" data-toggle="tooltip" data-placement="top"
+                                    title="Setuju">
+                                    <i class="glyph-icon icon-check"></i>
+                                </button>
 
-                                    <button class="btn btn-warning btn-md" data-toggle="modal" data-target="#modalTolak"
-                                        data-peminjamanid="{{$peminjaman->p_id}}" data-toggle="tooltip"
-                                        data-placement="top" title="Tolak">
-                                        <i class="glyph-icon icon-remove"></i>
-                                    </button>
-                                    @endif
+                                <button class="btn btn-warning btn-md" data-toggle="modal" data-target="#modalTolak"
+                                    data-peminjamanid="{{$peminjaman->p_id}}" data-toggle="tooltip" data-placement="top"
+                                    title="Tolak">
+                                    <i class="glyph-icon icon-remove"></i>
+                                </button>
+                                @endif
 
-                                    @if(Auth::user()->hasRole('dosen') || Auth::user()->hasRole('mahasiswa'))
-                                    <a href="{{ route('peminjaman.ubah',$peminjaman->p_id) }}" class="btn btn-info"
-                                        data-toggle="tooltip" data-placement="top" title="Ubah Data">
-                                        <i class="glyph-icon icon-edit"></i>
-                                    </a>
+                                @if(Auth::user()->hasRole('dosen') || Auth::user()->hasRole('mahasiswa'))
+                                <a href="{{ route('peminjaman.ubah',$peminjaman->p_id) }}" class="btn btn-info"
+                                    data-toggle="tooltip" data-placement="top" title="Ubah Data">
+                                    <i class="glyph-icon icon-edit"></i>
+                                </a>
 
-                                    @endif
+                                @endif
 
-                                    <button class="btn btn-danger btn-md" data-toggle="modal" data-target="#modalHapus"
-                                        data-peminjamanid="{{$peminjaman->p_id}}" data-toggle="tooltip"
-                                        data-placement="top" title="Hapus Data">
-                                        <i class="glyph-icon icon-trash"></i>
-                                    </button>
+                                <button class="btn btn-danger btn-md" data-toggle="modal" data-target="#modalHapus"
+                                    data-peminjamanid="{{$peminjaman->p_id}}" data-toggle="tooltip" data-placement="top"
+                                    title="Hapus Data">
+                                    <i class="glyph-icon icon-trash"></i>
+                                </button>
 
 
-                                    @elseif($peminjaman->p_status == 1)
-                                    <a href="{{ route('peminjaman.lihat', $peminjaman->p_id) }}" class="btn btn-info"
-                                        data-toggle="tooltip" data-placement="top" title="Lihat Data">
-                                        <i class="glyph-icon icon-eye"></i>
-                                    </a>
-                                    @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff inventaris'))
-                                    <button class="btn btn-success btn-md" data-toggle="modal"
-                                        data-target="#modalSelesai" data-peminjamanid="{{$peminjaman->p_id}}"
-                                        data-toggle="tooltip" data-placement="top" title="Selesai">
-                                        <i class="glyph-icon icon-check"></i>
-                                    </button>
-                                    @endif
+                                @elseif($peminjaman->p_status == 1)
+                                <a href="{{ route('peminjaman.lihat', $peminjaman->p_id) }}" class="btn btn-info"
+                                    data-toggle="tooltip" data-placement="top" title="Lihat Data">
+                                    <i class="glyph-icon icon-eye"></i>
+                                </a>
+                                @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff inventaris'))
+                                <button class="btn btn-success btn-md" data-toggle="modal" data-target="#modalSelesai"
+                                    data-peminjamanid="{{$peminjaman->p_id}}" data-toggle="tooltip" data-placement="top"
+                                    title="Selesai">
+                                    <i class="glyph-icon icon-check"></i>
+                                </button>
+                                @endif
 
-                                    @if(Auth::user()->hasRole('dosen') || Auth::user()->hasRole('mahasiswa'))
-                                    <a href="{{ route('peminjaman.cetak.user', $peminjaman->p_id) }}"
-                                        class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Cetak">
-                                        <i class="glyph-icon icon-print"></i>
-                                    </a>
-                                    @endif
+                                @if(Auth::user()->hasRole('dosen') || Auth::user()->hasRole('mahasiswa'))
+                                <a href="{{ route('peminjaman.cetak.user', $peminjaman->p_id) }}" class="btn btn-info"
+                                    data-toggle="tooltip" data-placement="top" title="Cetak">
+                                    <i class="glyph-icon icon-print"></i>
+                                </a>
+                                @endif
 
-                                    @elseif($peminjaman->p_status == 2)
-                                    <a href="{{ route('peminjaman.lihat', $peminjaman->p_id) }}" class="btn btn-info"
-                                        data-toggle="tooltip" data-placement="top" title="Lihat Data">
-                                        <i class="glyph-icon icon-eye"></i>
-                                    </a>
-                                    <button class="btn btn-danger btn-md" data-toggle="modal" data-target="#modalHapus"
-                                        data-peminjamanid="{{$peminjaman->p_id}}">
-                                        <i class="glyph-icon icon-trash"></i>
-                                    </button>
-                                    @else
-                                    <a href="{{ route('peminjaman.lihat', $peminjaman->p_id) }}" class="btn btn-info"
-                                        data-toggle="tooltip" data-placement="top" title="Lihat Data">
-                                        <i class="glyph-icon icon-eye"></i>
-                                    </a>
-                                    @if(Auth::user()->hasRole('dosen') || Auth::user()->hasRole('mahasiswa'))
-                                    <a href="{{ route('peminjaman.cetak.user', $peminjaman->p_id) }}"
-                                        class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Cetak">
-                                        <i class="glyph-icon icon-print"></i>
-                                    </a>
-                                    @endif
-                                    @endif
+                                @elseif($peminjaman->p_status == 2)
+                                <a href="{{ route('peminjaman.lihat', $peminjaman->p_id) }}" class="btn btn-info"
+                                    data-toggle="tooltip" data-placement="top" title="Lihat Data">
+                                    <i class="glyph-icon icon-eye"></i>
+                                </a>
+                                <button class="btn btn-danger btn-md" data-toggle="modal" data-target="#modalHapus"
+                                    data-peminjamanid="{{$peminjaman->p_id}}">
+                                    <i class="glyph-icon icon-trash"></i>
+                                </button>
+                                @else
+                                <a href="{{ route('peminjaman.lihat', $peminjaman->p_id) }}" class="btn btn-info"
+                                    data-toggle="tooltip" data-placement="top" title="Lihat Data">
+                                    <i class="glyph-icon icon-eye"></i>
+                                </a>
+                                @if(Auth::user()->hasRole('dosen') || Auth::user()->hasRole('mahasiswa'))
+                                <a href="{{ route('peminjaman.cetak.user', $peminjaman->p_id) }}" class="btn btn-info"
+                                    data-toggle="tooltip" data-placement="top" title="Cetak">
+                                    <i class="glyph-icon icon-print"></i>
+                                </a>
+                                @endif
+                                @endif
 
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -272,10 +271,8 @@
             <h3 class="title-hero">
                 Data Peminjaman Sudah Disetujui
             </h3>
-            <div class="example-box-wrapper row">
-                <div class="container" style="overflow: auto">
-                    <div id="calendar-peminjaman-1" class="col-md-10 center-margin"></div>
-                </div>
+            <div class="example-box-wrapper row" style="overflow: auto">
+                <div id="calendar-peminjaman-1" class="col-md-10 center-margin"></div>
             </div>
         </div>
     </div>

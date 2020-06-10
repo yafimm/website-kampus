@@ -2,6 +2,9 @@
 @section('content')
 <div class="container">
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
     <script type="text/javascript" src="{{ asset('assets/widgets/datepicker/datepicker.js') }}"></script>
     <script type="text/javascript">
         /* Datepicker bootstrap */
@@ -92,10 +95,10 @@
     @if(Auth::user()->hasRole('yayasan'))
     <div class="panel">
         <div class="panel-body">
-            <form class="" action="{{ route('report.index') }}" method="get">
-                <div class="form-group col-12 col-sm-4 col-md-3">
+            <form class="" action="" method="get">
+                <div class="form-group col-sm-12 col-md-8 col-lg-3">
                     <label class="col-sm-12 control-label">Jenis Report</label>
-                    <select class="form-controll" name="jenis">
+                    <select class="col-lg-11 form-control" name="jenis" style="height:33px">
                         <option name="jenis" value="datapengadaan"
                             {{ Request::get("jenis") == 'datapengadaan' ? 'selected' : ''}}>Data Pengadaan</option>
                         <option name="jenis" value="datainventaris"
@@ -112,11 +115,11 @@
                             {{ Request::get("jenis") == 'datamaintenance' ? 'selected' : ''}}>Data Maintenance</option>
                     </select>
                 </div>
-                <div class="form-group col-12 col-sm-4 col-md-3">
+                <div class="form-group col-sm-12 col-md-8 col-lg-3">
                     <label class="col-sm-12 control-label">Dari Tanggal </label>
                     <div class="col-sm-12">
                         <div class="input-prepend input-group">
-                            <span class="add-on input-group-addon">
+                            <span class="add-on input-group-addon" style="width:50px;">
                                 <i class="glyph-icon icon-calendar"></i>
                             </span>
                             <input required id="datestart" name="mulai" type="text"
@@ -125,11 +128,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group col-12 col-sm-4 col-md-3">
+                <div class="form-group col-sm-12 col-md-8 col-lg-3">
                     <label class="col-sm-12 control-label">Sampai Tanggal</label>
                     <div class="col-sm-12">
                         <div class="input-prepend input-group">
-                            <span class="add-on input-group-addon">
+                            <span class="add-on input-group-addon" style="width:50px;">
                                 <i class="glyph-icon icon-calendar"></i>
                             </span>
                             <input required id="dateend" name="akhir" type="text"
@@ -139,13 +142,16 @@
                     </div>
                 </div>
 
+                <div class="container pt-4">
+                    <button class="btn btn-primary col-sm-12 col-md-8 col-lg-2 mt-1 ml-lg-4">
+                        <i class="glyph-icon icon-clipboard"></i> Proses
+                    </button>
+                </div>
 
-                <button class="btn btn-primary btn-md col-12 col-sm-4 col-md-3">
-                    <i class="glyph-icon icon-clipboard"></i> Proses
-                </button>
             </form>
         </div>
     </div>
+
     @endif
 
     @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris') || Auth::user()->hasRole('dosen'))
@@ -159,113 +165,112 @@
                 </button>
                 @endif
             </h3>
-            <div class="example-box-wrapper">
-                <div class="container" style="overflow: auto;">
-                    <table id="dt_barang" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>User</th>
-                                <th>Barang</th>
-                                <th>Jumlah</th>
-                                <th>Status</th>
-                                <th>Tanggal</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
+            <div class="example-box-wrapper" style="overflow: auto;">
+                <table id="dt_barang" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>User</th>
+                            <th>Barang</th>
+                            <th>Jumlah</th>
+                            <th>Status</th>
+                            <th>Tanggal</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
 
-                        <tfoot>
-                            <tr>
-                                <th></th>
-                                <th>User</th>
-                                <th>Barang</th>
-                                <th>Jumlah</th>
-                                <th>Status</th>
-                                <th>Tanggal</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </tfoot>
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            <th>User</th>
+                            <th>Barang</th>
+                            <th>Jumlah</th>
+                            <th>Status</th>
+                            <th>Tanggal</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </tfoot>
 
-                        <tbody>
-                            @foreach ($data_request as $key => $request)
-                            <tr>
-                                <td>{{$key + 1}}</td>
-                                <td>{{$request->name}}</td>
-                                <td>{{$request->b_nama}}</td>
-                                <td>{{$request->rb_jumlah}}</td>
-                                <td>
-                                    @if ($request->rb_status == 0)
-                                    <span class="bs-label label-warning">Menunggu</span>
-                                    @elseif($request->rb_status == 1)
-                                    <span class="bs-label label-danger">Ditolak</span>
-                                    @elseif($request->rb_status == 2)
-                                    <span class="bs-label label-primary">Disetujui</span>
-                                    @else
-                                    <span class="bs-label label-success">Selesai</span>
-                                    @endif
-                                </td>
-                                <td>{{ date('d/m/Y', strtotime($request->created_at)) }}</td>
-                                <td>
-                                    @if ($request->rb_status == 0)
-                                    <a href="{{ route('request.lihat', $request->rb_id) }}" class="btn btn-info"
-                                        data-toggle="tooltip" data-placement="top" title="Lihat Data">
-                                        <i class="glyph-icon icon-eye"></i>
-                                    </a>
+                    <tbody>
+                        @foreach ($data_request as $key => $request)
+                        <tr>
+                            <td>{{$key + 1}}</td>
+                            <td>{{$request->name}}</td>
+                            <td>{{$request->b_nama}}</td>
+                            <td>{{$request->rb_jumlah}}</td>
+                            <td>
+                                @if ($request->rb_status == 0)
+                                <span class="bs-label label-warning">Menunggu</span>
+                                @elseif($request->rb_status == 1)
+                                <span class="bs-label label-danger">Ditolak</span>
+                                @elseif($request->rb_status == 2)
+                                <span class="bs-label label-primary">Disetujui</span>
+                                @else
+                                <span class="bs-label label-success">Selesai</span>
+                                @endif
+                            </td>
+                            <td>{{ date('d/m/Y', strtotime($request->created_at)) }}</td>
+                            <td>
+                                @if ($request->rb_status == 0)
+                                <a href="{{ route('request.lihat', $request->rb_id) }}" class="btn btn-info"
+                                    data-toggle="tooltip" data-placement="top" title="Lihat Data">
+                                    <i class="glyph-icon icon-eye"></i>
+                                </a>
 
-                                    @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris'))
-                                    <button class="btn btn-primary btn-md" data-toggle="modal"
-                                        data-target="#modalSetujuRequest" data-requestid="{{$request->rb_id}}"
-                                        data-toggle="tooltip" data-placement="top" title="Setuju">
-                                        <i class="glyph-icon icon-check"></i>
-                                    </button>
+                                @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris'))
+                                <button class="btn btn-primary btn-md" data-toggle="modal"
+                                    data-target="#modalSetujuRequest" data-requestid="{{$request->rb_id}}"
+                                    data-toggle="tooltip" data-placement="top" title="Setuju">
+                                    <i class="glyph-icon icon-check"></i>
+                                </button>
 
-                                    <button class="btn btn-warning btn-md" data-toggle="modal"
-                                        data-target="#modalTolakRequest" data-requestid="{{$request->rb_id}}"
-                                        data-toggle="tooltip" data-placement="top" title="Tolak">
-                                        <i class="glyph-icon icon-remove"></i>
-                                    </button>
+                                <button class="btn btn-warning btn-md" data-toggle="modal"
+                                    data-target="#modalTolakRequest" data-requestid="{{$request->rb_id}}"
+                                    data-toggle="tooltip" data-placement="top" title="Tolak">
+                                    <i class="glyph-icon icon-remove"></i>
+                                </button>
 
-                                    @endif
-                                    <button class="btn btn-danger btn-md" data-toggle="modal"
-                                        data-target="#modalHapusRequest" data-requestid="{{$request->rb_id}}"
-                                        data-toggle="tooltip" data-placement="top" title="Hapus">
-                                        <i class="glyph-icon icon-trash"></i>
-                                    </button>
-                                    @elseif($request->rb_status == 1)
-                                    <a href="{{ route('request.lihat', $request->rb_id) }}" class="btn btn-info"
-                                        data-toggle="tooltip" data-placement="top" title="Lihat Data">
-                                        <i class="glyph-icon icon-eye"></i>
-                                    </a>
+                                @endif
+                                <button class="btn btn-danger btn-md" data-toggle="modal"
+                                    data-target="#modalHapusRequest" data-requestid="{{$request->rb_id}}"
+                                    data-toggle="tooltip" data-placement="top" title="Hapus">
+                                    <i class="glyph-icon icon-trash"></i>
+                                </button>
+                                @elseif($request->rb_status == 1)
+                                <a href="{{ route('request.lihat', $request->rb_id) }}" class="btn btn-info"
+                                    data-toggle="tooltip" data-placement="top" title="Lihat Data">
+                                    <i class="glyph-icon icon-eye"></i>
+                                </a>
 
-                                    <button class="btn btn-danger btn-md" data-toggle="modal"
-                                        data-target="#modalHapusRequest" data-requestid="{{$request->rb_id}}"
-                                        data-toggle="tooltip" data-placement="top" title="Hapus Data">
-                                        <i class="glyph-icon icon-trash"></i>
-                                    </button>
-                                    @elseif($request->rb_status == 2)
-                                    <a href="{{ route('request.lihat',$request->rb_id) }}" class="btn btn-info"
-                                        data-toggle="tooltip" data-placement="top" title="Lihat Data">
-                                        <i class="glyph-icon icon-eye"></i>
-                                    </a>
-                                    @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris'))
-                                    <button class="btn btn-success btn-md" data-toggle="modal"
-                                        data-target="#modalSetujuRequest" data-requestid="{{$request->rb_id}}"
-                                        data-toggle="tooltip" data-placement="top" title="Selesai">
-                                        <i class="glyph-icon icon-check"></i>
-                                    </button>
-                                    @endif
-                                    @else
-                                    <a href="{{ route('request.lihat',$request->rb_id) }}" class="btn btn-info"
-                                        data-toggle="tooltip" data-placement="top" title="Lihat Data">
-                                        <i class="glyph-icon icon-eye"></i>
-                                    </a>
-                                    @endif
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                                <button class="btn btn-danger btn-md" data-toggle="modal"
+                                    data-target="#modalHapusRequest" data-requestid="{{$request->rb_id}}"
+                                    data-toggle="tooltip" data-placement="top" title="Hapus Data">
+                                    <i class="glyph-icon icon-trash"></i>
+                                </button>
+                                @elseif($request->rb_status == 2)
+                                <a href="{{ route('request.lihat',$request->rb_id) }}" class="btn btn-info"
+                                    data-toggle="tooltip" data-placement="top" title="Lihat Data">
+                                    <i class="glyph-icon icon-eye"></i>
+                                </a>
+                                @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris'))
+                                <button class="btn btn-success btn-md" data-toggle="modal"
+                                    data-target="#modalSetujuRequest" data-requestid="{{$request->rb_id}}"
+                                    data-toggle="tooltip" data-placement="top" title="Selesai">
+                                    <i class="glyph-icon icon-check"></i>
+                                </button>
+                                @endif
+                                @else
+                                <a href="{{ route('request.lihat',$request->rb_id) }}" class="btn btn-info"
+                                    data-toggle="tooltip" data-placement="top" title="Lihat Data">
+                                    <i class="glyph-icon icon-eye"></i>
+                                </a>
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
             </div>
         </div>
     </div>
@@ -437,7 +442,7 @@
                 </button>
                 @endif
             </h3>
-            <div class="example-box-wrapper">
+            <div class="example-box-wrapper" style="overflow: auto;">
                 <table id="dt_peminjaman" class="table table-striped table-bordered" cellspacing="0" width="100%">
                     <thead>
                         <tr>

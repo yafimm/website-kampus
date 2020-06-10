@@ -85,67 +85,64 @@
                 </button>
                 @endif
             </h3>
-            <div class="example-box-wrapper">
-                <div class="container" style="overflow: auto">
-                    <table id="dt_inventaris" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Kode</th>
-                                <th>Nama</th>
-                                <th>Unit</th>
-                                <th>Harga</th>
-                                <th>Posisi</th>
-                                <th>Keterangan</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
+            <div class="example-box-wrapper" style="overflow: auto">
+                <table id="dt_inventaris" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Kode</th>
+                            <th>Nama</th>
+                            <th>Unit</th>
+                            <th>Harga</th>
+                            <th>Posisi</th>
+                            <th>Keterangan</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
 
-                        <tfoot>
-                            <tr>
-                                <th></th>
-                                <th>Kode</th>
-                                <th>Nama</th>
-                                <th>Unit</th>
-                                <th>Harga</th>
-                                <th>Posisi</th>
-                                <th>Keterangan</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </tfoot>
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            <th>Kode</th>
+                            <th>Nama</th>
+                            <th>Unit</th>
+                            <th>Harga</th>
+                            <th>Posisi</th>
+                            <th>Keterangan</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </tfoot>
 
-                        <tbody>
-                            @foreach ($data_inventaris as $key => $inventaris)
-                            <tr>
-                                <td>{{$key + 1}}</td>
-                                <td>{{$inventaris->i_kode}}</td>
-                                <td>{{$inventaris->i_nama}}</td>
-                                <td>{{$inventaris->i_unit}}</td>
-                                <td>{{$inventaris->i_harga}}</td>
-                                <td>{{$inventaris->i_posisi}}</td>
-                                <td>{{$inventaris->i_keterangan}}</td>
-                                <td>
-                                    <a href="{{ route('inventaris.lihat', $inventaris->i_id) }}"
-                                        class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top"
-                                        title="Lihat Data">
-                                        <i class="glyph-icon icon-eye"></i>
-                                    </a>
-                                    <a href="{{ route('inventaris.ubah', $inventaris->i_id) }}"
-                                        class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top"
-                                        title="Ubah Data">
-                                        <i class="glyph-icon icon-pencil"></i>
-                                    </a>
-                                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalHapus"
-                                        data-inventarisid="{{$inventaris->i_id}}" data-toggle="tooltip"
-                                        data-placement="top" title="Hapus Data">
-                                        <i class="glyph-icon icon-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                    <tbody>
+                        @foreach ($data_inventaris as $key => $inventaris)
+                        <tr>
+                            <td>{{$key + 1}}</td>
+                            <td>{{$inventaris->i_kode}}</td>
+                            <td>{{$inventaris->i_nama}}</td>
+                            <td>{{$inventaris->i_unit}}</td>
+                            <td>{{$inventaris->i_harga}}</td>
+                            <td>{{$inventaris->i_posisi}}</td>
+                            <td>{{$inventaris->i_keterangan}}</td>
+                            <td>
+                                <a href="{{ route('inventaris.lihat', $inventaris->i_id) }}" class="btn btn-info btn-sm"
+                                    data-toggle="tooltip" data-placement="top" title="Lihat Data">
+                                    <i class="glyph-icon icon-eye"></i>
+                                </a>
+                                <a href="{{ route('inventaris.ubah', $inventaris->i_id) }}"
+                                    class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top"
+                                    title="Ubah Data">
+                                    <i class="glyph-icon icon-pencil"></i>
+                                </a>
+                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalHapus"
+                                    data-inventarisid="{{$inventaris->i_id}}" data-toggle="tooltip" data-placement="top"
+                                    title="Hapus Data">
+                                    <i class="glyph-icon icon-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

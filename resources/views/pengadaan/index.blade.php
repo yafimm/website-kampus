@@ -87,64 +87,60 @@
                 </button>
                 @endif
             </h3>
-            <div class="example-box-wrapper">
-                <div class="container" style="overflow: auto">
-                    <table id="dt_pengadaan" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>No Register</th>
-                                <th>Nama Suplier / Toko</th>
-                                <th>Total Keseluruhan</th>
-                                <th>Tanggal</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
+            <div class="example-box-wrapper" style="overflow: auto">
+                <table id="dt_pengadaan" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>No Register</th>
+                            <th>Nama Suplier / Toko</th>
+                            <th>Total Keseluruhan</th>
+                            <th>Tanggal</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
 
-                        <tfoot>
-                            <tr>
-                                <th></th>
-                                <th>No Register</th>
-                                <th>Nama Suplier / Toko</th>
-                                <th>Total Keseluruhan</th>
-                                <th>Tanggal</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </tfoot>
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            <th>No Register</th>
+                            <th>Nama Suplier / Toko</th>
+                            <th>Total Keseluruhan</th>
+                            <th>Tanggal</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </tfoot>
 
-                        <tbody>
-                            <tr>
-                                @foreach($arr_pengadaan as $key => $pengadaan)
-                                <td>{{ $key + 1 }}</td>
-                                <td>{{$pengadaan->no_register}}</td>
-                                <td>{{$pengadaan->supplier}}</td>
-                                <td>Rp. {{number_format($pengadaan->totalkeseluruhan, 2,',','.')}}</td>
-                                <td>{{date('d-m-Y', strtotime($pengadaan->tanggal))}}</td>
-                                <td>
-                                    <a href="{{ route('pengadaan.show', $pengadaan->no_register) }}"
-                                        class="btn btn-info" data-toggle="tooltip" data-placement="top"
-                                        title="Lihat Data">
-                                        <i class="glyph-icon icon-eye"></i>
-                                    </a>
-                                    <a href="{{ route('pengadaan.edit', $pengadaan->no_register) }}"
-                                        data-toggle="tooltip" data-placement="top" title="Ubah Data"
-                                        class="btn btn-warning">
-                                        <i class="glyph-icon icon-pencil"></i>
-                                    </a>
-                                    @if(Auth::user()->hasRole('admin'))
-                                    <button class="btn btn-primary btn-md btn-cetak"
-                                        data-no_register="{{ $pengadaan->no_register }}" data-toggle="modal"
-                                        data-target="#modalReportSatuan" data-toggle="tooltip" data-placement="top"
-                                        title="Cetak">
-                                        <i class="glyph-icon icon-clipboard"></i>
-                                    </button>
-                                    @endif
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                    <tbody>
+                        <tr>
+                            @foreach($arr_pengadaan as $key => $pengadaan)
+                            <td>{{ $key + 1 }}</td>
+                            <td>{{$pengadaan->no_register}}</td>
+                            <td>{{$pengadaan->supplier}}</td>
+                            <td>Rp. {{number_format($pengadaan->totalkeseluruhan, 2,',','.')}}</td>
+                            <td>{{date('d-m-Y', strtotime($pengadaan->tanggal))}}</td>
+                            <td>
+                                <a href="{{ route('pengadaan.show', $pengadaan->no_register) }}" class="btn btn-info"
+                                    data-toggle="tooltip" data-placement="top" title="Lihat Data">
+                                    <i class="glyph-icon icon-eye"></i>
+                                </a>
+                                <a href="{{ route('pengadaan.edit', $pengadaan->no_register) }}" data-toggle="tooltip"
+                                    data-placement="top" title="Ubah Data" class="btn btn-warning">
+                                    <i class="glyph-icon icon-pencil"></i>
+                                </a>
+                                @if(Auth::user()->hasRole('admin'))
+                                <button class="btn btn-primary btn-md btn-cetak"
+                                    data-no_register="{{ $pengadaan->no_register }}" data-toggle="modal"
+                                    data-target="#modalReportSatuan" data-toggle="tooltip" data-placement="top"
+                                    title="Cetak">
+                                    <i class="glyph-icon icon-clipboard"></i>
+                                </button>
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

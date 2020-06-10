@@ -88,61 +88,58 @@
                 </button>
                 @endif
             </h3>
-            <div class="example-box-wrapper">
-                <div class="container" style="overflow: auto">
-                    <table id="dt_maintenance" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>No Register</th>
-                                <th>Total Keseluruhan</th>
-                                <th>Tanggal</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
+            <div class="example-box-wrapper" style="overflow: auto">
+                <table id="dt_maintenance" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>No Register</th>
+                            <th>Total Keseluruhan</th>
+                            <th>Tanggal</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
 
-                        <tfoot>
-                            <tr>
-                                <th></th>
-                                <th>No Register</th>
-                                <th>Total Keseluruhan</th>
-                                <th>Tanggal</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </tfoot>
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            <th>No Register</th>
+                            <th>Total Keseluruhan</th>
+                            <th>Tanggal</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </tfoot>
 
-                        <tbody>
-                            <tr>
-                                @foreach($arr_maintenance as $key => $maintenance)
-                                <td>{{ $key + 1 }}</td>
-                                <td>{{$maintenance->no_register}}</td>
-                                <td>Rp. {{number_format($maintenance->total, 2,',','.')}}</td>
-                                <td>{{date('d-m-Y', strtotime($maintenance->tanggal_maintenance))}}</td>
-                                <td>
-                                    <a href="{{ route('maintenance.show', $maintenance->no_register) }}"
-                                        class="btn btn-info" data-toggle="tooltip" data-placement="top"
-                                        title="Lihat Data">
-                                        <i class="glyph-icon icon-eye"></i>
-                                    </a>
-                                    <a href="{{ route('maintenance.edit', $maintenance->no_register) }}"
-                                        class="btn btn-warning" data-toggle="tooltip" data-placement="top"
-                                        title="Ubah Data">
-                                        <i class="glyph-icon icon-pencil"></i>
-                                    </a>
-                                    @if(Auth::user()->hasRole('admin'))
-                                    <button class="btn btn-primary btn-md btn-cetak"
-                                        data-no_register="{{ $maintenance->no_register }}" data-toggle="modal"
-                                        data-target="#modalReportTahunan" data-toggle="tooltip" data-placement="top"
-                                        title="Cetak">
-                                        <i class="glyph-icon icon-clipboard"></i>
-                                    </button>
-                                    @endif
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                    <tbody>
+                        <tr>
+                            @foreach($arr_maintenance as $key => $maintenance)
+                            <td>{{ $key + 1 }}</td>
+                            <td>{{$maintenance->no_register}}</td>
+                            <td>Rp. {{number_format($maintenance->total, 2,',','.')}}</td>
+                            <td>{{date('d-m-Y', strtotime($maintenance->tanggal_maintenance))}}</td>
+                            <td>
+                                <a href="{{ route('maintenance.show', $maintenance->no_register) }}"
+                                    class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Lihat Data">
+                                    <i class="glyph-icon icon-eye"></i>
+                                </a>
+                                <a href="{{ route('maintenance.edit', $maintenance->no_register) }}"
+                                    class="btn btn-warning" data-toggle="tooltip" data-placement="top"
+                                    title="Ubah Data">
+                                    <i class="glyph-icon icon-pencil"></i>
+                                </a>
+                                @if(Auth::user()->hasRole('admin'))
+                                <button class="btn btn-primary btn-md btn-cetak"
+                                    data-no_register="{{ $maintenance->no_register }}" data-toggle="modal"
+                                    data-target="#modalReportTahunan" data-toggle="tooltip" data-placement="top"
+                                    title="Cetak">
+                                    <i class="glyph-icon icon-clipboard"></i>
+                                </button>
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

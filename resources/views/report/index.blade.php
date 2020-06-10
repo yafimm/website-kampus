@@ -120,7 +120,7 @@
                 </div>
 
                 <div class="container pt-4">
-                    <button class="btn btn-primary col-sm-12 col-md-2 col-lg-2 mt-1 ml-lg-4">
+                    <button class="btn btn-primary col-sm-12 col-md-8 col-lg-2 mt-1 ml-lg-4">
                         <i class="glyph-icon icon-clipboard"></i> Proses
                     </button>
                 </div>
