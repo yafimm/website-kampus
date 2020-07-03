@@ -45,6 +45,19 @@
 
             $('.dataTables_filter input').attr("placeholder", "Search...");
 
+
+            // function sum total harga
+            let startPage = table.page.info().start;
+            let endPage = table.page.info().end;
+            let totalHarga = 0;
+            // console.log(table.page.info().start);
+            for (let i = startPage; i < endPage; i++) {
+                row = table.rows(i).data();
+                // Karena kolom 5 menyesuaikan dengan kolom didatatable, untuk 0 adalah data dari dalam datatable
+                totalHarga += convertRupiahToNumber(row[0][7]);
+            }
+            $('#totalPage').html(table.page.info().recordsDisplay);
+            $('#totalHarga').html(convertNumberToRupiah(totalHarga));
         });
 
     </script>
@@ -92,24 +105,25 @@
                             <th></th>
                             <th>Kode</th>
                             <th>Nama</th>
-                            <th>Unit</th>
-                            <th>Harga</th>
                             <th>Posisi</th>
                             <th>Keterangan</th>
+                            <th>Unit</th>
+                            <th>Harga</th>
+                            <th>Total</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
 
                     <tfoot>
-                        <tr>
-                            <th></th>
-                            <th>Kode</th>
-                            <th>Nama</th>
-                            <th>Unit</th>
-                            <th>Harga</th>
-                            <th>Posisi</th>
-                            <th>Keterangan</th>
-                            <th>Aksi</th>
+                        <tr class="table-info">
+                          <th colspan="6" class="text-center">Total <br><small class="text-info text-sm">*Untuk <span id="totalPage"></span> Data, Harga * Stok</small></th>
+                          <th colspan="3" class="text-center" id="totalHarga"></th>
+                        </tr>
+                        <tr class="table-primary">
+                          <th colspan="6" class="text-center">Total Keseluruhan <br><small class="text-info text-sm">*Total Seluruh data.</small></th>
+                          <th colspan="3" class="text-center">
+                              Rp. {{ number_format($data_inventaris->sum('total'), 2, ',', '.') }}
+                          </th>
                         </tr>
                     </tfoot>
 
@@ -119,10 +133,11 @@
                             <td>{{$key + 1}}</td>
                             <td>{{$inventaris->i_kode}}</td>
                             <td>{{$inventaris->i_nama}}</td>
-                            <td>{{$inventaris->i_unit}}</td>
-                            <td>{{$inventaris->i_harga}}</td>
                             <td>{{$inventaris->i_posisi}}</td>
                             <td>{{$inventaris->i_keterangan}}</td>
+                            <td>{{$inventaris->i_unit}}</td>
+                            <td>Rp. {{number_format($inventaris->i_harga, 2, ',', '.')}}</td>
+                            <td>Rp. {{number_format($inventaris->total, 2, ',', '.')}}</td>
                             <td>
                                 <a href="{{ route('inventaris.lihat', $inventaris->i_id) }}" class="btn btn-info btn-sm"
                                     data-toggle="tooltip" data-placement="top" title="Lihat Data">

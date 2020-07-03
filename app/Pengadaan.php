@@ -12,6 +12,8 @@ class Pengadaan extends Model
       'kode','barang_id','qty','biaya', 'supplier', 'tanggal', 'inventaris_id', 'no_register'
   ];
 
+  protected $appends = ['total'];
+
   public function barang()
   {
       return $this->belongsTo('App\Barang', 'barang_id', 'b_id');

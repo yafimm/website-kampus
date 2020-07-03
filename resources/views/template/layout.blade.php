@@ -252,7 +252,7 @@
                     <div class="user-account-btn dropdown">
                         <a href="#" title="My Account" class="user-profile clearfix" data-toggle="dropdown">
                             <img width="28" src="{{ asset('assets/images-resource/user.png') }}" alt="Profile image">
-                            <span>{{Auth::user()->name}}</span>
+                            <span>{{ substr(Auth::user()->name, 0, 9) }}</span>
                             <i class="glyph-icon icon-angle-down"></i>
                         </a>
                         <div class="dropdown-menu float-left">
@@ -263,7 +263,7 @@
                                     </div>
                                     <div class="user-info">
                                         <span style="color:#000">
-                                            {{Auth::user()->name}}
+                                            {{ Auth::user()->name }}
                                             <i>{{Auth::user()->role}}</i>
                                         </span>
                                     </div>

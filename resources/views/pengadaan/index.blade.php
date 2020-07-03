@@ -37,16 +37,27 @@
         /* Datatables export */
 
         $(document).ready(function () {
-            var table = $('#dt_pengadaan').DataTable();
+              var table = $('#dt_pengadaan').DataTable();
             var tt = new $.fn.dataTable.TableTools(table);
-
-
-            $('.dataTables_filter input').attr("placeholder", "Search...");
 
             $('.btn-cetak').click(function(){
               // alert($(this).data('no_register'));
               $('#no_register').val($(this).data('no_register'));
             });
+
+
+            // function sum total harga
+            let startPage = table.page.info().start;
+            let endPage = table.page.info().end;
+            let totalHarga = 0;
+            // console.log(table.page.info().start);
+            for (let i = startPage; i < endPage; i++) {
+                row = table.rows(i).data();
+                // Karena kolom 5 menyesuaikan dengan kolom didatatable, untuk 0 adalah data dari dalam datatable
+                totalHarga += convertRupiahToNumber(row[0][4]);
+            }
+            $('#totalPage').html(table.page.info().recordsDisplay);
+            $('#totalHarga').html(convertNumberToRupiah(totalHarga));
         });
 
     </script>
@@ -94,20 +105,22 @@
                             <th></th>
                             <th>No Register</th>
                             <th>Nama Suplier / Toko</th>
-                            <th>Total Keseluruhan</th>
                             <th>Tanggal</th>
+                            <th>Total Keseluruhan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
 
                     <tfoot>
-                        <tr>
-                            <th></th>
-                            <th>No Register</th>
-                            <th>Nama Suplier / Toko</th>
-                            <th>Total Keseluruhan</th>
-                            <th>Tanggal</th>
-                            <th>Aksi</th>
+                        <tr class="table-info">
+                          <th colspan="4" class="text-center">Total <br><small class="text-info text-sm">*Untuk <span id="totalPage"></span> Data, Harga * Stok</small></th>
+                          <th colspan="3" class="text-center" id="totalHarga"></th>
+                        </tr>
+                        <tr class="table-primary">
+                          <th colspan="4" class="text-center">Total Keseluruhan <br><small class="text-info text-sm">*Total Seluruh data.</small></th>
+                          <th colspan="3" class="text-center">
+                              Rp. {{ number_format($arr_pengadaan->sum('totalkeseluruhan'), 2, ',', '.') }}
+                          </th>
                         </tr>
                     </tfoot>
 
@@ -117,8 +130,8 @@
                             <td>{{ $key + 1 }}</td>
                             <td>{{$pengadaan->no_register}}</td>
                             <td>{{$pengadaan->supplier}}</td>
-                            <td>Rp. {{number_format($pengadaan->totalkeseluruhan, 2,',','.')}}</td>
                             <td>{{date('d-m-Y', strtotime($pengadaan->tanggal))}}</td>
+                            <td>Rp. {{number_format($pengadaan->totalkeseluruhan, 2,',','.')}}</td>
                             <td>
                                 <a href="{{ route('pengadaan.show', $pengadaan->no_register) }}" class="btn btn-info"
                                     data-toggle="tooltip" data-placement="top" title="Lihat Data">

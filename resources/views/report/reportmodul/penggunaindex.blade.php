@@ -1,5 +1,21 @@
 @extends('report.index')
 @section('contentreport')
+<section class="section-chart">
+    <div class="row">
+        <div class="col-md-8 offset-md-2 mt-5 mb-5">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h2>Laporan Data Pengguna</h2>
+                    <hr>
+                </div>
+                <div class="card-body">
+                    <canvas id="myChart" width="200px" height="150px"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <div class="example-box-wrapper">
     <table id="dt_barang" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
@@ -40,5 +56,42 @@
     </table>
     <div>
 </div>
+
+<script type="text/javascript">
+
+  var dataPengguna = {!! json_encode($arr_pengguna_js) !!};
+  var dataChart = [];
+  var dataRole = [];
+  var i = 0;
+  for (key in dataPengguna) {
+      dataRole[i] = key;
+      dataChart[i] = dataPengguna[key];
+      i++;
+  }
+
+
+    </script>
+    {{-- chartjs --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'bar',
+
+            // The data for our dataset
+            data: {
+                labels: dataRole,
+                datasets: [{
+                    label: 'Data Pengguna',
+                    backgroundColor: 'rgb(63, 63, 191)',
+                    borderColor: 'rgb(63, 127, 191)',
+                    data: dataChart
+                }]
+            },
+
+            // Configuration options go here
+        });
+    </script>
 
 @endsection

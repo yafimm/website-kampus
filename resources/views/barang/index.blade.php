@@ -51,7 +51,8 @@
               for (let i = startPage; i < endPage; i++) {
                   row = table.rows(i).data();
                   // Karena kolom 5 menyesuaikan dengan kolom didatatable, untuk 0 adalah data dari dalam datatable
-                  totalHarga += convertRupiahToNumber(row[0][5]);
+                  totalHarga += convertRupiahToNumber(row[0][6]);
+                  console.log(totalHarga);
               }
               $('#totalPage').html(table.page.info().recordsDisplay);
               $('#totalHarga').html(convertNumberToRupiah(totalHarga));
@@ -107,19 +108,20 @@
                                 <th>Stock</th>
                                 <th>Satuan</th>
                                 <th>Harga</th>
+                                <th>Total</th>
                                 <th width="20%">Aksi</th>
                             </tr>
                         </thead>
 
                         <tfoot>
                             <tr class="table-info">
-                              <th colspan="5" class="text-center">Total <br><small class="text-info text-sm">*Untuk <span id="totalPage"></span> Data</small></th>
-                              <th colspan="2" class="text-center" id="totalHarga"></th>
+                              <th colspan="5" class="text-center">Total <br><small class="text-info text-sm">*Untuk <span id="totalPage"></span> Data, Harga * Stok</small></th>
+                              <th colspan="3" class="text-center" id="totalHarga"></th>
                             </tr>
                             <tr class="table-primary">
                               <th colspan="5" class="text-center">Total Keseluruhan <br><small class="text-info text-sm">*Total Seluruh data.</small></th>
-                              <th colspan="2" class="text-center">
-                                  Rp. {{ number_format($data_barang->sum('b_harga'), 2, ',', '.') }}
+                              <th colspan="3" class="text-center">
+                                  Rp. {{ number_format($data_barang->sum('total'), 2, ',', '.') }}
                               </th>
                             </tr>
                         </tfoot>
@@ -133,6 +135,7 @@
                                 <td>{{$barang->b_stock}}</td>
                                 <td>{{$barang->b_satuan}}</td>
                                 <td>{{'Rp. '.number_format($barang->b_harga, 2, ',' ,'.')}}</td>
+                                <td>{{'Rp. '.number_format($barang->total, 2, ',', '.')}}</td>
                                 <td>
                                     <a href="{{ route('barang.lihat', $barang->b_id) }}" class="btn btn-info btn-sm"
                                         data-toggle="tooltip" data-placement="top" title="Lihat Data">

@@ -76,7 +76,13 @@
               <li class="no-menu">
                 <a href="{{ route('report.index') }}" title="Frontend template">
                   <i class="glyph-icon icon-typicons-popup" style="color:#337ab7"></i>
-                  <span>Executive Dashboard</span>
+                  <span>Grafik</span>
+                </a>
+              </li>
+              <li class="no-menu">
+                <a href="{{ route('report.index') }}" title="Frontend template">
+                  <i class="glyph-icon icon-typicons-popup" style="color:#337ab7"></i>
+                  <span>Laporan</span>
                 </a>
               </li>
             @endif

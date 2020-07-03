@@ -2,9 +2,9 @@ function convertRupiahToNumber(value){
     // menghilangkan tulisan rupiah
     number = value.substr(3);
     // Menghilangkan titik pada ribuan
-    number = number.replace('.','');
+    number = number.replace(/\./g, '');
     // menghilangkan format rupiah;
-    return parseInt(number.replace(',','.'));
+    return parseInt(number.replace(/,/g, '.'));
 };
 
 function convertNumberToRupiah(value){
