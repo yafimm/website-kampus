@@ -76,21 +76,21 @@ class WelcomeController extends Controller
      public function index(){
         $data_peminjaman = DB::table('peminjaman')
         ->join('users', 'peminjaman.user_id', '=', 'users.id')
-        ->select('peminjaman.p_id', 'users.name', 'peminjaman.p_date', 
-        'peminjaman.p_date_end', 'peminjaman.p_time_start', 'peminjaman.p_time_end', 
+        ->select('peminjaman.p_id', 'users.name', 'peminjaman.p_date',
+        'peminjaman.p_date_end', 'peminjaman.p_time_start', 'peminjaman.p_time_end',
         'peminjaman.p_scan_surat_peminjaman', 'peminjaman.p_status', 'peminjaman.created_at',
         'peminjaman.updated_at')
         ->get();
 
         $data_peminjaman_sukses = DB::table('peminjaman')
         ->join('users', 'peminjaman.user_id', '=', 'users.id')
-        ->select('peminjaman.p_id', 'users.name', 'peminjaman.p_date', 
-        'peminjaman.p_date_end', 'peminjaman.p_time_start', 'peminjaman.p_time_end', 
+        ->select('peminjaman.p_id', 'users.name', 'peminjaman.p_date',
+        'peminjaman.p_date_end', 'peminjaman.p_time_start', 'peminjaman.p_time_end',
         'peminjaman.p_scan_surat_peminjaman', 'peminjaman.p_status', 'peminjaman.created_at',
         'peminjaman.updated_at', 'peminjaman.p_nama_event')
         ->where('peminjaman.p_status','1')
         ->get();
-        $today = date("Y-m-d"); 
+        $today = date("Y-m-d");
         return view('first', compact('data_peminjaman', 'data_peminjaman_sukses', 'today'));
     }
 }

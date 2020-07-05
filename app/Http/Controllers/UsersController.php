@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use DB;
+use Auth;
+use App\Peminjaman;
 
 class UsersController extends Controller
 {
@@ -28,15 +30,27 @@ class UsersController extends Controller
         ->orderBy('rb_status', 'asc')
         ->get();
 
-        $data_peminjaman = DB::table('peminjaman')
-        ->join('users', 'peminjaman.user_id', '=', 'users.id')
-        ->select('peminjaman.p_id', 'users.name', 'peminjaman.p_date',
-        'peminjaman.p_date_end', 'peminjaman.p_time_start', 'peminjaman.p_time_end',
-        'peminjaman.p_scan_surat_peminjaman', 'peminjaman.p_status', 'peminjaman.created_at',
-        'peminjaman.updated_at')
-        ->orderBy('p_status', 'asc')
-        ->orderBy('created_at', 'desc')
-        ->get();
+        if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris')){
+          $data_peminjaman = Peminjaman::orderBy('created_at','desc')->orderBy('p_status', 'asc')->get();
+          $data_peminjaman_sukses = DB::table('peminjaman')
+          ->join('users', 'peminjaman.user_id', '=', 'users.id')
+          ->select('peminjaman.p_id', 'users.name', 'peminjaman.p_date',
+          'peminjaman.p_date_end', 'peminjaman.p_time_start', 'peminjaman.p_time_end',
+          'peminjaman.p_scan_surat_peminjaman', 'peminjaman.p_status', 'peminjaman.created_at',
+          'peminjaman.updated_at', 'peminjaman.p_nama_event')
+          ->where('peminjaman.p_status','1')
+          ->get();
+        }else{
+          $data_peminjaman = Peminjaman::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->orderBy('p_status', 'asc')->get();
+          $data_peminjaman_sukses = DB::table('peminjaman')
+          ->join('users', 'peminjaman.user_id', '=', 'users.id')
+          ->select('peminjaman.p_id', 'users.name', 'peminjaman.p_date',
+          'peminjaman.p_date_end', 'peminjaman.p_time_start', 'peminjaman.p_time_end',
+          'peminjaman.p_scan_surat_peminjaman', 'peminjaman.p_status', 'peminjaman.created_at',
+          'peminjaman.updated_at', 'peminjaman.p_nama_event')
+          ->where('peminjaman.p_status','1')
+          ->get();
+        }
         return view('user.dashboard', compact('data_request','data_peminjaman'));
     }
 

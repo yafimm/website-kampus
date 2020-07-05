@@ -325,5 +325,15 @@ class PeminjamanController extends Controller
 
     }
 
+    public function cetakSuratPemimjaman($id)
+    {
+        $data_peminjaman = Peminjaman::findOrFail($id);
+        if($data_peminjaman->p_status == 1 || $data_peminjaman->p_status == 3){
+          $pdf = PDF::loadview('peminjaman.surat_peminjaman_pdf', ['data_peminjaman' => $data_peminjaman]);
+          return $pdf->download('surat_peminjaman_'.$data_peminjaman->p_id.'.pdf');
+        }
+        return abort(404);
+    }
+
 
 }

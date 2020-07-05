@@ -478,7 +478,7 @@
                         @endphp
                         <tr>
                             <td>{{$count}}</td>
-                            <td>{{$peminjaman->name}}</td>
+                            <td>{{$peminjaman->user->name}}</td>
                             <td>{{date('d/m/Y', strtotime($peminjaman->p_date))}}</td>
                             <td>{{date('d/m/Y', strtotime($peminjaman->p_date_end))}}</td>
                             <td><a target="_blank"
