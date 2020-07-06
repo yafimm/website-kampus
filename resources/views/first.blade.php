@@ -373,20 +373,8 @@
                 </p>
                 <div class="divider"></div>
                 <p class="about-us">
-                    <a href="{{ url('/register/oramwa') }}">
-                        Daftar Sebagai ORMAWA
-                    </a>
-                </p>
-                <div class="divider"></div>
-                <p class="about-us">
                     <a href="{{ url('/register/dosen') }}">
-                        Daftar Sebagai Dosen
-                    </a>
-                </p>
-                <div class="divider"></div>
-                <p class="about-us">
-                    <a href="{{ url('/register/bagumum') }}">
-                        Daftar Sebagai Bagian Umum
+                        Daftar Sebagai Dosen atau Non dosen
                     </a>
                 </p>
                 <br>

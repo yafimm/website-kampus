@@ -145,13 +145,9 @@
                             </td>
                             <td>{{date('d-m-Y', strtotime($peminjaman->p_date))}}</td>
                             <td>{{date('d-m-Y', strtotime($peminjaman->p_date_end))}}</td>
-                            <td>@if($peminjaman->p_status == 1 || $peminjaman->p_status == 3)
-                                <a target="_blank"
-                                    href="{{ route('peminjaman.cetaksuratpengembalian', $peminjaman->p_id) }}"><u>Download</u></a>
-                                @else
+                            <td>
                                 <a target="_blank"
                                     href="{{ route('downloadsurat', $peminjaman->p_scan_surat_peminjaman) }}"><u>Download</u></a>
-                                @endif
                             </td>
                             <td>
                                 @if ($peminjaman->p_status == 0)
@@ -214,7 +210,7 @@
                                 @endif
 
                                 @if(Auth::user()->hasRole('dosen') || Auth::user()->hasRole('mahasiswa'))
-                                <a href="{{ route('peminjaman.cetak.user', $peminjaman->p_id) }}" class="btn btn-info btn-sm"
+                                <a href="{{ route('peminjaman.cetaksuratpengembalian', $peminjaman->p_id) }}" target="_blank" class="btn btn-info btn-sm"
                                     data-toggle="tooltip" data-placement="top" title="Cetak">
                                     <i class="glyph-icon icon-print"></i>
                                 </a>
@@ -234,12 +230,6 @@
                                     data-toggle="tooltip" data-placement="top" title="Lihat Data">
                                     <i class="glyph-icon icon-eye"></i>
                                 </a>
-                                @if(Auth::user()->hasRole('dosen') || Auth::user()->hasRole('mahasiswa'))
-                                <a href="{{ route('peminjaman.cetak.user', $peminjaman->p_id) }}" class="btn btn-info btn-sm"
-                                    data-toggle="tooltip" data-placement="top" title="Cetak">
-                                    <i class="glyph-icon icon-print"></i>
-                                </a>
-                                @endif
                                 @endif
 
                             </td>

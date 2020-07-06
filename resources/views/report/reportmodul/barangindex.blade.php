@@ -32,14 +32,15 @@
         </thead>
 
         <tfoot>
-            <tr>
-                <th></th>
-                <th>Kode</th>
-                <th>Nama</th>
-                <th>Stock</th>
-                <th>Harga</th>
-                <th>Tanggal</th>
-                <th>Total</th>
+            <tr class="table-info">
+              <th colspan="5" class="text-center">Total <br><small class="text-info text-sm">*Untuk <span id="totalPage"></span> Data, Harga * Stok</small></th>
+              <th colspan="3" class="text-center" id="totalHarga"></th>
+            </tr>
+            <tr class="table-primary">
+              <th colspan="5" class="text-center">Total Keseluruhan <br><small class="text-info text-sm">*Total Seluruh data.</small></th>
+              <th colspan="3" class="text-center">
+                  Rp. {{ number_format($arr_barang->sum('total'), 2, ',', '.') }}
+              </th>
             </tr>
         </tfoot>
 
@@ -63,13 +64,36 @@
 </div>
 
     <script type="text/javascript">
+        /* Datatables export */
+
+          $(document).ready(function () {
+              var table = $('#dt_barang').DataTable();
+              var tt = new $.fn.dataTable.TableTools(table);
+              $('.dataTables_filter input').attr("placeholder", "Search...");
+              // function sum total harga
+              let startPage = table.page.info().start;
+              let endPage = table.page.info().end;
+              let totalHarga = 0;
+              // console.log(table.page.info().start);
+              for (let i = startPage; i < endPage; i++) {
+                  row = table.rows(i).data();
+                  // Karena kolom 5 menyesuaikan dengan kolom didatatable, untuk 0 adalah data dari dalam datatable
+                  totalHarga += convertRupiahToNumber(row[0][6]);
+              }
+              $('#totalPage').html(table.page.info().recordsDisplay);
+              $('#totalHarga').html(convertNumberToRupiah(totalHarga));
+
+          });
+
+    </script>
+
+    <script type="text/javascript">
       var dateStart = new Date("{!! date('Y-m-d', strtotime(Request::get('mulai'))) !!}");
       var dateEnd = new Date("{!! date('Y-m-d', strtotime(Request::get('akhir'))) !!}");
       var rangeDate = (dateEnd - dateStart) / (1000 * 3600 * 24);
       var dataHarga = {!! json_encode($arr_barang_js) !!};
       var dataChart = [];
       var dataDate = [];
-      console.log(dataChart);
 
       for (var i = 0; i < rangeDate; i++) {
         if(i == 0){
@@ -80,7 +104,6 @@
         let tanggal = dateStart.getDate() < 10 ? "0"+dateStart.getDate() : dateStart.getDate();
         let bulan = (dateStart.getMonth() < 10 ? "0":"") + (dateStart.getMonth() + 1);
         let tahun = dateStart.getFullYear();
-        console.log(bulan);
         let formatTanggal = tanggal+"-"+bulan+"-"+tahun;
         let arrayData = [];
         dataDate.push(formatTanggal);
@@ -94,9 +117,9 @@
           }
         }
       }
-      console.log(dataChart);
 
     </script>
+
     {{-- chartjs --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script>

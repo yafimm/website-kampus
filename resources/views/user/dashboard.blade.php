@@ -95,7 +95,7 @@
     @if(Auth::user()->hasRole('yayasan'))
     <div class="panel">
         <div class="panel-body">
-            <form class="" action="" method="get">
+            <form class="" action="{{ route('report.index') }}" method="get">
                 <div class="form-group col-sm-12 col-md-8 col-lg-3">
                     <label class="col-sm-12 control-label">Jenis Report</label>
                     <select class="col-lg-11 form-control" name="jenis" style="height:33px">
