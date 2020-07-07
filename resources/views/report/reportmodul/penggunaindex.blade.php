@@ -77,15 +77,14 @@
         var ctx = document.getElementById('myChart').getContext('2d');
         var chart = new Chart(ctx, {
             // The type of chart we want to create
-            type: 'bar',
+            type: 'pie',
 
             // The data for our dataset
             data: {
                 labels: dataRole,
                 datasets: [{
                     label: 'Data Pengguna',
-                    backgroundColor: 'rgb(63, 63, 191)',
-                    borderColor: 'rgb(63, 127, 191)',
+                    backgroundColor: ["#0074D9", "#FF4136", "#2ECC40", "#FF851B"],
                     data: dataChart
                 }]
             },

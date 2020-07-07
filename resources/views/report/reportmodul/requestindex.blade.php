@@ -75,9 +75,8 @@
       var dateEnd = new Date("{!! date('Y-m-d', strtotime(Request::get('akhir'))) !!}");
       var rangeDate = (dateEnd - dateStart) / (1000 * 3600 * 24);
       var dataHarga = {!! json_encode($arr_request_js) !!};
-      var dataChart = [];
+      var dataChart = [[]];
       var dataDate = [];
-      console.log(dataChart);
 
       for (var i = 0; i < rangeDate; i++) {
         if(i == 0){
@@ -88,17 +87,37 @@
         let tanggal = dateStart.getDate() < 10 ? "0"+dateStart.getDate() : dateStart.getDate();
         let bulan = (dateStart.getMonth() < 10 ? "0":"") + (dateStart.getMonth() + 1);
         let tahun = dateStart.getFullYear();
-        console.log(bulan);
         let formatTanggal = tanggal+"-"+bulan+"-"+tahun;
         let arrayData = [];
         dataDate.push(formatTanggal);
-        dataChart[i] = 0;
-
         for (key in dataHarga) {
+          //isiin array dengan 0 dulu biar jalan
+          dataChart.push([0]);
           if(formatTanggal == key){
-            dataChart[i] += dataHarga[key];
+            if(dataHarga[key][0] != null){
+              dataChart[0][i] = dataHarga[key][0];
+            }else{
+              dataChart[0][i] = 0;
+            }
+
+            if(dataHarga[key][1] != null){
+              dataChart[1][i] = dataHarga[key][1];
+            }else{
+              dataChart[1][i] = 0;
+            }
+
+            if(dataHarga[key][2] != null){
+              dataChart[2][i] = dataHarga[key][2];
+            }else{
+              dataChart[2][i] = 0;
+            }
+
+          }else if(dataChart != 0){
+
           }else{
-            dataChart[i] += 0;
+            dataChart[0][i] = 0;
+            dataChart[1][i] = 0;
+            dataChart[2][i] = 0;
           }
         }
       }
@@ -117,10 +136,19 @@
             data: {
                 labels: dataDate,
                 datasets: [{
-                    label: 'Data Request Barang',
-                    backgroundColor: 'rgb(63, 63, 191)',
-                    borderColor: 'rgb(63, 127, 191)',
-                    data: dataChart
+                    label: 'Menunggu',
+                    backgroundColor: 'rgba(230, 126, 34, 1)',
+                    data: dataChart[0]
+                },
+                {
+                    label: 'Ditolak',
+                    backgroundColor: 'rgba(235, 103, 89, 1)',
+                    data: dataChart[1]
+                },
+                {
+                    label: 'Disetujui',
+                    backgroundColor: 'rgba(7, 155, 239, 1)',
+                    data: dataChart[2]
                 }]
             },
 

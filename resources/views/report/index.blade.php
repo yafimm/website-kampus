@@ -120,8 +120,11 @@
                 </div>
 
                 <div class="container pt-4">
-                    <button class="btn btn-primary col-sm-12 col-md-8 col-lg-2 mt-1 ml-lg-4">
+                    <button class="btn btn-primary col-sm-12 col-md-6 col-lg-1 mt-1 ml-lg-4" data-toggle="tooltip" data-placement="top" title="Proses Data">
                         <i class="glyph-icon icon-clipboard"></i> Proses
+                    </button>
+                    <button class="btn btn-primary col-sm-12 col-md-6 col-lg-1 mt-1 ml-lg-4" data-toggle="tooltip" data-placement="top" title="Cetak Laporan">
+                        <i class="glyph-icon icon-clipboard"></i> Cetak
                     </button>
                 </div>
 

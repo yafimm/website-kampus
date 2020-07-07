@@ -129,8 +129,7 @@
                 labels: dataDate,
                 datasets: [{
                     label: 'Data Pengadaan',
-                    backgroundColor: 'rgb(63, 63, 191)',
-                    borderColor: 'rgb(63, 127, 191)',
+                    backgroundColor: 'rgba(7, 155, 239, 1)',
                     data: dataChart
                 }]
             },

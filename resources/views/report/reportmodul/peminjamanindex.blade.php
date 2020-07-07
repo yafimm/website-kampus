@@ -74,7 +74,7 @@
       var dateEnd = new Date("{!! date('Y-m-d', strtotime(Request::get('akhir'))) !!}");
       var rangeDate = (dateEnd - dateStart) / (1000 * 3600 * 24);
       var dataHarga = {!! json_encode($arr_peminjaman_js) !!};
-      var dataChart = [];
+      var dataChart = [[]];
       var dataDate = [];
       console.log(dataChart);
 
@@ -90,17 +90,41 @@
         let formatTanggal = tanggal+"-"+bulan+"-"+tahun;
         let arrayData = [];
         dataDate.push(formatTanggal);
-        dataChart[i] = 0;
 
         for (key in dataHarga) {
+          //isiin array dengan 0 dulu biar jalan
+          dataChart.push([0]);
           if(formatTanggal == key){
-            console.log(key + ' VS ' +formatTanggal + ' = ' +dataHarga[key] );
-            dataChart[i] = dataHarga[key];
-            console.log(dataChart + ' ISi dari ' + i);
+            if(dataHarga[key][0] != null){
+              dataChart[0][i] = dataHarga[key][0];
+            }else{
+              dataChart[0][i] = 0;
+            }
+
+            if(dataHarga[key][1] != null){
+              dataChart[1][i] = dataHarga[key][1];
+            }else{
+              dataChart[1][i] = 0;
+            }
+
+            if(dataHarga[key][2] != null){
+              dataChart[2][i] = dataHarga[key][2];
+            }else{
+              dataChart[2][i] = 0;
+            }
+
+            if(dataHarga[key][3] != null){
+              dataChart[3][i] = dataHarga[key][3];
+            }else{
+              dataChart[3][i] = 0;
+            }
           }else if(dataChart != 0){
-              
+
           }else{
-            dataChart[i] = 0;
+            dataChart[0][i] = 0;
+            dataChart[1][i] = 0;
+            dataChart[2][i] = 0;
+            dataChart[3][i] = 0;
           }
         }
       }
@@ -121,26 +145,28 @@
             data: {
                 labels: dataDate,
                 datasets: [{
-                    label: 'Data Pengadaan',
-                    backgroundColor: 'rgb(63, 63, 191)',
-                    borderColor: 'rgb(63, 127, 191)',
-                    data: dataChart
-                }]
+                    label: 'Menunggu',
+                    backgroundColor: 'rgba(230, 126, 34, 1)',
+                    data: dataChart[0]
+                },
+                {
+                    label: 'Ditolak',
+                    backgroundColor: 'rgba(235, 103, 89, 1)',
+                    data: dataChart[1]
+                },
+                {
+                    label: 'Diterima/Sedang dipinjam',
+                    backgroundColor: 'rgba(7, 155, 239, 1)',
+                    data: dataChart[2]
+                },
+                {
+                    label: 'Selesai',
+                    backgroundColor: 'rgba(46, 204, 113, 1)',
+                    data: dataChart[3]
+                }
+              ]
             },
 
-            // Configuration options go here
-            options: {
-               scales: {
-                   yAxes: [{
-                       ticks: {
-                           // Include a dollar sign in the ticks
-                           callback: function(value, index, values) {
-                               return value;
-                           }
-                       }
-                   }]
-               },
-           }
         });
     </script>
 

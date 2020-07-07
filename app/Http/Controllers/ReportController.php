@@ -10,9 +10,24 @@ use App\User;
 use App\Maintenance;
 use App\Pengadaan;
 use App\Request as RequestBarang;
+use DB;
 
 class ReportController extends Controller
 {
+
+    public function grafik()
+    {
+        $dataTotal = ['barang' => DB::table('barang')->count(),
+                 'inventaris' => DB::table('inventaris')->count(),
+                 'maintenance' => DB::table('maintenance')->count(),
+                 'peminjaman' => DB::table('peminjaman')->count(),
+                 'pengadaan' => DB::table('pengadaan')->count(),
+                 'request_barang' => DB::table('request_barang')->count(),
+                 'users' => DB::table('users')->count(),
+                  ];
+
+        return view('report.grafik', compact('dataTotal'));
+    }
     public function index(Request $request)
     {
         if(isset($request->jenis))
@@ -58,12 +73,18 @@ class ReportController extends Controller
             else if($request->jenis == 'datapeminjaman')
             {
                 $arr_peminjaman = Peminjaman::whereDate('created_at', '>=', date('Y-m-d', strtotime($request->mulai)))->whereDate('created_at', '<=', date('Y-m-d', strtotime($request->akhir)))->get();
-                $arr_peminjaman_js = $arr_peminjaman->groupBy(function($data) {
+                $arr_peminjaman_js = $arr_peminjaman->groupBy([function($data) {
                                       return date('d-m-Y', strtotime($data->p_date));
+                                  }, function($data){
+                                      return $data['p_status'];
+                                  }]);
+
+                $arr_peminjaman_js = $arr_peminjaman_js->map(function($value){
+                                          $data = $value->map(function($nestedValue){
+                                            return count($nestedValue);
+                                          });
+                                      return $data;
                                   });
-                $arr_peminjaman_js = $arr_peminjaman_js->map(function($data){
-                                      return count($data);
-                                  })->toArray();
                 return view('report.reportmodul.peminjamanindex', compact('arr_peminjaman_js', 'arr_peminjaman'));
             }
             else if($request->jenis == 'datapengguna')
@@ -80,13 +101,23 @@ class ReportController extends Controller
             else if($request->jenis == 'datarequest')
             {
                 $arr_request = RequestBarang::whereDate('created_at', '>=', date('Y-m-d', strtotime($request->mulai)))->whereDate('created_at', '<=', date('Y-m-d', strtotime($request->akhir)))->get();
-                $arr_request_js = $arr_request->groupBy(function($data) {
+                $arr_request_js = $arr_request->groupBy([function($data) {
                                       return $data->created_at->format('d-m-Y');
-                                  });
+                                  }, function($data){
+                                      return $data['rb_status'];
+                                  }]);
 
-                $arr_request_js = $arr_request_js->map(function($data){
-                                      return $data->sum('rb_jumlah');
-                                  })->toArray();
+
+                // $arr_request_js = $arr_request_js->map(function($data){
+                //                       return $data->sum('rb_jumlah');
+                //                   })->toArray();
+
+                $arr_request_js = $arr_request_js->map(function($value){
+                                          $data = $value->map(function($nestedValue){
+                                            return $nestedValue->sum('rb_jumlah');
+                                          });
+                                      return $data;
+                                  });
                 return view('report.reportmodul.requestindex', compact('arr_request_js','arr_request'));
             }
             else if($request->jenis == 'datamaintenance')
