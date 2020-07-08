@@ -150,14 +150,14 @@
                     data: dataChart[0]
                 },
                 {
-                    label: 'Ditolak',
-                    backgroundColor: 'rgba(235, 103, 89, 1)',
+                    label: 'Diterima/Sedang dipinjam',
+                    backgroundColor: 'rgba(7, 155, 239, 1)',
                     data: dataChart[1]
                 },
                 {
-                    label: 'Diterima/Sedang dipinjam',
-                    backgroundColor: 'rgba(7, 155, 239, 1)',
-                    data: dataChart[2]
+                  label: 'Ditolak',
+                  backgroundColor: 'rgba(235, 103, 89, 1)',
+                  data: dataChart[2]
                 },
                 {
                     label: 'Selesai',

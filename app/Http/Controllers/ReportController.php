@@ -72,7 +72,7 @@ class ReportController extends Controller
             }
             else if($request->jenis == 'datapeminjaman')
             {
-                $arr_peminjaman = Peminjaman::whereDate('created_at', '>=', date('Y-m-d', strtotime($request->mulai)))->whereDate('created_at', '<=', date('Y-m-d', strtotime($request->akhir)))->get();
+                $arr_peminjaman = Peminjaman::whereDate('p_date', '>=', date('Y-m-d', strtotime($request->mulai)))->whereDate('p_date', '<=', date('Y-m-d', strtotime($request->akhir)))->get();
                 $arr_peminjaman_js = $arr_peminjaman->groupBy([function($data) {
                                       return date('d-m-Y', strtotime($data->p_date));
                                   }, function($data){

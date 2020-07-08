@@ -37,7 +37,7 @@
         /* Datatables export */
 
         $(document).ready(function () {
-              var table = $('#dt_pengadaan').DataTable();
+            var table = $('#dt_pengadaan').DataTable();
             var tt = new $.fn.dataTable.TableTools(table);
 
             $('.btn-cetak').click(function(){
