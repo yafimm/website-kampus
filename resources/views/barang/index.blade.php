@@ -51,7 +51,7 @@
               for (let i = startPage; i < endPage; i++) {
                   row = table.rows(i).data();
                   // Karena kolom 5 menyesuaikan dengan kolom didatatable, untuk 0 adalah data dari dalam datatable
-                  totalHarga += convertRupiahToNumber(row[0][6]);
+                  totalHarga += convertRupiahToNumber(row[0][5]);
                   console.log(totalHarga);
               }
               $('#totalPage').html(table.page.info().recordsDisplay);

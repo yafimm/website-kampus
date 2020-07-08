@@ -44,6 +44,21 @@
 
             $('.dataTables_filter input').attr("placeholder", "Search...");
 
+            // function sum total harga
+            let startPage = table.page.info().start;
+            let endPage = table.page.info().end;
+            let totalHarga = 0;
+            // console.log(table.page.info().start);
+            for (let i = startPage; i < endPage; i++) {
+                row = table.rows(i).data();
+                // Karena kolom 5 menyesuaikan dengan kolom didatatable, untuk 0 adalah data dari dalam datatable
+                totalHarga += convertRupiahToNumber(row[0][2]);
+                console.log(totalHarga);
+            }
+            $('#totalPage').html(table.page.info().recordsDisplay);
+            $('#totalHarga').html(convertNumberToRupiah(totalHarga));
+
+
             $('.btn-cetak').click(function(){
               // alert($(this).data('no_register'));
               $('#no_register').val($(this).data('no_register'));
@@ -94,29 +109,32 @@
                         <tr>
                             <th></th>
                             <th>No Register</th>
-                            <th>Total Keseluruhan</th>
                             <th>Tanggal</th>
+                            <th>Total Keseluruhan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
 
                     <tfoot>
-                        <tr>
-                            <th></th>
-                            <th>No Register</th>
-                            <th>Total Keseluruhan</th>
-                            <th>Tanggal</th>
-                            <th>Aksi</th>
+                        <tr class="table-info">
+                          <th colspan="3" class="text-center">Total <br><small class="text-info text-sm">*Untuk <span id="totalPage"></span> Data, Harga * Stok</small></th>
+                          <th colspan="2" class="text-center" id="totalHarga"></th>
+                        </tr>
+                        <tr class="table-primary">
+                          <th colspan="3" class="text-center">Total Keseluruhan <br><small class="text-info text-sm">*Total Seluruh data.</small></th>
+                          <th colspan="2" class="text-center">
+                              Rp. {{ number_format($arr_maintenance->sum('total'), 2, ',', '.') }}
+                          </th>
                         </tr>
                     </tfoot>
 
                     <tbody>
+                      @foreach($arr_maintenance as $key => $maintenance)
                         <tr>
-                            @foreach($arr_maintenance as $key => $maintenance)
                             <td>{{ $key + 1 }}</td>
                             <td>{{$maintenance->no_register}}</td>
-                            <td>Rp. {{number_format($maintenance->total, 2,',','.')}}</td>
                             <td>{{date('d-m-Y', strtotime($maintenance->tanggal_maintenance))}}</td>
+                            <td>Rp. {{number_format($maintenance->total, 2,',','.')}}</td>
                             <td>
                                 <a href="{{ route('maintenance.show', $maintenance->no_register) }}"
                                     class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Lihat Data">

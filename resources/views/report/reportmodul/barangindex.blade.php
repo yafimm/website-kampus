@@ -33,11 +33,11 @@
 
         <tfoot>
             <tr class="table-info">
-              <th colspan="5" class="text-center">Total <br><small class="text-info text-sm">*Untuk <span id="totalPage"></span> Data, Harga * Stok</small></th>
+              <th colspan="4" class="text-center">Total <br><small class="text-info text-sm">*Untuk <span id="totalPage"></span> Data, Harga * Stok</small></th>
               <th colspan="3" class="text-center" id="totalHarga"></th>
             </tr>
             <tr class="table-primary">
-              <th colspan="5" class="text-center">Total Keseluruhan <br><small class="text-info text-sm">*Total Seluruh data.</small></th>
+              <th colspan="4" class="text-center">Total Keseluruhan <br><small class="text-info text-sm">*Total Seluruh data.</small></th>
               <th colspan="3" class="text-center">
                   Rp. {{ number_format($arr_barang->sum('total'), 2, ',', '.') }}
               </th>
@@ -58,24 +58,7 @@
             @endforeach
         </tbody>
     </table>
-    <div class="col-12 text-right">
-      <h4>Total Keseluruhan : Rp. {{ number_format($arr_barang->sum('total'),2,",",".") }}</h4>
-    </div>
 </div>
-    <script type="text/javascript" src="{{ asset('assets/widgets/datatable/datatable.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/datatable/datatable-bootstrap.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/datatable/datatable-tabletools.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/datatable/datatable-reorder.js') }}"></script>
-    <script type="text/javascript">
-        /* Datatables export */
-
-          $(document).ready(function () {
-              alert('yey');
-        
-
-          });
-
-    </script>
 
     <script type="text/javascript">
       var dateStart = new Date("{!! date('Y-m-d', strtotime(Request::get('mulai'))) !!}");

@@ -36,29 +36,26 @@
     <script type="text/javascript">
         /* Datatables export */
 
-        $(document).ready(function () {
-            var table = $('#dt_pengadaan').DataTable();
-            var tt = new $.fn.dataTable.TableTools(table);
+          $(document).ready(function () {
+              var table = $('#dt_pengadaan').DataTable();
+              var tt = new $.fn.dataTable.TableTools(table);
+              $('.dataTables_filter input').attr("placeholder", "Search...");
 
-            $('.btn-cetak').click(function(){
-              // alert($(this).data('no_register'));
-              $('#no_register').val($(this).data('no_register'));
-            });
+              // function sum total harga
+              let startPage = table.page.info().start;
+              let endPage = table.page.info().end;
+              let totalHarga = 0;
+              // console.log(table.page.info().start);
+              for (let i = startPage; i < endPage; i++) {
+                  row = table.rows(i).data();
+                  // Karena kolom 5 menyesuaikan dengan kolom didatatable, untuk 0 adalah data dari dalam datatable
+                  totalHarga += convertRupiahToNumber(row[0][4]);
+                  console.log(totalHarga);
+              }
+              $('#totalPage').html(table.page.info().recordsDisplay);
+              $('#totalHarga').html(convertNumberToRupiah(totalHarga));
 
-
-            // function sum total harga
-            let startPage = table.page.info().start;
-            let endPage = table.page.info().end;
-            let totalHarga = 0;
-            // console.log(table.page.info().start);
-            for (let i = startPage; i < endPage; i++) {
-                row = table.rows(i).data();
-                // Karena kolom 5 menyesuaikan dengan kolom didatatable, untuk 0 adalah data dari dalam datatable
-                totalHarga += convertRupiahToNumber(row[0][4]);
-            }
-            $('#totalPage').html(table.page.info().recordsDisplay);
-            $('#totalHarga').html(convertNumberToRupiah(totalHarga));
-        });
+          });
 
     </script>
     <!-- Sparklines charts -->
@@ -114,19 +111,19 @@
                     <tfoot>
                         <tr class="table-info">
                           <th colspan="4" class="text-center">Total <br><small class="text-info text-sm">*Untuk <span id="totalPage"></span> Data, Harga * Stok</small></th>
-                          <th colspan="3" class="text-center" id="totalHarga"></th>
+                          <th colspan="2" class="text-center" id="totalHarga"></th>
                         </tr>
                         <tr class="table-primary">
                           <th colspan="4" class="text-center">Total Keseluruhan <br><small class="text-info text-sm">*Total Seluruh data.</small></th>
-                          <th colspan="3" class="text-center">
+                          <th colspan="2" class="text-center">
                               Rp. {{ number_format($arr_pengadaan->sum('totalkeseluruhan'), 2, ',', '.') }}
                           </th>
                         </tr>
                     </tfoot>
 
                     <tbody>
+                      @foreach($arr_pengadaan as $key => $pengadaan)
                         <tr>
-                            @foreach($arr_pengadaan as $key => $pengadaan)
                             <td>{{ $key + 1 }}</td>
                             <td>{{$pengadaan->no_register}}</td>
                             <td>{{$pengadaan->supplier}}</td>
@@ -158,77 +155,77 @@
         </div>
     </div>
 
-</div>
-
-<div class="modal fade" id="modalReportTanggal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title"><strong>Cetak Laporan</strong></h4>
-            </div>
-            <form name="reportTahunan" id="reportTahunan" action="{{ route('pengadaan.cetakTanggal') }}" method="POST"
-                class="form-horizontal bordered-row">
-                {{ csrf_field() }}
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">Dari Tanggal</label>
-                        <div class="col-sm-6">
-                            <div class="input-prepend input-group">
-                                <span class="add-on input-group-addon">
-                                    <i class="glyph-icon icon-calendar"></i>
-                                </span>
-                                <input id="dari-tanggal" name="mulai" type="text"
-                                    class="bootstrap-datepicker form-control" value="" data-date-format="dd-mm-yyyy">
+    <div class="modal fade" id="modalReportTanggal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><strong>Cetak Laporan</strong></h4>
+                </div>
+                <form name="reportTahunan" id="reportTahunan" action="{{ route('pengadaan.cetakTanggal') }}" method="POST"
+                    class="form-horizontal bordered-row">
+                    {{ csrf_field() }}
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Dari Tanggal</label>
+                            <div class="col-sm-6">
+                                <div class="input-prepend input-group">
+                                    <span class="add-on input-group-addon">
+                                        <i class="glyph-icon icon-calendar"></i>
+                                    </span>
+                                    <input id="dari-tanggal" name="mulai" type="text"
+                                        class="bootstrap-datepicker form-control" value="" data-date-format="dd-mm-yyyy">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">Sampai Tanggal</label>
-                        <div class="col-sm-6">
-                            <div class="input-prepend input-group">
-                                <span class="add-on input-group-addon">
-                                    <i class="glyph-icon icon-calendar"></i>
-                                </span>
-                                <input id="sampai-tanggal" name="akhir" type="text"
-                                    class="bootstrap-datepicker form-control" value="" data-date-format="dd-mm-yyyy">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Sampai Tanggal</label>
+                            <div class="col-sm-6">
+                                <div class="input-prepend input-group">
+                                    <span class="add-on input-group-addon">
+                                        <i class="glyph-icon icon-calendar"></i>
+                                    </span>
+                                    <input id="sampai-tanggal" name="akhir" type="text"
+                                        class="bootstrap-datepicker form-control" value="" data-date-format="dd-mm-yyyy">
+                                </div>
                             </div>
                         </div>
+                        <br>
                     </div>
-                    <br>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-success" formtarget="_blank">Cetak</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modalReportSatuan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title"><strong>Cetak Laporan</strong></h4>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-success" formtarget="_blank">Cetak</button>
+                    </div>
+                </form>
             </div>
-            <form name="reportTahunan" id="reportTahunan" action="{{ route('pengadaan.cetak') }}" method="POST"
-                class="form-horizontal bordered-row">
-                {{ csrf_field() }}
-                <input type="hidden" id="no_register" name="no_register" value="">
-                <div class="modal-body">
-                    Apakah anda yakin akan mencetak Data ?
-                    <br>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-success" formtarget="_blank">Cetak</button>
-                </div>
-            </form>
         </div>
     </div>
-</div>
+
+    <div class="modal fade" id="modalReportSatuan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><strong>Cetak Laporan</strong></h4>
+                </div>
+                <form name="reportTahunan" id="reportTahunan" action="{{ route('pengadaan.cetak') }}" method="POST"
+                    class="form-horizontal bordered-row">
+                    {{ csrf_field() }}
+                    <input type="hidden" id="no_register" name="no_register" value="">
+                    <div class="modal-body">
+                        Apakah anda yakin akan mencetak Data ?
+                        <br>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-success" formtarget="_blank">Cetak</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+  </div>
+
 @endsection
