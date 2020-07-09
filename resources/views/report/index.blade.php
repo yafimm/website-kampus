@@ -28,34 +28,31 @@
 
 
     <script type="text/javascript" src="{{ asset('assets/widgets/datatable/datatable.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/datatable/datatable-bootstrap.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/datatable/datatable-tabletools.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/widgets/datatable/datatable-bootstrap.js') }}">
+    </script>
+    <script type="text/javascript" src="{{ asset('assets/widgets/datatable/datatable-tabletools.js') }}">
+    </script>
     <script type="text/javascript" src="{{ asset('assets/widgets/datatable/datatable-reorder.js') }}"></script>
 
     <script type="text/javascript">
-    /* Datatables export */
-    $(document).ready(function(){
-        var table = $('#dt_barang').DataTable();
-        var tt = new $.fn.dataTable.TableTools(table);
-        $('.dataTables_filter input').attr("placeholder", "Search...");
+        /* Datatables export */
 
-        // function sum total harga
-        let startPage = table.page.info().start;
-        let endPage = table.page.info().end;
-        let totalHarga = 0;
-        // console.log(table.page.info().start);
-        for (let i = startPage; i < endPage; i++) {
-            row = table.rows(i).data();
-            // Karena kolom 5 menyesuaikan dengan kolom didatatable, untuk 0 adalah data dari dalam datatable
-            totalHarga += convertRupiahToNumber(row[0][4]);
-            console.log(totalHarga);
-        }
-        $('#totalPage').html(table.page.info().recordsDisplay);
-        $('#totalHarga').html(convertNumberToRupiah(totalHarga));
+        $(document).ready(function () {
+            var table = $('#dt_barang').DataTable();
+            var tt = new $.fn.dataTable.TableTools(table);
+            $('.dataTables_filter input').attr("placeholder", "Search...");
 
-    });
+            $('button #cetakLaporan').click(function(e){
+              e.preventDefault();
+              let dateStart = $('#datestart').val();
+              let dateEnd = $('#dateend').val();
+              let jenisReport = $('input[name="jenis"]').val();
+              console.log(dateStart);
+            });
+        });
+
+
     </script>
-
     <!-- Sparklines charts -->
 
     <script type="text/javascript" src="{{ asset('assets/widgets/charts/sparklines/sparklines.js') }}"></script>
@@ -131,14 +128,13 @@
                 </div>
 
                 <div class="container pt-4">
-                    <button class="btn btn-primary col-sm-12 col-md-6 col-lg-1 mt-1 ml-lg-4" data-toggle="tooltip" data-placement="top" title="Proses Data">
+                    <button type="submit" class="btn btn-primary col-sm-12 col-md-6 col-lg-1 mt-1 ml-lg-4" data-toggle="tooltip" data-placement="top" title="Proses Data">
                         <i class="glyph-icon icon-clipboard"></i> Proses
                     </button>
-                    <button class="btn btn-primary col-sm-12 col-md-6 col-lg-1 mt-1 ml-lg-4" data-toggle="tooltip" data-placement="top" title="Cetak Laporan">
+                    <button type="button" id='cetakLaporan' class="btn btn-primary col-sm-12 col-md-6 col-lg-1 mt-1 ml-lg-4" data-toggle="tooltip" data-placement="top" title="Cetak Laporan">
                         <i class="glyph-icon icon-clipboard"></i> Cetak
                     </button>
                 </div>
-
             </form>
         </div>
     </div>
