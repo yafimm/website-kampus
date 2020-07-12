@@ -21,7 +21,21 @@
             });
 
     </script>
-    <!-- Bootstrap Datepicker -->
+    @if( Request::get("jenis") == 'databarang' )
+    <script type="text/javascript" src="{{ asset('js/report/barang.index.js') }}"></script>
+    @elseif( Request::get("jenis") == 'datapengadaan' )
+    <script type="text/javascript" src="{{ asset('js/report/pengadaan.index.js') }}"></script>
+    @elseif( Request::get("jenis") == 'datainventaris' )
+    <script type="text/javascript" src="{{ asset('js/report/inventaris.index.js') }}"></script>
+    @elseif( Request::get("jenis") == 'datapeminjaman' )
+    <script type="text/javascript" src="{{ asset('js/report/peminjaman.index.js') }}"></script>
+    @elseif( Request::get("jenis") == 'datapengguna' )
+    <script type="text/javascript" src="{{ asset('js/report/pengguna.index.js') }}"></script>
+    @elseif( Request::get("jenis") == 'datarequest' )
+    <script type="text/javascript" src="{{ asset('js/report/request.index.js') }}"></script>
+    @elseif( Request::get("jenis") == 'datamaintenance' )
+    <script type="text/javascript" src="{{ asset('js/report/maintenance.index.js') }}"></script>
+    @endif<!-- Bootstrap Datepicker -->
     <script type="text/javascript" src="{{ asset('assets/widgets/datepicker-ui/datepicker.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/widgets/datepicker-ui/datepicker-demo.js') }}">
     </script>
@@ -36,18 +50,53 @@
 
     <script type="text/javascript">
         /* Datatables export */
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
         $(document).ready(function () {
-            var table = $('#dt_barang').DataTable();
-            var tt = new $.fn.dataTable.TableTools(table);
-            $('.dataTables_filter input').attr("placeholder", "Search...");
-
-            $('button #cetakLaporan').click(function(e){
+            $('button#cetakLaporan').click(function(e){
               e.preventDefault();
               let dateStart = $('#datestart').val();
               let dateEnd = $('#dateend').val();
-              let jenisReport = $('input[name="jenis"]').val();
-              console.log(dateStart);
+              let jenisReport = $('select[name="jenis"]').val();
+              let url = '';
+              if(jenisReport == 'datapengadaan'){
+                url = "{!! route('pengadaan.cetak') !!}";
+              }else if(jenisReport == 'datainventaris'){
+                url = "{!! route('inventaris.cetak') !!}";
+              }else if(jenisReport == 'databarang'){
+                url = "{!! route('barang.cetak') !!}";
+              }else if(jenisReport == 'datapeminjaman'){
+                url = "{!! route('peminjaman.cetak') !!}";
+              }else if(jenisReport == 'datarequest'){
+                url = "{!! route('request.cetak') !!}";
+              }else if(jenisReport == 'datamaintenance'){
+                url = "{!! route('maintenance.cetak') !!}";
+              }else{
+                alert('Pilih Jenis Report terlebih dahulur');
+                return false;
+              }
+              $('input#cetakMulai').val(dateStart);
+              $('input#cetakMulai').val(dateEnd);
+              $('form#cetakForm').attr('action', url);
+              $('form#cetakForm').submit();
+              // $.ajax({
+              //    type:'POST',
+              //    url: url,
+              //    data:{mulai: dateStart, akhir: dateEnd},
+              //    success:function(data){
+              //      console.log('ADA');
+              //       alert(data.success);
+              //    },
+              //    error: function(xhr, textStatus, errorThrown){
+              //         console.log('gagal');
+              //        alert("Status: " + textStatus); alert("Error: " + xhr.responseText);
+              //        alert(xhr.status);
+              //     }
+              // });
             });
         });
 
@@ -135,6 +184,12 @@
                         <i class="glyph-icon icon-clipboard"></i> Cetak
                     </button>
                 </div>
+            </form>
+            <form id="cetakForm" class="" action="" method="post" target="_blank">
+                @CSRF
+                @method('POST')
+                <input id="cetakMulai" type="hidden" name="mulai" value="">
+                <input id="cetakAkhir" type="hidden" name="akhir" value="">
             </form>
         </div>
     </div>

@@ -68,7 +68,7 @@ Route::group(['middleware' => ['web','auth','role:admin,staff_inventaris']], fun
 });
 
 // Modul Pengguna
-Route::group(['middleware' => ['web', 'auth', 'role:admin']], function() {
+Route::group(['middleware' => ['web', 'auth', 'role:admin,yayasan']], function() {
     Route::post('/barang/cetak', 'BarangController@cetak')->name('barang.cetak');
     Route::post('/inventaris/cetak', 'InventarisController@cetak')->name('inventaris.cetak');
     Route::post('/peminjaman/cetak', 'PeminjamanController@cetakTanggal')->name('peminjaman.cetak');

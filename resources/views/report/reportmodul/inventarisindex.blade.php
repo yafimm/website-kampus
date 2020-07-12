@@ -17,7 +17,7 @@
 </section>
 
 <div class="example-box-wrapper">
-    <table id="dt_barang" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <table id="dt_inventaris" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
             <tr>
                 <th></th>
@@ -31,14 +31,15 @@
         </thead>
 
         <tfoot>
-            <tr>
-                <th></th>
-                <th>Kode</th>
-                <th>Nama</th>
-                <th>Unit</th>
-                <th>Harga</th>
-                <th>Tanggal</th>
-                <th>Total</th>
+            <tr class="table-info">
+              <th colspan="4" class="text-center">Total <br><small class="text-info text-sm">*Untuk <span id="totalPage"></span> Data, Harga * Stok</small></th>
+              <th colspan="3" class="text-center" id="totalHarga"></th>
+            </tr>
+            <tr class="table-primary">
+              <th colspan="4" class="text-center">Total Keseluruhan <br><small class="text-info text-sm">*Total Seluruh data.</small></th>
+              <th colspan="3" class="text-center">
+                  Rp. {{ number_format($arr_inventaris->sum('total'), 2, ',', '.') }}
+              </th>
             </tr>
         </tfoot>
 
@@ -56,9 +57,6 @@
             @endforeach
         </tbody>
     </table>
-    <div class="col-12 text-right">
-      <h4>Total Keseluruhan : Rp. {{ number_format($arr_inventaris->sum('total'),2,",",".") }}</h4>
-    </div>
 </div>
 
 

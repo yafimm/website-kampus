@@ -17,7 +17,7 @@
 </section>
 
 <div class="example-box-wrapper">
-    <table id="dt_barang" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <table id="dt_request" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
             <tr>
               <th></th>
