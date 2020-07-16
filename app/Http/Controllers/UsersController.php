@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Peminjaman;
 use DB;
 use Auth;
-use App\Peminjaman;
+use PDF;
 
 class UsersController extends Controller
 {
@@ -100,5 +101,12 @@ class UsersController extends Controller
     public function prosesHapus(Request $request){
         User::findOrFail($request->id)->delete();
         return redirect()->route('user.index')->with('alert-class', 'alert-success')->with('flash_message', 'Data pengguna berhasil dihapus');
+    }
+
+    public function cetak(Request $request)
+    {
+      $data_users = User::where([['created_at','>=', date('Y-m-d', strtotime($request->mulai))], ['created_at','<=', date('Y-m-d', strtotime($request->akhir))]])->orderBy('role', 'desc')->get();
+      $pdf = PDF::loadview('user.laporan_user_pdf', ['data_users'=>$data_users, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
+      return $pdf->download('laporan-data-user.pdf');
     }
 }

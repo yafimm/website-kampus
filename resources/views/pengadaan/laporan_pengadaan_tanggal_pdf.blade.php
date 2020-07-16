@@ -13,7 +13,7 @@
 	</style>
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
-            <td align="center" width="10%"><img src="{{ asset('assets/images-resource/apple-icon-72x72.png') }}"></td>
+            <td align="center" width="10%"><img src="{{ asset('assets/images-resource/apple-icon-72x72.jpg') }}"></td>
             <td align="center" width="80%" style="font-size:20px;"><strong><br>
                     <span style="font-size:20px">Sekolah Tinggi Manajemen Informatika dan Komputer
                         AMIKBANDUNG</span></strong>
@@ -73,6 +73,12 @@
   			</tr>
   			@endforeach
   		</tbody>
+			<tfoot>
+				<tr>
+					<th colspan="3" style="text-align: center; vertical-align: middle;">Total Keseluruhan</th>
+					<th colspan="3" style="text-align: center; vertical-align: middle;">Rp. {{ number_format( $pengadaan->sum('total'), 2, ',', '.') }}</th>
+				</tr>
+			</tfoot>
   	</table>
 
   @endforeach

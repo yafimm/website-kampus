@@ -41,22 +41,41 @@
             var table = $('#dt_maintenance').DataTable();
             var tt = new $.fn.dataTable.TableTools(table);
 
-
             $('.dataTables_filter input').attr("placeholder", "Search...");
 
+            dataTableTotal();
+
+            table.on('search.dt', function () {
+                  dataTableTotal();
+            });
+
+            $('#dt_inventaris_paginate').click(function () {
+              $('.tag').tooltip();
+              dataTableTotal();
+            });
+
+            $('#dt_inventaris_length').on('change', function () {
+              $('.tag').tooltip();
+              dataTableTotal();
+            });
+
             // function sum total harga
-            let startPage = table.page.info().start;
-            let endPage = table.page.info().end;
-            let totalHarga = 0;
-            // console.log(table.page.info().start);
-            for (let i = startPage; i < endPage; i++) {
-                row = table.rows(i).data();
-                // Karena kolom 5 menyesuaikan dengan kolom didatatable, untuk 0 adalah data dari dalam datatable
-                totalHarga += convertRupiahToNumber(row[0][2]);
-                console.log(totalHarga);
+            function dataTableTotal(){
+              let startPage = table.page.info().start;
+              let endPage = table.page.info().end;
+              let totalHarga = 0;
+              let totalData = parseInt(table.page.info().end - table.page.info().start);
+
+              // console.log(table.page.info().start);
+              for (let i = startPage; i < endPage; i++) {
+                  row = table.rows(i).data();
+                  // Karena kolom 5 menyesuaikan dengan kolom didatatable, untuk 0 adalah data dari dalam datatable
+                  totalHarga += convertRupiahToNumber(row[0][3]);
+                  console.log(totalHarga);
+              }
+              $('#totalPage').html(totalData);
+              $('#totalHarga').html(convertNumberToRupiah(totalHarga));
             }
-            $('#totalPage').html(table.page.info().recordsDisplay);
-            $('#totalHarga').html(convertNumberToRupiah(totalHarga));
 
 
             $('.btn-cetak').click(function(){
@@ -117,7 +136,7 @@
 
                     <tfoot>
                         <tr class="table-info">
-                          <th colspan="3" class="text-center">Total <br><small class="text-info text-sm">*Untuk <span id="totalPage"></span> Data, Harga * Stok</small></th>
+                          <th colspan="3" class="text-center">Total <br><small class="text-info text-sm">*Untuk <span id="totalPage"></span> Data</small></th>
                           <th colspan="2" class="text-center" id="totalHarga"></th>
                         </tr>
                         <tr class="table-primary">

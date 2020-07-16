@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Laporan Data Request Barang</title>
+	<title>Laporan Data User</title>
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css') }}">
 </head>
 <body>
@@ -26,49 +26,34 @@
     </table>
     <hr style="border-top: 1px solid black;">
 	<center>
-		<h4>Laporan Data Request Barang</h4>
-		<p>{{ date('d/m/Y', strtotime($mulai)) .' - '. date('d/m/Y', strtotime($akhir)) }}</p>
+		<h4>Laporan Data User</h4>
+		<h6>{{ date('d/m/Y', strtotime($mulai)) .' - '. date('d/m/Y', strtotime($akhir)) }}</h6>
 	</center>
+
 	<table class='table table-bordered'>
 		<thead>
 			<tr>
 				<th>No</th>
-				<th>Nama Pengguna</th>
-				<th>Nama Barang</th>
-        <th>Jumlah</th>
-				<th>Status</th>
-				<th>Tanggal</th>
+				<th>NPM/NPK</th>
+				<th>Nama</th>
+				<th>Email</th>
+				<th>No Telpon</th>
+				<th>Hak Akses</th>
 			</tr>
 		</thead>
 		<tbody>
 			@php $i=1 @endphp
-			@foreach($data_request as $request)
+			@foreach($data_users as $user)
 			<tr>
 				<td>{{ $i++ }}</td>
-				<td>{{$request->user->name}}</td>
-				<td>{{$request->barang ? $request->barang->b_nama : ' - '}}</td>
-        <td>{{$request->rb_jumlah}}</td>
-				<td>
-                    @if ($request->rb_status == 0)
-                        <span class="text-warning">Menunggu</span>
-                    @elseif($request->rb_status == 1)
-                        <span class="text-danger">Ditolak</span>
-                    @elseif($request->rb_status == 2)
-                        <span class="text-primary">Disetujui</span>
-										@else
-												<span class="text-success">Selesai</span>
-                    @endif
-                </td>
-				<td>{{$request->created_at->format('d/m/Y')}}</td>
+				<td>{{$user->role == 'mahasiswa' ? $user->npm : $user->npk}}</td>
+				<td>{{$user->name}}</td>
+				<td>{{$user->email ? $user->email : '-'}}</td>
+				<td>{{$user->no_telpon ? $user->no_telpon : '-' }}</td>
+				<td>{{$user->role}}</td>
 			</tr>
 			@endforeach
 		</tbody>
-		<tfoot>
-				<tr>
-					<th colspan="3">Total Request Unit</th>
-					<th colspan="3">{{ $data_request->sum('rb_jumlah') }}</th>
-				</tr>
-		</tfoot>
 	</table>
 
 </body>
