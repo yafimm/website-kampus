@@ -130,16 +130,16 @@
                             <td>{{date('d-m-Y', strtotime($pengadaan->tanggal))}}</td>
                             <td>Rp. {{number_format($pengadaan->totalkeseluruhan, 2,',','.')}}</td>
                             <td>
-                                <a href="{{ route('pengadaan.show', $pengadaan->no_register) }}" class="btn btn-info"
+                                <a href="{{ route('pengadaan.show', $pengadaan->no_register) }}" class="btn btn-info btn-sm"
                                     data-toggle="tooltip" data-placement="top" title="Lihat Data">
                                     <i class="glyph-icon icon-eye"></i>
                                 </a>
                                 <a href="{{ route('pengadaan.edit', $pengadaan->no_register) }}" data-toggle="tooltip"
-                                    data-placement="top" title="Ubah Data" class="btn btn-warning">
+                                    data-placement="top" title="Ubah Data" class="btn btn-warning btn-sm">
                                     <i class="glyph-icon icon-pencil"></i>
                                 </a>
                                 @if(Auth::user()->hasRole('admin'))
-                                <button class="btn btn-primary btn-md btn-cetak"
+                                <button class="btn btn-primary btn-md btn-cetak btn-sm"
                                     data-no_register="{{ $pengadaan->no_register }}" data-toggle="modal"
                                     data-target="#modalReportSatuan" data-toggle="tooltip" data-placement="top"
                                     title="Cetak">

@@ -106,6 +106,8 @@ Route::group(['middleware' => ['web', 'auth', 'role:admin,staff_inventaris']], f
   Route::get('/pengadaan', 'PengadaanController@index')->name('pengadaan.index');
   Route::post('/pengadaan', 'PengadaanController@store')->name('pengadaan.store');
   Route::get('/pengadaan/create', 'PengadaanController@create')->name('pengadaan.create');
+  Route::get('/pengadaan/cari', 'PengadaanController@loadData')->name('pengadaan.cari');
+  Route::get('/pengadaan/getbarang', 'PengadaanController@getBarang')->name('pengadaan.getBarang');
   Route::get('/pengadaan/{id}', 'PengadaanController@show')->name('pengadaan.show');
   Route::get('/pengadaan/{id}/edit', 'PengadaanController@edit')->name('pengadaan.edit');
   Route::post('/pengadaan/{id}', 'PengadaanController@update')->name('pengadaan.update');

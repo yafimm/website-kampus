@@ -64,25 +64,6 @@
         });
 
     </script>
-    <!-- Sparklines charts -->
-
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/sparklines/sparklines.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/sparklines/sparklines-demo.js') }}">
-    </script>
-
-    <!-- Flot charts -->
-
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-resize.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-stack.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-pie.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-tooltip.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-demo-1.js') }}"></script>
-
-    <!-- PieGage charts -->
-
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/piegage/piegage.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/piegage/piegage-demo.js') }}"></script>
 
     <div id="page-title">
         <h2>Halaman Data pengadaan #{{$arr_pengadaan[0]->no_register }}</h2>
@@ -127,18 +108,6 @@
                             <th>Total</th>
                         </tr>
                     </thead>
-
-                    <tfoot>
-                        <tr>
-                          <th></th>
-                          <th>Kode</th>
-                          <th>Nama Barang / Inventaris</th>
-                          <th>Qty</th>
-                          <th>Biaya</th>
-                          <th>Total</th>
-                        </tr>
-                    </tfoot>
-
                     <tbody>
                         <tr>
                           @foreach($arr_pengadaan as $key => $pengadaan)

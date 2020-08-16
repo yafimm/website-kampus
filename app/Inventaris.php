@@ -20,4 +20,9 @@ class Inventaris extends Model
     {
         return $this->i_unit * $this->i_harga;
     }
+
+    public function pengadaan()
+    {
+        return $this->hasMany('App\Pengadaan', 'barang_id', 'b_id');
+    }
 }

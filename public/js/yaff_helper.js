@@ -13,6 +13,24 @@ function convertNumberToRupiah(value){
   for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
   return 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('')+',00';
 }
+
+function showAlert(type, message)
+{
+    let alert = '<div class="alert alert-'+type+' alert-dismissible" role="alert">'+
+                    message+
+                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+                      '<span aria-hidden="true">&times;</span>'+
+                    '</button>'+
+                '</div>';
+
+    $('#alertDiv').append(alert).hide().fadeIn(1000);
+
+    setTimeout(function() {
+        $("#alertDiv").children('div').fadeOut(300, function() {
+            $("#alertDiv").children('div').remove();
+        });
+    }, 5000);
+}
 //
 // function convertToRupiah(angka)
 // {

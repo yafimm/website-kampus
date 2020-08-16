@@ -7,6 +7,7 @@ use App\Pengadaan;
 use App\Barang;
 use App\Inventaris;
 use PDF;
+use DB;
 
 class PengadaanController extends Controller
 {
@@ -19,16 +20,15 @@ class PengadaanController extends Controller
     public function create()
     {
         $arr_pengadaan = collect(new Pengadaan);
-        $arr_barang = collect(Barang::all()); // Nyatu sama inventaris
-        $arr_inventaris = collect(Inventaris::all());
-        $arr_barang_inventaris = $arr_inventaris->merge($arr_barang);
-        return view('pengadaan.create', compact('arr_pengadaan','arr_barang_inventaris'));
+        // dd($arr_pengadaan);
+        return view('pengadaan.create', compact('arr_pengadaan'));
     }
 
     public function show($id)
     {
         //$id sama dengan no register
         $arr_pengadaan = Pengadaan::where('no_register', $id)->get();
+
         return view('pengadaan.show', compact('arr_pengadaan'));
     }
 
@@ -42,7 +42,7 @@ class PengadaanController extends Controller
               'supplier' => $request->supplier,
               'kode' => $request->kode[$i],
               'tanggal' => date('Y-m-d', strtotime($request->tanggal)),
-              'biaya' => $request->biaya[$i],
+              'biaya' => $request->harga[$i],
               'qty' => $request->qty[$i],
           ];
 
@@ -82,7 +82,7 @@ class PengadaanController extends Controller
               'supplier' => $request->supplier,
               'kode' => $request->kode[$i],
               'tanggal' => date('Y-m-d', strtotime($request->tanggal)),
-              'biaya' => $request->biaya[$i],
+              'biaya' => $request->harga[$i],
               'qty' => $request->qty[$i]
           ];
 
@@ -126,20 +126,51 @@ class PengadaanController extends Controller
 
     }
 
-    public function cetak(Request $request){
-      $data_pengadaan = Pengadaan::where([['no_register','=', $request->no_register]])->get();
-      $pdf = PDF::loadview('pengadaan.laporan_pengadaan_pdf', ['data_pengadaan'=>$data_pengadaan]);
-      return $pdf->download('laporan-data-pengadaan'.$request->no_register.'.pdf');
+    public function loadData(Request $request)
+    {
+        if ($request->has('q')) {
+            $cari = $request->q;
+            $data = DB::table('barang')->select('b_id', 'b_kode', 'b_nama')->where('b_kode', 'LIKE', '%'.$cari.'%')->take(10)->get();
+            return response()->json($data);
+        }
     }
 
-    public function cetakTanggal(Request $request){
-      $data_pengadaan = Pengadaan::where([['tanggal','>=', date('Y-m-d', strtotime($request->mulai))], ['tanggal','<=', date('Y-m-d', strtotime($request->akhir))]])->orderBy('tanggal', 'asc')->with('barang', 'inventaris')->get();
-      $data_pengadaan = $data_pengadaan->mapToGroups(function ($item, $key) {
-          return [$item['no_register'] => $item];
-      });
+    public function getBarang(Request $request)
+    {
+        if($request->kode){
+            $jenisBarang = substr($request->kode, 0, 3);
+            if($jenisBarang == 'INV'){
+                $data = Inventaris::where('i_kode', $request->kode)->first();
+            }else{
+                $data = Barang::where('b_kode', $request->kode)->first();
+            }
+            if(count($data->pengadaan) > 0){
+                $barangPengadaan = $data->pengadaan->where('no_register', $request->no_register)->first();
+                if($barangPengadaan){
+                    return response()->json(['message' => 'Gagal menambahkan data, karena data ini sudah digunakan dipengadaan ini ('.$request->no_register.') !!', 'status' => false]);
+                }
+            }
+            return response()->json($data);
+        }
+        return response()->json(['message' => 'Gagal menambahkan data, karena data tidak ditemukan', 'status' => false]);
+    }
 
-      $pdf = PDF::loadview('pengadaan.laporan_pengadaan_tanggal_pdf', ['data_pengadaan'=>$data_pengadaan, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
-      return $pdf->download('laporan-data-pengadaan-'.$request->mulai.'_'.$request->mulai.'.pdf');
+    public function cetak(Request $request)
+    {
+        $data_pengadaan = Pengadaan::where([['no_register','=', $request->no_register]])->get();
+        $pdf = PDF::loadview('pengadaan.laporan_pengadaan_pdf', ['data_pengadaan'=>$data_pengadaan]);
+        return $pdf->download('laporan-data-pengadaan'.$request->no_register.'.pdf');
+    }
+
+    public function cetakTanggal(Request $request)
+    {
+        $data_pengadaan = Pengadaan::where([['tanggal','>=', date('Y-m-d', strtotime($request->mulai))], ['tanggal','<=', date('Y-m-d', strtotime($request->akhir))]])->orderBy('tanggal', 'asc')->with('barang', 'inventaris')->get();
+        $data_pengadaan = $data_pengadaan->mapToGroups(function ($item, $key) {
+            return [$item['no_register'] => $item];
+        });
+
+        $pdf = PDF::loadview('pengadaan.laporan_pengadaan_tanggal_pdf', ['data_pengadaan'=>$data_pengadaan, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
+        return $pdf->download('laporan-data-pengadaan-'.$request->mulai.'_'.$request->mulai.'.pdf');
     }
 
 }

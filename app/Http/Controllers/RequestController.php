@@ -47,7 +47,7 @@ class RequestController extends Controller
             $jenis = 2;
             $data_request = RequestBarang::find($id);
             $data_barang = Barang::find($data_request->b_id);
-            if($data_barang->b_stock < $data_request->rb_jumlah){
+            if($data_barang->getStok() < $data_request->rb_jumlah){
               // gagal disetujui karena stok habis
               return redirect()->route('request.index')->with('alert-class', 'alert-danger')->with('flash_message', 'Gagal, Stock barang tidak mencukupi !!');
             }else{

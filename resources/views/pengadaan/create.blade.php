@@ -24,62 +24,127 @@
             });
 
     </script>
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
     <script type="text/javascript">
-      $(document).ready(function(){
-          var totalDetail = 0;
-          $('#tambah-maintenance-detail').click(function(){
-              $html ='<div class="panel panel-default">'+
-                '<div class="panel-heading"><h5>Data Detail ke - '+ (totalDetail + 1) +'</h5></div>'+
-                '<div class="row panel-body" style="margin-bottom:10p" id="row'+ totalDetail++ +'">'+
-                '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
-                  '<label for="exampleFormControlSelect1">Barang / Inventaris</label>'+
-                  '<div class="col-12">'+
-                    '<select required name="barang_inventaris[]" type="text" class="form-control" id="" placeholder="Kolom Kode" required>'+
-                      @foreach($arr_barang_inventaris as $barang_inventaris)
-                        @if(isset($barang_inventaris->b_id))
-                          '<option value="BRG{{ $barang_inventaris->b_id }}"> {{ $barang_inventaris->b_nama }}</option>'+
-                        @else
-                          '<option value="INV{{ $barang_inventaris->i_id }}"> {{ $barang_inventaris->i_nama }}</option>'+
-                        @endif
-                      @endforeach
-                    '</select>'+
-                  '</div>'+
-                '</div>'+
-                '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
-                  '<label class="col-12 control-label">Jumlah Barang / Inventaris</label>'+
-                  '<div class="col-12">'+
-                    '<input required name="qty[]" type="number" class="form-control" id="" placeholder="Jumlah Barang" required>'+
-                  '</div>'+
-                '</div>'+
-                '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
-                  '<label class="col-12 control-label">Biaya</label>'+
-                  '<div class="col-12">'+
-                    '<input required name="biaya[]" type="number" class="form-control" id="" placeholder="Kolom Biaya" required>'+
-                  '</div>'+
-                '</div>'+
-                '</div>';
+      var urlCari = '{{ route("pengadaan.cari") }}';
+      var urlGetBarang = '{{ route("pengadaan.getBarang")}}';
+      var nomorPengadaanBarang = 0;
 
-                $('#body-form-detail').append($html);
+      function hapusItem(index)
+      {
+          $('#tbl_barang tr#pengadaan-detail-'+index).remove();
+          showAlert('success', 'Berhasil hapus data barang pada detail pengadaan');
+      }
 
+      function setNetto()
+      {
+          console.log('ada');
+          let netto = 0;
+          $('input[name="totalHarga[]"]').each(function() {
+             netto += parseInt($(this).val());
           });
+          $('#netto').val(convertNumberToRupiah(netto));
+      }
+
+      function setTotalHarga(index, value, qty)
+      {
+          let totalHarga = value * qty;
+          $('#totalHarga-'+index).val(totalHarga);
+          $('#totalHargaSpan-'+index).html(convertNumberToRupiah(totalHarga));
+          setNetto();
+      }
+
+      function setQty(index, value)
+      {
+          value = value.replace(/[^0-9]/g, '');
+          let harga = $('#harga-'+index).val();
+          $('#qty-'+index).val(value);
+          setTotalHarga(index, harga, value);
+      }
+
+      function setHarga(index, value)
+      {
+          value = value.replace(/[^0-9]/g, '');
+          let qty = $('#qty-'+index).val();
+          $('#harga-'+index).val(value);
+          setTotalHarga(index, value, qty);
+      }
+
+      $(document).ready(function(){
+
+        let arrPengadaanDetail = [];
+        $('.cari').select2({
+          placeholder: 'Cari berdasarkan kode ..',
+          ajax: {
+            url: urlCari,
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+              return {
+                results:  $.map(data, function (item) {
+                  return {
+                    text: item.b_kode+" - "+item.b_nama,
+                    id: item.b_kode,
+                  }
+                })
+              };
+            },
+            cache: true
+          }
+        });
+
+        $('#cari').change(function(){
+
+            $.ajax({
+                type: 'GET', //THIS NEEDS TO BE GET
+                url: urlGetBarang,
+                dataType: 'json',
+                data: {kode: $(this).val(), no_register: $('input[name="no_register"').val()},
+                success: function (data) {
+                  if(data.status == false){
+                    $('#cari').empty();
+                    showAlert('danger', data.message);
+                  }else{
+                    let kode = data.b_kode ? data.b_kode : data.i_kode;
+                    let nama = data.b_nama ? data.b_nama : data.i_nama;
+                    let id = data.b_id ? "BRG"+data.b_id : "INV"+data.i_id;
+
+                    //Kalo data sudah ada di detail, keluar alert
+                    if(arrPengadaanDetail.includes(kode)){
+                      showAlert('danger', 'Gagal menambahkan data, karena data '+ kode +' - '+ nama + ' Sudah dimasukkan !');
+                      $('#cari').empty();
+                    }else{
+                      let html = '';
+                      html += '<tr id="pengadaan-detail-'+nomorPengadaanBarang+'">'+
+                                '<td>'+ (nomorPengadaanBarang + 1) +' <input type="hidden" name="barang_inventaris[]" value="'+id+'"> </td>'+
+                                '<td>'+kode+'</td>'+
+                                '<td>'+nama+'</td>'+
+                                '<td><input id="qty-'+nomorPengadaanBarang+'" class="form-control" type="text" name="qty[]" onkeyup="setQty('+nomorPengadaanBarang+', value)" value="0"></td>'+
+                                '<td><input id="harga-'+nomorPengadaanBarang+'" class="form-control" type="text" name="harga[]" onkeyup="setHarga('+nomorPengadaanBarang+', value)" value="0"></td>'+
+                                '<td><span id="totalHargaSpan-'+nomorPengadaanBarang+'">Rp. 0,00</span><input type="hidden" id="totalHarga-'+nomorPengadaanBarang+'" class="form-control" type="text" name="totalHarga[]" value="0" readonly></td>'+
+                                '<td><button type="button" class="btn btn-danger btn-sm" onclick="hapusItem('+nomorPengadaanBarang+')" data-id="'+nomorPengadaanBarang+'" data-toggle="tooltip" data-placement="top"><i class="glyph-icon icon-trash"></i></button></td>'+
+                              '</tr>';
+
+                     $('#tbl_barang tbody').append(html);
+                     $('#cari').empty();
+                     showAlert('success', 'Berhasil menambahkan data '+ kode +' - '+nama);
+                     arrPengadaanDetail.push(kode);
+                     nomorPengadaanBarang++;
+                  }
+
+                }
+
+
+              },error:function(data){
+                     console.log(data);
+                }
+            });
+        });
+
       });
+
     </script>
-
-    <!-- Flot charts -->
-
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-resize.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-stack.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-pie.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-tooltip.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-demo-1.js') }}"></script>
-
-    <!-- PieGage charts -->
-
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/piegage/piegage.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/piegage/piegage-demo.js') }}"></script>
-
 
     <div id="page-title">
         <h2>Halaman Tambah Data Pengadaan</h2>
@@ -88,9 +153,6 @@
 
     <div class="panel">
         <div class="panel-body">
-            <h3 class="title-hero">
-
-            </h3>
             <div class="example-box-wrapper">
                 <div class="example-box-wrapper">
                     <form class="form-horizontal" action="{{ route('pengadaan.store') }}" method="POST"
@@ -122,11 +184,37 @@
                                       <i class="glyph-icon icon-calendar"></i>
                                   </span>
                                   <input required id="datestart" name="tanggal" type="text"
-                                      class="bootstrap-datepicker form-control" value="{{ Request::get('tanggal_pengadaan') }}"
+                                      class="bootstrap-datepicker form-control" value="{{ Request::get('tanggal_pengadaan') ? Request::get('tanggal_pengadaan') : date('d-m-Y')  }}"
                                       data-date-format="mm/dd/yyyy">
                               </div>
                           </div>
                         </div>
+
+                        <hr>
+                        <div id="alertDiv">
+                        </div>
+                        <div class="form-group">
+                          <div class="col-md-6 col-lg-3 col-sm-12">
+                              <div class="col-sm-12">
+                                <div class="input-prepend input-group">
+                                    <span class="add-on input-group-addon">
+                                        <i class="glyph-icon icon-search"></i>
+                                    </span>
+                                    <select id="cari" class="cari form-control" style="width:500px;" name="cari"></select>
+                                </div>
+                              </div>
+                          </div>
+
+                          <div class="col-md-3 col-offset-md-3 col-lg-3 col-lg-offset-6 col-sm-12">
+                              <label class="col-sm-3 control-label">Netto</label>
+                              <div class="col-sm-9">
+                                  <div class="input-prepend input-group">
+                                      <input id="netto" name="netto" type="text" class="form-control" value="Rp. 0,00" readonly>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+
 
                         @include('pengadaan.shared.form')
                     </form>

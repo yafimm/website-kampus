@@ -26,60 +26,46 @@
     </script>
 
     <script type="text/javascript">
-    $(document).ready(function(){
-        var totalDetail = 0;
-        $('#tambah-maintenance-detail').click(function(){
-          $html ='<div class="panel panel-default">'+
-            '<div class="panel-heading"><h5>Data Detail ke - '+ (totalDetail + 1) +'</h5></div>'+
-            '<div class="row panel-body" style="margin-bottom:10p" id="row'+ totalDetail++ +'">'+
-            '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
-              '<label for="exampleFormControlSelect1">Barang</label>'+
-              '<div class="col-12">'+
-                '<select required name="barang_inventaris[]" type="text" class="form-control" id="" placeholder="Kolom Kode" required>'+
-                @foreach($arr_barang_inventaris as $barang_inventaris)
-                  @if(isset($barang_inventaris->b_id))
-                    '<option value="BRG{{ $barang_inventaris->b_id }}"> {{ $barang_inventaris->b_nama }}</option>'+
-                  @else
-                    '<option value="INV{{ $barang_inventaris->i_id }}"> {{ $barang_inventaris->i_nama }}</option>'+
-                  @endif
-                @endforeach
-                '</select>'+
-              '</div>'+
-            '</div>'+
-            '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
-              '<label class="col-12 control-label">Jumlah Barang</label>'+
-              '<div class="col-12">'+
-                '<input required name="qty[]" type="number" class="form-control" id="" placeholder="Jumlah Barang" required>'+
-              '</div>'+
-            '</div>'+
-            '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
-              '<label class="col-12 control-label">Biaya</label>'+
-              '<div class="col-12">'+
-                '<input required name="biaya[]" type="number" class="form-control" id="" placeholder="Kolom Biaya" required>'+
-              '</div>'+
-            '</div>'+
-            '</div>';
+        function hapusItem(index)
+        {
+            $('#tbl_barang tr#pengadaan-detail-'+index).remove();
+            showAlert('success', 'Berhasil hapus data barang pada detail pengadaan');
+        }
 
-              $('#body-form-detail').append($html);
+        function setNetto()
+        {
+            console.log('ada');
+            let netto = 0;
+            $('input[name="totalHarga[]"]').each(function() {
+               netto += parseInt($(this).val());
+            });
+            $('#netto').val(convertNumberToRupiah(netto));
+        }
 
-        });
-    });
+        function setTotalHarga(index, value, qty)
+        {
+            let totalHarga = value * qty;
+            $('#totalHarga-'+index).val(totalHarga);
+            $('#totalHargaSpan-'+index).html(convertNumberToRupiah(totalHarga));
+            setNetto();
+        }
+
+        function setQty(index, value)
+        {
+            value = value.replace(/[^0-9]/g, '');
+            let harga = $('#harga-'+index).val();
+            $('#qty-'+index).val(value);
+            setTotalHarga(index, harga, value);
+        }
+
+        function setHarga(index, value)
+        {
+            value = value.replace(/[^0-9]/g, '');
+            let qty = $('#qty-'+index).val();
+            $('#harga-'+index).val(value);
+            setTotalHarga(index, value, qty);
+        }
     </script>
-
-    <!-- Flot charts -->
-
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-resize.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-stack.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-pie.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-tooltip.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-demo-1.js') }}"></script>
-
-    <!-- PieGage charts -->
-
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/piegage/piegage.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/piegage/piegage-demo.js') }}"></script>
-
 
     <div id="page-title">
         <h2>Halaman Ubah Data Pengadaan</h2>
@@ -101,7 +87,7 @@
                             <label class="col-sm-3 control-label">Nomor Register</label>
                             <div class="col-sm-6">
                                 <input required name="no_register" type="text" class="form-control" id="" value="{{ $arr_pengadaan[0]->no_register }}"
-                                    placeholder="Kolom Nomor Register">
+                                    placeholder="Kolom Nomor Register" readonly>
                             </div>
                         </div>
 
@@ -123,6 +109,18 @@
                                   <input required id="datestart" name="tanggal" type="text"
                                       class="bootstrap-datepicker form-control" value="{{ date('d-m-Y', strtotime($arr_pengadaan[0]->tanggal)) }}"
                                       data-date-format="mm/dd/yyyy">
+                              </div>
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+
+                          <div class="col-md-3 col-offset-md-9 col-md-offset-6 col-lg-3 col-lg-offset-6 col-sm-12">
+                              <label class="col-sm-3 control-label">Netto</label>
+                              <div class="col-sm-9">
+                                  <div class="input-prepend input-group">
+                                      <input id="netto" name="netto" type="text" class="form-control" value="Rp. {{ numbeR_format($arr_pengadaan->sum('total'), 2, ',', '.') }}" readonly>
+                                  </div>
                               </div>
                           </div>
                         </div>

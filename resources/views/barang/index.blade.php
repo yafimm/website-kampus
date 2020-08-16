@@ -132,7 +132,7 @@
                                 <td>{{$key + 1}}</td>
                                 <td>{{$barang->b_kode}}</td>
                                 <td>{{$barang->b_nama}}</td>
-                                <td>{{$barang->b_stock}}</td>
+                                <td>{{$barang->getStok()}}</td>
                                 <td>{{$barang->b_satuan}}</td>
                                 <td>{{'Rp. '.number_format($barang->b_harga, 2, ',' ,'.')}}</td>
                                 <td>{{'Rp. '.number_format($barang->total, 2, ',', '.')}}</td>

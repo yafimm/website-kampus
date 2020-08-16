@@ -16,6 +16,18 @@
     <script type="text/javascript" src="{{ asset('assets/widgets/charts/sparklines/sparklines-demo.js') }}">
     </script>
 
+
+    <script type="text/javascript">
+        /* Datatables export */
+
+          $(document).ready(function () {
+              var table = $('#dt_barang').DataTable();
+              var tt = new $.fn.dataTable.TableTools(table);
+              $('.dataTables_filter input').attr("placeholder", "Search...");
+          });
+
+    </script>
+
     <!-- Flot charts -->
 
     <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot.js') }}"></script>
@@ -51,10 +63,10 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Stock Barang</label>
+                            <label class="col-sm-3 control-label">Stok Barang</label>
                             <div class="col-sm-6">
-                                <input disabled name="stock" type="number" class="form-control" id=""
-                                    placeholder="Kolom Stock Barang" value="{{$data_barang->b_stock}}">
+                                <input disabled name="stock" type="text" class="form-control" id=""
+                                    placeholder="Kolom Stock Barang" value="{{$data_barang->getStok()}}">
                             </div>
                         </div>
                         <div class="form-group">
@@ -99,6 +111,40 @@
                                 </div>
                             </div>
 
+                        </div>
+                        <div class="">
+                          <h3>Riwayat Stok</h3>
+                          <hr>
+                          <table id="dt_barang" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Tanggal</th>
+                                        <th>No Register</th>
+                                        <th>Satuan</th>
+                                        <th>Stok Lama</th>
+                                        <th>Stok Baru</th>
+                                        <th>Total Stok</th>
+                                        <th>Total Harga</th>
+                                    </tr>
+                                </thead>
+
+
+                                <tbody>
+                                    @foreach ($data_barang->pengadaan as $key => $pengadaan)
+                                      <tr>
+                                          <td>{{$key + 1}}</td>
+                                          <td>{{date('d/m/Y', strtotime($pengadaan->tanggal))}}</td>
+                                          <td>{{$pengadaan->no_register}}</td>
+                                          <td>{{$data_barang->b_satuan}}</td>
+                                          <td>{{$data_barang->getStok($pengadaan->created_at) }}</td>
+                                          <td>{{$pengadaan->qty}}</td>
+                                          <td>{{ $pengadaan->qty + $data_barang->getStok($pengadaan->created_at) }}</td>
+                                          <td>{{'Rp. '.number_format($pengadaan->biaya, 2, ',' ,'.')}}</td>
+                                      </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                         <div class="form-group">
 

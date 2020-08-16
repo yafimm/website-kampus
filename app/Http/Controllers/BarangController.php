@@ -113,4 +113,6 @@ class BarangController extends Controller
        return $pdf->download('laporan-data-barang.pdf');
      }
 
+     
+
 }

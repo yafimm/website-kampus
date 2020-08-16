@@ -73,8 +73,8 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Stock Barang</label>
                             <div class="col-sm-6">
-                                <input required name="stock" type="number" class="form-control" id=""
-                                    placeholder="Kolom Stock Barang" value="{{old('stock', $data_barang->b_stock)}}">
+                                <input required name="stock" type="text" class="form-control" id=""
+                                    placeholder="Kolom Stock Barang" value="{{old('stock', $data_barang->getStok())}}" readonly>
                                 @if($errors->has('stock'))
                                    <small class="form-text text-danger">*{{ $errors->first('stock') }}</small>
                                 @endif
