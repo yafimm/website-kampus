@@ -64,7 +64,7 @@
               let jenisReport = $('select[name="jenis"]').val();
               let url = '';
               if(jenisReport == 'datapengadaan'){
-                url = "{!! route('pengadaan.cetak') !!}";
+                url = "{!! route('pengadaan.cetakTanggal') !!}";
               }else if(jenisReport == 'datainventaris'){
                 url = "{!! route('inventaris.cetak') !!}";
               }else if(jenisReport == 'databarang'){
@@ -74,13 +74,15 @@
               }else if(jenisReport == 'datarequest'){
                 url = "{!! route('request.cetak') !!}";
               }else if(jenisReport == 'datamaintenance'){
-                url = "{!! route('maintenance.cetak') !!}";
+                url = "{!! route('maintenance.cetakTanggal') !!}";
+              }else if(jenisReport == 'datapengguna'){
+                url = "{!! route('user.cetak') !!}";
               }else{
-                alert('Pilih Jenis Report terlebih dahulur');
+                alert('Pilih Jenis Report terlebih dahulu');
                 return false;
               }
               $('input#cetakMulai').val(dateStart);
-              $('input#cetakMulai').val(dateEnd);
+              $('input#cetakAkhir').val(dateEnd);
               $('form#cetakForm').attr('action', url);
               $('form#cetakForm').submit();
               // $.ajax({

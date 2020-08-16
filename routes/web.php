@@ -77,6 +77,7 @@ Route::group(['middleware' => ['web', 'auth', 'role:admin,yayasan']], function()
     Route::post('/maintenance/cetak', 'MaintenanceController@cetak')->name('maintenance.cetak');
     Route::post('/maintenance/cetakTanggal', 'MaintenanceController@cetakTanggal')->name('maintenance.cetakTanggal');
     Route::post('/request/cetakTanggal', 'RequestController@cetakTanggal')->name('request.cetak');
+    Route::post('/pengguna/cetak', 'UsersController@cetak')->name('user.cetak');
 
 
     Route::get('/pengguna', 'UsersController@index')->name('user.index');

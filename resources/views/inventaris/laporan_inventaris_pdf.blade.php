@@ -34,10 +34,11 @@
 			<tr>
 				<th>No</th>
 				<th>Nama</th>
-				<th>Unit</th>
-				<th>Harga</th>
         <th>Posisi</th>
 				<th>Keterangan</th>
+				<th>Unit</th>
+				<th>Harga</th>
+				<th>Total</th>
 				<th>Tanggal</th>
 			</tr>
 		</thead>
@@ -47,14 +48,21 @@
 			<tr>
 				<td>{{ $i++ }}</td>
 				<td>{{$inventaris->i_nama}}</td>
-				<td>{{$inventaris->i_unit}}</td>
-				<td>Rp. {{$inventaris->i_harga ? number_format($inventaris->i_harga, 2, ',', '.') : '0,00'}}</td>
         <td>{{$inventaris->i_posisi}}</td>
 				<td>{{$inventaris->i_keterangan}}</td>
+				<td>{{$inventaris->i_unit}}</td>
+				<td>Rp. {{$inventaris->i_harga ? number_format($inventaris->i_harga, 2, ',', '.') : '0,00'}}</td>
+				<td>Rp. {{number_format($inventaris->total, 2, ',', '.')}}</td>
 				<td>{{$inventaris->created_at->format('d/m/Y')}}</td>
 			</tr>
 			@endforeach
 		</tbody>
+		<tfoot>
+			<tr>
+				<th colspan="4" style="text-align: center; vertical-align: middle;">Total Keseluruhan</th>
+				<th colspan="4" style="text-align: center; vertical-align: middle;">Rp. {{ number_format( $data_inventaris->sum('total'), 2, ',', '.') }}</th>
+			</tr>
+		</tfoot>
 	</table>
 
 </body>

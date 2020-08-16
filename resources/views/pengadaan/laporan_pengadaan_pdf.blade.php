@@ -13,7 +13,7 @@
 	</style>
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
-            <td align="center" width="10%"><img src="{{ asset('assets/images-resource/apple-icon-72x72.png') }}"></td>
+            <td align="center" width="10%"><img src="{{ asset('assets/images-resource/apple-icon-72x72.jpg') }}"></td>
             <td align="center" width="80%" style="font-size:20px;"><strong><br>
                     <span style="font-size:20px">Sekolah Tinggi Manajemen Informatika dan Komputer
                         AMIKBANDUNG</span></strong>
@@ -28,7 +28,7 @@
 	<center>
 		<h4>Laporan Data Pengadaan</h4>
 		<p>No Register #{{ $data_pengadaan[0]->no_register }}</p>
-		<p>{{ date('d-m-Y', strtotime($data_pengadaan[0]->tanggal)) }}</p>
+		<p>{{ date('d/m/Y', strtotime($data_pengadaan[0]->tanggal)) }}</p>
 		<p>{{ $data_pengadaan[0]->supplier }}</p>
 	</center>
 
@@ -70,6 +70,12 @@
 			</tr>
 			@endforeach
 		</tbody>
+		<tfoot>
+			<tr>
+				<th colspan="3" style="text-align: center; vertical-align: middle;">Total Keseluruhan</th>
+				<th colspan="3" style="text-align: center; vertical-align: middle;">Rp. {{ number_format( $data_pengadaan->sum('total'), 2, ',', '.') }}</th>
+			</tr>
+		</tfoot>
 	</table>
 
 </body>

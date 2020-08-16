@@ -110,7 +110,9 @@ class BarangController extends Controller
      public function cetak(Request $request){
        $data_barang = Barang::where([['created_at','>=', date('Y-m-d', strtotime($request->mulai))], ['created_at','<=', date('Y-m-d', strtotime($request->akhir))]])->get();
        $pdf = PDF::loadview('barang.laporan_barang_pdf', ['data_barang'=>$data_barang, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
-       return $pdf->download('laporan-data-barang.pdf');
+       // return view('barang.laporan_barang_pdf',  ['data_barang'=>$data_barang, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
+       // return $pdf->download('laporan-data-barang.pdf');
+       return $pdf->stream();
      }
 
      

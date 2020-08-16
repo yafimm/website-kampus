@@ -32,16 +32,15 @@
         </thead>
 
         <tfoot>
-            <tr>
-              <th></th>
-              <th>No Register</th>
-              <th>Kode</th>
-              <th>Nama</th>
-              <th>Posisi</th>
-              <th>Tanggal</th>
-              <th>Biaya</th>
-              <th>Keterangan</th>
-              <th>Status</th>
+            <tr class="table-info">
+              <th colspan="6" class="text-center">Total <br><small class="text-info text-sm">*Untuk <span id="totalPage"></span> Data, Harga * Stok</small></th>
+              <th colspan="3" class="text-center" id="totalHarga"></th>
+            </tr>
+            <tr class="table-primary">
+              <th colspan="6" class="text-center">Total Keseluruhan <br><small class="text-info text-sm">*Total Seluruh data.</small></th>
+              <th colspan="3" class="text-center">
+                  Rp. {{ number_format($arr_maintenance->sum('biaya'), 2, ',', '.') }}
+              </th>
             </tr>
         </tfoot>
 
@@ -69,9 +68,6 @@
             @endforeach
         </tbody>
     </table>
-    <div class="col-12 text-right">
-      <h4>Total Keseluruhan : Rp. {{ number_format($arr_maintenance->sum('biaya'),2,",",".") }}</h4>
-    </div>
 </div>
 
 

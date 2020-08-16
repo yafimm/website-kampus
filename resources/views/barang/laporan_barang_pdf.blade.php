@@ -2,7 +2,7 @@
 <html>
 <head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Laporan Data Barang</title>
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css') }}" media="all">
 </head>
 <body>
 	<style type="text/css">
@@ -35,9 +35,10 @@
 			<tr>
 				<th>No</th>
 				<th>Nama</th>
+				<th>Satuan</th>
 				<th>Stock</th>
 				<th>Harga</th>
-				<th>Satuan</th>
+				<th>Total</th>
 				<th>Tanggal</th>
 			</tr>
 		</thead>
@@ -47,13 +48,20 @@
 			<tr>
 				<td>{{ $i++ }}</td>
 				<td>{{$barang->b_nama}}</td>
+				<td>{{$barang->b_satuan}}</td>
 				<td>{{$barang->b_stock}}</td>
 				<td>Rp. {{$barang->b_harga ? number_format($barang->b_harga, 2 ,',','.') : '0,00' }}</td>
-				<td>{{$barang->b_satuan}}</td>
+				<td>Rp. {{number_format($barang->total, 2, ',', '.')}}</td>
 				<td>{{$barang->created_at->format('d/m/Y')}}</td>
 			</tr>
 			@endforeach
 		</tbody>
+		<tfoot>
+			<tr>
+				<th colspan="3" style="text-align: center; vertical-align: middle;">Total Keseluruhan</th>
+				<th colspan="4" style="text-align: center; vertical-align: middle;">Rp. {{ number_format( $data_barang->sum('total'), 2, ',', '.') }}</th>
+			</tr>
+		</tfoot>
 	</table>
 
 </body>

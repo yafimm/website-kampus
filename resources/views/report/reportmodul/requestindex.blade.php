@@ -112,12 +112,19 @@
               dataChart[2][i] = 0;
             }
 
+            if(dataHarga[key][3] != null){
+              dataChart[3][i] = dataHarga[key][3];
+            }else{
+              dataChart[3][i] = 0;
+            }
+
           }else if(dataChart != 0){
 
           }else{
             dataChart[0][i] = 0;
             dataChart[1][i] = 0;
             dataChart[2][i] = 0;
+            dataChart[3][i] = 0;
           }
         }
       }
@@ -149,6 +156,11 @@
                     label: 'Disetujui',
                     backgroundColor: 'rgba(7, 155, 239, 1)',
                     data: dataChart[2]
+                },
+                {
+                    label: 'Selesai',
+                    backgroundColor: 'rgba(46, 204, 113, 1)',
+                    data: dataChart[3]
                 }]
             },
 

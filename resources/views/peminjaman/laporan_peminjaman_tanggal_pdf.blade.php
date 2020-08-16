@@ -34,10 +34,10 @@
 			<tr>
 				<th>No</th>
 				<th>Nama Pengguna</th>
-                <th>Tanggal Mulai Peminjaman</th>
-                <th>Tanggal Berakhir Peminjaman</th>
+				<th>Daftar Inventaris</th>
 				<th>Status</th>
-                <th>Daftar Inventaris</th>
+        <th>Tanggal Mulai Peminjaman</th>
+        <th>Tanggal Berakhir Peminjaman</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -46,8 +46,19 @@
 			<tr>
 				<td>{{ $i++ }}</td>
 				<td>{{$peminjaman->user ? $peminjaman->user->name : '- Data pengguna sudah dihapus -'}}</td>
-				<td>{{ date('d/m/Y', strtotime($peminjaman->p_date)) }}</td>
-        <td>{{ date('d/m/Y', strtotime($peminjaman->p_date_end)) }}</td>
+				<td>
+					@if($peminjaman->inventaris)
+					@foreach($peminjaman->inventaris as $inventaris)
+					@if($loop->last)
+					{{ $inventaris->i_nama }}
+					@else
+					{{ $inventaris->i_nama }},
+					@endif
+					@endforeach
+					@else
+					-
+					@endif
+				</td>
 				<td>
             @if ($peminjaman->p_status == 0)
                 <span class="text-warning">Menunggu</span>
@@ -59,19 +70,8 @@
 								<span class="text-success">Selesai</span>
             @endif
         </td>
-				<td>
-					@if($peminjaman->inventaris)
-						@foreach($peminjaman->inventaris as $inventaris)
-							@if($loop->last)
-							{{ $inventaris->i_nama }}
-							@else
-							{{ $inventaris->i_nama }},
-							@endif
-						@endforeach
-					@else
-						-
-					@endif
-        </td>
+				<td>{{ date('d/m/Y', strtotime($peminjaman->p_date)) }}</td>
+				<td>{{ date('d/m/Y', strtotime($peminjaman->p_date_end)) }}</td>
 			</tr>
 			@endforeach
 		</tbody>

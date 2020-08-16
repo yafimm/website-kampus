@@ -73,6 +73,12 @@
 			</tr>
 			@endforeach
 		</tbody>
+		<tfoot>
+			<tr>
+				<th colspan="3" style="text-align: center; vertical-align: middle;">Total Keseluruhan</th>
+				<th colspan="3" style="text-align: center; vertical-align: middle;">Rp. {{ number_format( $data_maintenance->sum('biaya'), 2, ',', '.') }}</th>
+			</tr>
+		</tfoot>
 	</table>
 
 </body>
