@@ -1,6 +1,6 @@
 <div class="form-group my-2">
-  <div class="body-form" id="body-form-detail">
-    <table id="tbl_barang" class="table table-striped table-bordered">
+  <div class="example-box-wrapper" style="overflow: auto">
+    <table id="tbl_pengadaan_detail" class="table table-striped table-bordered">
     <thead>
       <th>No</th>
       <th>Kode</th>

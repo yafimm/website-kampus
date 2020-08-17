@@ -112,7 +112,7 @@
                 <a href="{{ route('barang.tambah') }}" class="btn btn-primary">
                     <i class="glyph-icon icon-plus-circle"></i> Tambah
                 </a>
-                @if(Auth::user()->hasRole('admin'))
+                @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris'))
                 <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportTahunan">
                     <i class="glyph-icon icon-clipboard"></i> Cetak Laporan
                 </button>
@@ -169,11 +169,6 @@
                                         data-barangid="{{$barang->b_id}}" data-toggle="tooltip" data-placement="top"
                                         title="Hapus Data">
                                         <i class="glyph-icon icon-trash"></i>
-                                    </button>
-                                    <button class="btn btn-primary btn-sm" data-toggle="modal"
-                                        data-target="#modalRestock" data-barangid="{{$barang->b_id}}"
-                                        data-toggle="tooltip" data-placement="top" title="Tambah Stok">
-                                        <i class="glyph-icon icon-plus"></i>
                                     </button>
                                 </td>
                             </tr>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\PengadaanRequest;
 use App\Pengadaan;
 use App\Barang;
 use App\Inventaris;
@@ -32,15 +33,13 @@ class PengadaanController extends Controller
         return view('pengadaan.show', compact('arr_pengadaan'));
     }
 
-    public function store(Request $request)
+    public function store(PengadaanRequest $request)
     {
         $data = $request->all();
-        //Patokan total arraynya dari jumlah barang
         for ($i=0; $i < count($request->barang_inventaris); $i++) {
           $pengadaan[] = [
               'no_register' => $request->no_register,
               'supplier' => $request->supplier,
-              'kode' => $request->kode[$i],
               'tanggal' => date('Y-m-d', strtotime($request->tanggal)),
               'biaya' => $request->harga[$i],
               'qty' => $request->qty[$i],
@@ -71,7 +70,7 @@ class PengadaanController extends Controller
 
     }
 
-    public function update(Request $request, $id)
+    public function update(PengadaanRequest $request, $id)
     {
         $data = $request->all();
         //Patokan total arraynya dari jumlah barang
@@ -80,7 +79,6 @@ class PengadaanController extends Controller
           $pengadaan[] = [
               'no_register' => $id,
               'supplier' => $request->supplier,
-              'kode' => $request->kode[$i],
               'tanggal' => date('Y-m-d', strtotime($request->tanggal)),
               'biaya' => $request->harga[$i],
               'qty' => $request->qty[$i]
@@ -130,7 +128,7 @@ class PengadaanController extends Controller
     {
         if ($request->has('q')) {
             $cari = $request->q;
-            $data = DB::table('barang')->select('b_id', 'b_kode', 'b_nama')->where('b_kode', 'LIKE', '%'.$cari.'%')->take(10)->get();
+            $data = DB::table('barang')->select('b_id', 'b_kode', 'b_nama')->where('b_kode', 'LIKE', '%'.$cari.'%')->orWhere('b_nama', 'LIKE', '%'.$cari.'%')->take(10)->get();
             return response()->json($data);
         }
     }

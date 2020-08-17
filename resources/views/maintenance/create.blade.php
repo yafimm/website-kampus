@@ -24,65 +24,13 @@
             });
 
     </script>
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
     <script type="text/javascript">
-      $(document).ready(function(){
-          var totalDetail = 0;
-          $('#tambah-maintenance-detail').click(function(){
-              $html = '<h5>Data Detail ke - '+ (totalDetail + 1) +'</h5>'+
-                '<hr>'+
-                '<div class="row margin-bottom-sm" id="row'+ totalDetail++ +'">'+
-                '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
-                  '<label class="col-12 control-label">Kode</label>'+
-                  '<div class="col-12">'+
-                    '<input required name="kode[]" type="text" class="form-control" id="" placeholder="Kolom Kode">'+
-                  '</div>'+
-                '</div>'+
-                '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
-                  '<label for="exampleFormControlSelect1">Barang/Inventaris</label>'+
-                  '<select class="form-control" name="barang_inventaris[]" id="exampleFormControlSelect1">'+
-                    @foreach($arr_barang_inventaris as $barang_inventaris)
-                      @if(isset($barang_inventaris->b_id))
-                        '<option value="BRG{{ $barang_inventaris->b_id }}"> {{ $barang_inventaris->b_nama }}</option>'+
-                      @else
-                        '<option value="INV{{ $barang_inventaris->i_id }}"> {{ $barang_inventaris->i_nama }}</option>'+
-                      @endif
-                    @endforeach
-                  '</select>'+
-                '</div>'+
-                '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
-                  '<label class="col-12 control-label">Posisi</label>'+
-                  '<div class="col-12">'+
-                    '<input required name="posisi[]" type="text" class="form-control" id="" placeholder="Kolom Posisi">'+
-                  '</div>'+
-                '</div>'+
-                '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
-                  '<label class="col-12 control-label">Biaya</label>'+
-                  '<div class="col-12">'+
-                    '<input required name="biaya[]" type="text" class="form-control" id="" placeholder="Kolom Biaya">'+
-                  '</div>'+
-                '</div>'+
-                '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
-                  '<label class="col-12 control-label">Keterangan</label>'+
-                  '<div class="col-12">'+
-                    '<input required name="keterangan[]" type="text" class="form-control" id=""placeholder="Kolom Keterangan">'+
-                  '</div>'+
-                '</div>'+
-                '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
-                  '<label for="exampleFormControlSelect1">Status</label>'+
-                  '<select class="form-control" name="status[]" value"{{ old("status") }}" id="exampleFormControlSelect1">'+
-                    '<option value="Belum Mulai">Belum Mulai</option>'+
-                    '<option value="Sedang Berjalan">Sedang Berjalan</option>'+
-                    '<option value="Selesai">Selesai</option>'+
-                  '</select>'+
-                '</div>'+
-                '</div>';
-
-                $('#body-form-detail').append($html);
-
-          });
-      });
+      var urlCari = '{{ route("maintenance.cari") }}';
+      var urlGetBarang = '{{ route("maintenance.getBarang")}}';
     </script>
+    <script src="{{ asset('js/maintenance.js') }}"></script>
 
     <!-- Flot charts -->
 
@@ -119,7 +67,21 @@
                             <label class="col-sm-3 control-label">Nomor Register</label>
                             <div class="col-sm-6">
                                 <input required name="no_register" type="text" class="form-control" id="" value="{{ Request::get('no_register') ? Request::get('no_register') : YaffSetMaintenanceNoRegister() }}"
-                                    placeholder="Kolom Nomor Register">
+                                    placeholder="Kolom Nomor Register" readonly>
+                                @if($errors->has('no_register'))
+                                   <small class="form-text text-danger">*{{ $errors->first('no_register') }}</small>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Toko</label>
+                            <div class="col-sm-6">
+                                <input required name="toko" type="text" class="form-control" id="" value="{{ Request::get('toko') }}"
+                                    placeholder="Kolom Nama Toko">
+                                @if($errors->has('toko'))
+                                   <small class="form-text text-danger">*{{ $errors->first('toko') }}</small>
+                                @endif
                             </div>
                         </div>
 
@@ -131,8 +93,39 @@
                                       <i class="glyph-icon icon-calendar"></i>
                                   </span>
                                   <input required id="datestart" name="tanggal_maintenance" type="text"
-                                      class="bootstrap-datepicker form-control" value="{{ Request::get('tanggal_maintenance') }}"
+                                      class="bootstrap-datepicker form-control" value="{{ Request::get('tanggal_maintenance') ? Request::get('tanggal_maintenance') : date('d-m-Y')  }}"
                                       data-date-format="mm/dd/yyyy">
+                                  @if($errors->has('tanggal'))
+                                     <small class="form-text text-danger">*{{ $errors->first('tanggal') }}</small>
+                                  @endif
+                              </div>
+                          </div>
+                        </div>
+
+                        <hr>
+                        <div id="alertDiv">
+                          @if($errors->has('barang_inventaris'))
+                             <small class="form-text text-danger">*{{ $errors->first('barang_inventaris') }}</small>
+                          @endif
+                        </div>
+                        <div class="form-group">
+                          <div class="col-md-6 col-lg-3 col-sm-12">
+                              <div class="col-sm-12">
+                                <div class="input-prepend input-group">
+                                    <span class="add-on input-group-addon">
+                                        <i class="glyph-icon icon-search"></i>
+                                    </span>
+                                    <select id="cari" class="cari form-control" style="width:500px;" name="cari"></select>
+                                </div>
+                              </div>
+                          </div>
+
+                          <div class="col-md-3 col-offset-md-3 col-lg-3 col-lg-offset-6 col-sm-12">
+                              <label class="col-sm-3 control-label">Netto</label>
+                              <div class="col-sm-9">
+                                  <div class="input-prepend input-group">
+                                      <input id="total" name="total" type="text" class="form-control" value="Rp. 0,00" readonly>
+                                  </div>
                               </div>
                           </div>
                         </div>

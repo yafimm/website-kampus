@@ -497,7 +497,7 @@
                             </td>
                             <td>
                                 @if ($peminjaman->p_status == 0)
-                                <a href="{{ route('peminjaman.lihat', $peminjaman->p_id) }}" class="btn btn-info">
+                                <a href="{{ route('peminjaman.lihat', $peminjaman->p_id) }}" class="btn btn-info btm-sm">
                                     <i class="glyph-icon icon-eye"></i>
                                 </a>
 

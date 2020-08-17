@@ -68,7 +68,7 @@ Route::group(['middleware' => ['web','auth','role:admin,staff_inventaris']], fun
 });
 
 // Modul Pengguna
-Route::group(['middleware' => ['web', 'auth', 'role:admin,yayasan']], function() {
+Route::group(['middleware' => ['web', 'auth', 'role:admin,yayasan,staff_inventaris']], function() {
     Route::post('/barang/cetak', 'BarangController@cetak')->name('barang.cetak');
     Route::post('/inventaris/cetak', 'InventarisController@cetak')->name('inventaris.cetak');
     Route::post('/peminjaman/cetak', 'PeminjamanController@cetakTanggal')->name('peminjaman.cetak');
@@ -117,6 +117,8 @@ Route::group(['middleware' => ['web', 'auth', 'role:admin,staff_inventaris']], f
   Route::get('/maintenance', 'MaintenanceController@index')->name('maintenance.index');
   Route::get('/maintenance/create', 'MaintenanceController@create')->name('maintenance.create');
   Route::post('/maintenance', 'MaintenanceController@store')->name('maintenance.store');
+  Route::get('/maintenance/cari', 'MaintenanceController@loadData')->name('maintenance.cari');
+  Route::get('/maintenance/getbarang', 'MaintenanceController@getBarang')->name('maintenance.getBarang');
   Route::post('/maintenance/{id}', 'MaintenanceController@update')->name('maintenance.update');
   Route::get('/maintenance/{id}', 'MaintenanceController@show')->name('maintenance.show');
   Route::get('/maintenance/{id}/edit', 'MaintenanceController@edit')->name('maintenance.edit');

@@ -9,7 +9,7 @@ class Maintenance extends Model
     protected $table = 'maintenance';
 
     protected $fillable = [
-        'no_register','kode','barang_id','posisi','tanggal_maintenance', 'biaya', 'keterangan', 'status', 'inventaris_id'
+        'no_register','kode','barang_id','posisi','tanggal_maintenance', 'biaya', 'keterangan', 'status', 'inventaris_id', 'toko'
     ];
 
     public function barang()

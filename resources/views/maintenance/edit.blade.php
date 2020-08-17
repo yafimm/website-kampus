@@ -25,79 +25,7 @@
 
     </script>
 
-    <script type="text/javascript">
-      $(document).ready(function(){
-          var totalDetail = 0;
-          $('#tambah-maintenance-detail').click(function(){
-              $html = '<h5>Data Detail ke - '+ (totalDetail + 1) +'</h5>'+
-                '<hr>'+
-                '<div class="row margin-bottom-sm" id="row'+ totalDetail++ +'">'+
-                '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
-                  '<label class="col-12 control-label">Kode</label>'+
-                  '<div class="col-12">'+
-                    '<input required name="kode[]" type="text" class="form-control" id="" placeholder="Kolom Kode">'+
-                  '</div>'+
-                '</div>'+
-                '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
-                  '<label for="exampleFormControlSelect1">Barang</label>'+
-                  '<select class="form-control" name="barang_inventaris[]" id="exampleFormControlSelect1">'+
-                  @foreach($arr_barang_inventaris as $barang_inventaris)
-                    @if(isset($barang_inventaris->b_id))
-                      '<option value="BRG{{ $barang_inventaris->b_id }}"> {{ $barang_inventaris->b_nama }}</option>'+
-                    @else
-                      '<option value="INV{{ $barang_inventaris->i_id }}"> {{ $barang_inventaris->i_nama }}</option>'+
-                    @endif
-                  @endforeach
-                  '</select>'+
-                '</div>'+
-                '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
-                  '<label class="col-12 control-label">Posisi</label>'+
-                  '<div class="col-12">'+
-                    '<input required name="posisi[]" type="text" class="form-control" id="" placeholder="Kolom Posisi">'+
-                  '</div>'+
-                '</div>'+
-                '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
-                  '<label class="col-12 control-label">Biaya</label>'+
-                  '<div class="col-12">'+
-                    '<input required name="biaya[]" type="text" class="form-control" id="" placeholder="Kolom Biaya">'+
-                  '</div>'+
-                '</div>'+
-                '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
-                  '<label class="col-12 control-label">Keterangan</label>'+
-                  '<div class="col-12">'+
-                    '<input required name="keterangan[]" type="text" class="form-control" id=""placeholder="Kolom Keterangan">'+
-                  '</div>'+
-                '</div>'+
-                '<div class="col-md-4 col-sm-4 col-6 form-controll">'+
-                  '<label for="exampleFormControlSelect1">Status</label>'+
-                  '<select class="form-control" name="status[]" value"{{ old("status") }}" id="exampleFormControlSelect1">'+
-                    '<option value="">Belum Mulai</option>'+
-                    '<option value="Sedang Berjalan">Sedang Berjalan</option>'+
-                    '<option value="Selesai">Selesai</option>'+
-                  '</select>'+
-                '</div>'+
-                '</div>';
-
-                $('#body-form-detail').append($html);
-
-          });
-      });
-    </script>
-
-    <!-- Flot charts -->
-
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-resize.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-stack.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-pie.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-tooltip.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-demo-1.js') }}"></script>
-
-    <!-- PieGage charts -->
-
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/piegage/piegage.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/piegage/piegage-demo.js') }}"></script>
-
+    <script src="{{ asset('js/maintenance.js') }}"></script>
 
     <div id="page-title">
         <h2>Halaman Ubah Data Maintenance</h2>
@@ -119,7 +47,15 @@
                             <label class="col-sm-3 control-label">Nomor Register</label>
                             <div class="col-sm-6">
                                 <input required name="no_register" type="text" class="form-control" id="" value="{{ $arr_maintenance[0]->no_register }}"
-                                    placeholder="Kolom Nomor Register">
+                                    placeholder="Kolom Nomor Register" readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Toko</label>
+                            <div class="col-sm-6">
+                                <input required name="toko" type="text" class="form-control" id="" value="{{ $arr_maintenance[0]->toko }}"
+                                    placeholder="Kolom Nama Toko">
                             </div>
                         </div>
 
@@ -131,8 +67,25 @@
                                       <i class="glyph-icon icon-calendar"></i>
                                   </span>
                                   <input required id="datestart" name="tanggal_maintenance" type="text"
-                                      class="bootstrap-datepicker form-control" value="{{ $arr_maintenance[0]->tanggal_maintenance }}"
+                                      class="bootstrap-datepicker form-control" value="{{ date('d-m-Y', strtotime($arr_maintenance[0]->tanggal_maintenance)) }}"
                                       data-date-format="mm/dd/yyyy">
+                              </div>
+                          </div>
+                        </div>
+
+                        <hr>
+                        <div id="alertDiv">
+                          @if($errors->has('barang_inventaris'))
+                             <small class="form-text text-danger">*{{ $errors->first('barang_inventaris') }}</small>
+                          @endif
+                        </div>
+                        <div class="form-group">
+                          <div class="col-md-3 col-md-offset-9 col-lg-3 col-lg-offset-6 col-sm-12">
+                              <label class="col-sm-3 control-label">Total</label>
+                              <div class="col-sm-9">
+                                  <div class="input-prepend input-group">
+                                      <input id="total" name="total" type="text" class="form-control" value="Rp. {{ numbeR_format($arr_maintenance->sum('biaya'), 2, ',', '.') }}" readonly>
+                                  </div>
                               </div>
                           </div>
                         </div>

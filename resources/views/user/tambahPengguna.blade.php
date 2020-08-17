@@ -45,8 +45,8 @@
                         {{ csrf_field() }}
                         @if ($jenis == 'mahasiswa')
                             <input type="hidden" name="role" value="mahasiswa">
-                        @elseif ($jenis == 'ormawa')
-                            <input type="hidden" name="role" value="ormawa">
+                        @elseif ($jenis == 'dosen')
+                            <input type="hidden" name="role" value="dosen">
                         @elseif ($jenis == 'staff_inventaris')
                             <input type="hidden" name="role" value="staff_inventaris">
                         @elseif ($jenis == 'yayasan')
@@ -61,7 +61,7 @@
                                         placeholder="Kolom NPM">
                                 </div>
                             </div>
-                        @elseif ($jenis == 'ormawa')
+                        @elseif ($jenis == 'dosen')
                             <input type="hidden" name="npm" value="0">
                         @elseif ($jenis == 'staff_inventaris')
                             <input type="hidden" name="npm" value="0">
@@ -71,8 +71,14 @@
 
                         @if ($jenis == 'mahasiswa')
                             <input type="hidden" name="nip" value="0">
-                        @elseif ($jenis == 'ormawa')
-                            <input type="hidden" name="nip" value="0">
+                        @elseif ($jenis == 'dosen')
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">NIP</label>
+                                <div class="col-sm-6">
+                                    <input required name="nip" type="text" class="form-control" id="nip"
+                                        placeholder="Kolom NIP">
+                                </div>
+                            </div>
                         @elseif ($jenis == 'yayasan')
                             <input type="hidden" name="nip" value="0">
                         @elseif ($jenis == 'staff_inventaris')

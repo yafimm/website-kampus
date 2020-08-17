@@ -109,7 +109,7 @@
                 <a href="{{ route('inventaris.tambah') }}" class="btn btn-primary">
                     <i class="glyph-icon icon-plus-circle"></i> Tambah
                 </a>
-                @if(Auth::user()->hasRole('admin'))
+                @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris'))
                 <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportTahunan">
                     <i class="glyph-icon icon-clipboard"></i> Cetak Laporan
                 </button>
@@ -152,7 +152,7 @@
                             <td>{{$inventaris->i_nama}}</td>
                             <td>{{$inventaris->i_posisi}}</td>
                             <td>{{$inventaris->i_keterangan}}</td>
-                            <td>{{$inventaris->i_unit}}</td>
+                            <td>{{$inventaris->getStok()}}</td>
                             <td>Rp. {{number_format($inventaris->i_harga, 2, ',', '.')}}</td>
                             <td>Rp. {{number_format($inventaris->total, 2, ',', '.')}}</td>
                             <td>

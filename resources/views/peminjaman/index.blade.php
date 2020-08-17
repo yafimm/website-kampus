@@ -111,7 +111,7 @@
 
     <div class="panel">
         <div class="panel-body">
-            @if(Auth::user()->hasRole('admin'))
+            @if(Auth::user()->hasRole('admin') || Auth::user()->hasrole('staff_inventaris'))
             <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportTahunan">
                 <i class="glyph-icon icon-clipboard"></i> Cetak Laporan
             </button>

@@ -67,7 +67,7 @@
                             <label class="col-sm-3 control-label">Unit Inventaris</label>
                             <div class="col-sm-6">
                                 <input required name="unit" type="number" class="form-control" id=""
-                                    placeholder="Kolom Unit Inventaris" value="{{ old('unit') }}">
+                                    placeholder="Kolom Unit Inventaris" value="{{ old('unit', 0) }}" readonly>
                                 @if($errors->has('unit'))
                                    <small class="form-text text-danger">*{{ $errors->first('unit') }}</small>
                                 @endif

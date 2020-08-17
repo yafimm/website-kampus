@@ -16,8 +16,8 @@
                                 <span class="input-group-addon addon-inside bg-gray">
                                     <i class="glyph-icon icon-user"></i>
                                 </span>
-                                <input required type="text" class="form-control" id="npm" name="npm"
-                                    placeholder="Masukkan NPM">
+                                <input required type="text" class="form-control" id="nip" name="nip"
+                                    placeholder="Masukkan NIP">
                             </div>
                         </div>
                         <div class="form-group">
@@ -36,8 +36,8 @@
                                 </span>
                                 <input required type="text" class="form-control" id="nama" name="nama"
                                     placeholder="Masukkan Nama">
-                                <input type="hidden" class="form-control" id="role" name="role" value="mahasiswa">
-                                <input type="hidden" class="form-control" id="nip" name="nip" value="0">
+                                <input type="hidden" class="form-control" id="role" name="role" value="dosen">
+                                <input type="hidden" class="form-control" id="npm" name="npm" value="0">
                             </div>
                         </div>
                         <div class="form-group">

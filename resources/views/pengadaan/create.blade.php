@@ -29,122 +29,8 @@
     <script type="text/javascript">
       var urlCari = '{{ route("pengadaan.cari") }}';
       var urlGetBarang = '{{ route("pengadaan.getBarang")}}';
-      var nomorPengadaanBarang = 0;
-
-      function hapusItem(index)
-      {
-          $('#tbl_barang tr#pengadaan-detail-'+index).remove();
-          showAlert('success', 'Berhasil hapus data barang pada detail pengadaan');
-      }
-
-      function setNetto()
-      {
-          console.log('ada');
-          let netto = 0;
-          $('input[name="totalHarga[]"]').each(function() {
-             netto += parseInt($(this).val());
-          });
-          $('#netto').val(convertNumberToRupiah(netto));
-      }
-
-      function setTotalHarga(index, value, qty)
-      {
-          let totalHarga = value * qty;
-          $('#totalHarga-'+index).val(totalHarga);
-          $('#totalHargaSpan-'+index).html(convertNumberToRupiah(totalHarga));
-          setNetto();
-      }
-
-      function setQty(index, value)
-      {
-          value = value.replace(/[^0-9]/g, '');
-          let harga = $('#harga-'+index).val();
-          $('#qty-'+index).val(value);
-          setTotalHarga(index, harga, value);
-      }
-
-      function setHarga(index, value)
-      {
-          value = value.replace(/[^0-9]/g, '');
-          let qty = $('#qty-'+index).val();
-          $('#harga-'+index).val(value);
-          setTotalHarga(index, value, qty);
-      }
-
-      $(document).ready(function(){
-
-        let arrPengadaanDetail = [];
-        $('.cari').select2({
-          placeholder: 'Cari berdasarkan kode ..',
-          ajax: {
-            url: urlCari,
-            dataType: 'json',
-            delay: 250,
-            processResults: function (data) {
-              return {
-                results:  $.map(data, function (item) {
-                  return {
-                    text: item.b_kode+" - "+item.b_nama,
-                    id: item.b_kode,
-                  }
-                })
-              };
-            },
-            cache: true
-          }
-        });
-
-        $('#cari').change(function(){
-
-            $.ajax({
-                type: 'GET', //THIS NEEDS TO BE GET
-                url: urlGetBarang,
-                dataType: 'json',
-                data: {kode: $(this).val(), no_register: $('input[name="no_register"').val()},
-                success: function (data) {
-                  if(data.status == false){
-                    $('#cari').empty();
-                    showAlert('danger', data.message);
-                  }else{
-                    let kode = data.b_kode ? data.b_kode : data.i_kode;
-                    let nama = data.b_nama ? data.b_nama : data.i_nama;
-                    let id = data.b_id ? "BRG"+data.b_id : "INV"+data.i_id;
-
-                    //Kalo data sudah ada di detail, keluar alert
-                    if(arrPengadaanDetail.includes(kode)){
-                      showAlert('danger', 'Gagal menambahkan data, karena data '+ kode +' - '+ nama + ' Sudah dimasukkan !');
-                      $('#cari').empty();
-                    }else{
-                      let html = '';
-                      html += '<tr id="pengadaan-detail-'+nomorPengadaanBarang+'">'+
-                                '<td>'+ (nomorPengadaanBarang + 1) +' <input type="hidden" name="barang_inventaris[]" value="'+id+'"> </td>'+
-                                '<td>'+kode+'</td>'+
-                                '<td>'+nama+'</td>'+
-                                '<td><input id="qty-'+nomorPengadaanBarang+'" class="form-control" type="text" name="qty[]" onkeyup="setQty('+nomorPengadaanBarang+', value)" value="0"></td>'+
-                                '<td><input id="harga-'+nomorPengadaanBarang+'" class="form-control" type="text" name="harga[]" onkeyup="setHarga('+nomorPengadaanBarang+', value)" value="0"></td>'+
-                                '<td><span id="totalHargaSpan-'+nomorPengadaanBarang+'">Rp. 0,00</span><input type="hidden" id="totalHarga-'+nomorPengadaanBarang+'" class="form-control" type="text" name="totalHarga[]" value="0" readonly></td>'+
-                                '<td><button type="button" class="btn btn-danger btn-sm" onclick="hapusItem('+nomorPengadaanBarang+')" data-id="'+nomorPengadaanBarang+'" data-toggle="tooltip" data-placement="top"><i class="glyph-icon icon-trash"></i></button></td>'+
-                              '</tr>';
-
-                     $('#tbl_barang tbody').append(html);
-                     $('#cari').empty();
-                     showAlert('success', 'Berhasil menambahkan data '+ kode +' - '+nama);
-                     arrPengadaanDetail.push(kode);
-                     nomorPengadaanBarang++;
-                  }
-
-                }
-
-
-              },error:function(data){
-                     console.log(data);
-                }
-            });
-        });
-
-      });
-
     </script>
+    <script type="text/javascript" src="{{ asset('js/pengadaan.js') }}"></script>
 
     <div id="page-title">
         <h2>Halaman Tambah Data Pengadaan</h2>
@@ -163,7 +49,10 @@
                             <label class="col-sm-3 control-label">Nomor Register</label>
                             <div class="col-sm-6">
                                 <input required name="no_register" type="text" class="form-control" id="" value="{{ Request::get('no_register') ? Request::get('no_register') : YaffSetPengadaanNoRegister()}}"
-                                    placeholder="Kolom Nomor Register">
+                                    placeholder="Kolom Nomor Register" readonly>
+                                @if($errors->has('no_register'))
+                                   <small class="form-text text-danger">*{{ $errors->first('no_register') }}</small>
+                                @endif
                             </div>
                         </div>
 
@@ -172,6 +61,9 @@
                             <div class="col-sm-6">
                                 <input required name="supplier" type="text" class="form-control" id="" value="{{ Request::get('supplier') }}"
                                     placeholder="Kolom Nama Supplier/Toko">
+                                @if($errors->has('supplier'))
+                                   <small class="form-text text-danger">*{{ $errors->first('supplier') }}</small>
+                                @endif
                             </div>
                         </div>
 
@@ -186,12 +78,18 @@
                                   <input required id="datestart" name="tanggal" type="text"
                                       class="bootstrap-datepicker form-control" value="{{ Request::get('tanggal_pengadaan') ? Request::get('tanggal_pengadaan') : date('d-m-Y')  }}"
                                       data-date-format="mm/dd/yyyy">
+                                  @if($errors->has('tanggal'))
+                                     <small class="form-text text-danger">*{{ $errors->first('tanggal') }}</small>
+                                  @endif
                               </div>
                           </div>
                         </div>
 
                         <hr>
                         <div id="alertDiv">
+                          @if($errors->has('barang_inventaris'))
+                             <small class="form-text text-danger">*{{ $errors->first('barang_inventaris') }}</small>
+                          @endif
                         </div>
                         <div class="form-group">
                           <div class="col-md-6 col-lg-3 col-sm-12">

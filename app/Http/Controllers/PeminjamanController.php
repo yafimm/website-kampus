@@ -97,6 +97,7 @@ class PeminjamanController extends Controller
     }
 
     public function prosesPinjam(Request $request){
+      // dd($request->all());
         $inp_namaevent = $request->post('inp_nama_event');
         $inp_status = $request->post('status');
         $inp_iduser = $request->post('iduser');

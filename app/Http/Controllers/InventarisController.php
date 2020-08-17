@@ -28,6 +28,7 @@ class InventarisController extends Controller
     }
     public function ubah($id){
         $data_inventaris = Inventaris::findOrFail($id);
+        dD($data_inventaris->peminjaman);
         return view('inventaris.ubahInventaris', compact('data_inventaris'));
     }
     public function lihat($id){

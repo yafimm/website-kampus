@@ -50,25 +50,6 @@
     </script>
     <script type="text/javascript" src="{{ asset('assets/widgets/datatable/datatable-reorder.js') }}"></script>
 
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/sparklines/sparklines.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/sparklines/sparklines-demo.js') }}">
-    </script>
-
-    <!-- Flot charts -->
-
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-resize.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-stack.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-pie.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-tooltip.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-demo-1.js') }}"></script>
-
-    <!-- PieGage charts -->
-
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/piegage/piegage.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/piegage/piegage-demo.js') }}"></script>
-
-
     <div id="page-title">
         <h2>Halaman Peminjaman Barang</h2>
         <p>Selamat Datang {{Auth::user()->name}} | <strong>{{Auth::user()->role}}</strong></p>
@@ -219,8 +200,14 @@
                             '<div class="col-sm-3">' +
                             '<input type="hidden" name="idinventaris[]" value="' + id + '">' +
                             '<input required name="jumlahinventaris[]" type="number" class="form-control"' +
-                            'id="" placeholder="Jumlah barang">' +
-                            '</div></div>');
+                            'id="" placeholder="Jumlah barang">'+
+                            '</div>'+
+                            '<div class="col-sm-3">' +
+                            '</div>' +
+                            '<button class="btn btn-danger btn-sm"+'+
+                                'data-peminjamanid="" data-toggle="tooltip" data-placement="top"title="Hapus Data"><i class="glyph-icon icon-trash"></i>'+
+                            '</button>' +
+                            '</div>');
                     }
                 });
             </script>

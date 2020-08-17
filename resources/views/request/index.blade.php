@@ -88,11 +88,9 @@
         <div class="panel-body">
             @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris'))
             <h3 class="title-hero">
-                @if(Auth::user()->hasRole('admin'))
                 <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportTahunan">
                     <i class="glyph-icon icon-clipboard"></i> Cetak
                 </button>
-                @endif
             </h3>
             @endif
             <div class="example-box-wrapper" style="overflow: auto">
@@ -108,18 +106,6 @@
                             <th>Aksi</th>
                         </tr>
                     </thead>
-
-                    <tfoot>
-                        <tr>
-                            <th></th>
-                            <th>User</th>
-                            <th>Barang</th>
-                            <th>Jumlah</th>
-                            <th>Status</th>
-                            <th>Tanggal</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </tfoot>
 
                     <tbody>
                         @foreach ($data_request as $key => $request)
@@ -143,61 +129,61 @@
                             <td>{{ date('d/m/Y', strtotime($request->created_at)) }}</td>
                             <td>
                                 @if ($request->rb_status == 0)
-                                <a href="{{ route('request.lihat',$request->rb_id) }}" class="btn btn-info"
+                                <a href="{{ route('request.lihat',$request->rb_id) }}" class="btn btn-info btn-sm"
                                     data-toggle="tooltip" data-placement="top" title="Lihat Data">
                                     <i class="glyph-icon icon-eye"></i>
                                 </a>
                                 @if(Auth::user()->hasRole('dosen'))
-                                <a href="{{ route('request.ubah',$request->rb_id) }}" class="btn btn-info"
+                                <a href="{{ route('request.ubah',$request->rb_id) }}" class="btn btn-info btn-sm"
                                     data-toggle="tooltip" data-placement="top" title="Ubah Data">
                                     <i class="glyph-icon icon-edit"></i>
                                 </a>
                                 @endif
                                 @if((Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris')))
-                                <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalSetuju"
+                                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalSetuju"
                                     data-requestid="{{$request->rb_id}}" data-toggle="tooltip" data-placement="top"
                                     title="Setuju">
                                     <i class="glyph-icon icon-check"></i>
                                 </button>
 
-                                <button class="btn btn-warning btn-md" data-toggle="modal" data-target="#modalTolak"
+                                <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modalTolak"
                                     data-requestid="{{$request->rb_id}}" data-toggle="tooltip" data-placement="top"
                                     title="Tolak">
                                     <i class="glyph-icon icon-remove"></i>
                                 </button>
                                 @endif
 
-                                <button class="btn btn-danger btn-md" data-toggle="modal" data-target="#modalHapus"
+                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalHapus"
                                     data-requestid="{{$request->rb_id}}" data-toggle="tooltip" data-placement="top"
                                     title="Hapus Data">
                                     <i class="glyph-icon icon-trash"></i>
                                 </button>
                                 @elseif($request->rb_status == 1)
-                                <a href="{{ route('request.lihat',$request->rb_id) }}" class="btn btn-info"
+                                <a href="{{ route('request.lihat',$request->rb_id) }}" class="btn btn-info btn-sm"
                                     data-toggle="tooltip" data-placement="top" title="Lihat Data">
                                     <i class="glyph-icon icon-eye"></i>
                                 </a>
 
-                                <button class="btn btn-danger btn-md" data-toggle="modal" data-target="#modalHapus"
+                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalHapus"
                                     data-requestid="{{$request->rb_id}}" data-toggle="tooltip" data-placement="top"
                                     title="Hapus Data">
                                     <i class="glyph-icon icon-trash"></i>
                                 </button>
                                 @elseif($request->rb_status == 2)
-                                <a href="{{ route('request.lihat', $request->rb_id) }}" class="btn btn-info"
+                                <a href="{{ route('request.lihat', $request->rb_id) }}" class="btn btn-info btn-sm"
                                     data-toggle="tooltip" data-placement="top" title="Lihat Data">
                                     <i class="glyph-icon icon-eye"></i>
                                 </a>
 
                                 @if(Auth::user()->hasRole('dosen') || Auth::user()->hasRole('mahasiswa'))
-                                <a href="{{ route('request.ubah',$request->rb_id) }}" class="btn btn-info"
+                                <a href="{{ route('request.ubah',$request->rb_id) }}" class="btn btn-info btn-sm"
                                     data-toggle="tooltip" data-placement="top" title="Ubah Data">
                                     <i class="glyph-icon icon-edit"></i>
                                 </a>
                                 @endif
 
                                 @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff inventaris'))
-                                <button class="btn btn-success btn-md" data-toggle="modal" data-target="#modalSelesai"
+                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalSelesai"
                                     data-requestid="{{$request->rb_id}}" data-toggle="tooltip" data-placement="top"
                                     title="Selesai">
                                     <i class="glyph-icon icon-check"></i>
@@ -205,18 +191,18 @@
                                 @endif
 
                                 @if(Auth::user()->hasRole('dosen') || Auth::user()->hasRole('mahasiswa'))
-                                <a href="{{ route('request.cetak.user', $request->rb_id) }}" class="btn btn-info"
+                                <a href="{{ route('request.cetak.user', $request->rb_id) }}" class="btn btn-info btn-sm"
                                     data-toggle="tooltip" data-placement="top" title="Cetak">
                                     <i class="glyph-icon icon-print"></i>
                                 </a>
                                 @endif
                                 @else
-                                <a href="{{ route('request.lihat', $request->rb_id) }}" class="btn btn-info"
+                                <a href="{{ route('request.lihat', $request->rb_id) }}" class="btn btn-info btn-sm"
                                     data-toggle="tooltip" data-placement="top" title="Lihat Data">
                                     <i class="glyph-icon icon-eye"></i>
                                 </a>
                                 @if(Auth::user()->hasRole('dosen') || Auth::user()->hasRole('mahasiswa'))
-                                <a href="{{ route('request.cetak.user', $request->rb_id) }}" class="btn btn-info"
+                                <a href="{{ route('request.cetak.user', $request->rb_id) }}" class="btn btn-info btn-sm"
                                     data-toggle="tooltip" data-placement="top" title="Cetak">
                                     <i class="glyph-icon icon-print"></i>
                                 </a>

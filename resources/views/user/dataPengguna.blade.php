@@ -54,6 +54,9 @@
                 <a href="{{ route('user.tambah', 'yayasan') }}" class="btn btn-primary">
                     <i class="glyph-icon icon-plus-circle"></i> Tambah Akun Yayasan
                 </a>
+                <a href="{{ route('user.tambah', 'dosen') }}" class="btn btn-primary">
+                    <i class="glyph-icon icon-plus-circle"></i> Tambah Akun Dosen/Non Dosen
+                </a>
             </h3>
             <div class="example-box-wrapper" style="overflow: auto">
                 <table id="dt_pengguna" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -63,19 +66,9 @@
                             <th>Nama</th>
                             <th>Email</th>
                             <th>Role</th>
-                            <th>Aksi</th>
+                            <th width="20%">Aksi</th>
                         </tr>
                     </thead>
-
-                    <tfoot>
-                        <tr>
-                            <th></th>
-                            <th>Nama</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </tfoot>
 
                     <tbody>
                         @php
@@ -92,20 +85,20 @@
                             <td><span class="bs-label label-primary">{{str_replace('_',' ',$pengguna->role)}}</span>
                             </td>
                             <td>
-                                <a href="{{ route('user.lihat', $pengguna->id) }}" class="btn btn-info"
+                                <a href="{{ route('user.lihat', $pengguna->id) }}" class="btn btn-info btn-sm"
                                     data-toggle="tooltip" data-placement="top" title="Lihat Data">
                                     <i class="glyph-icon icon-eye"></i>
                                 </a>
-                                <a href="{{ route('user.ubah', $pengguna->id) }}" class="btn btn-warning"
+                                <a href="{{ route('user.ubah', $pengguna->id) }}" class="btn btn-warning btn-sm"
                                     data-toggle="tooltip" data-placement="top" title="Ubah Data">
                                     <i class="glyph-icon icon-pencil"></i>
                                 </a>
-                                <button class="btn btn-danger btn-md" data-toggle="modal" data-target="#modalHapus"
+                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalHapus"
                                     data-userid="{{$pengguna->id}}" data-toggle="tooltip" data-placement="top"
                                     title="Hapus Data">
                                     <i class="glyph-icon icon-trash"></i>
                                 </button>
-                                <button class="btn btn-info btn-md" data-toggle="modal" data-target="#modalPassword"
+                                <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalPassword"
                                     data-userid="{{$pengguna->id}}" data-toggle="tooltip" data-placement="top"
                                     title="Ubah Sandi Data">
                                     <i class="glyph-icon icon-circle-o"></i>

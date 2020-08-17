@@ -42,4 +42,26 @@ class BarangRequest extends FormRequest
         'satuan' => 'required|string',
       ];
     }
+
+    public function messages()
+    {
+         return [
+             'nama.required' => 'Nama barang tidak boleh kosong',
+             'nama.min' => 'Nama barang minimal harus 4 karakter',
+             'nama.max' => 'Nama barang maksimal hanya sampai 50 karakter',
+             'nama.unique' => 'Nama barang sudah ada didatabase',
+             'foto.required' => 'Foto barang harus diupload',
+             'foto.image' => 'Foto harus berformat gambar',
+             'foto.mimes' => 'Foto harus berformat : jpeg, png, gif, svg',
+             'foto.max' => 'Foto maksimal berukuran 2048KB (2MB)',
+             'kode.required' => 'Kode tidak boleh kosong',
+             'kode.min' => 'Kode minimal harus 4 karakter',
+             'kode.max' => 'Kode makimal hanya sampai 50 karakter',
+             'kode.unique' => 'Kode barang sudah digunakan didatabse',
+             'harga.required' => 'Harga tidak boleh kosong',
+             'harga.integer' => 'Harga harus berformat angka',
+             'satuan.required' => 'Satuan tidak boleh kosong',
+             'satuan.string' => 'Satuan harus berformat string',
+         ];
+    }
 }

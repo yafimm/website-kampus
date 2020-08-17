@@ -116,7 +116,7 @@
                 <a href="{{ route('maintenance.create') }}" class="btn btn-primary">
                     <i class="glyph-icon icon-plus-circle"></i> Tambah
                 </a>
-                @if(Auth::user()->hasRole('admin'))
+                @if(Auth::user()->hasRole('admin') || Auth::user()->hasrole('staff_inventaris'))
                 <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportTanggal">
                     <i class="glyph-icon icon-clipboard"></i> Cetak
                 </button>
@@ -156,16 +156,16 @@
                             <td>Rp. {{number_format($maintenance->total, 2,',','.')}}</td>
                             <td>
                                 <a href="{{ route('maintenance.show', $maintenance->no_register) }}"
-                                    class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Lihat Data">
+                                    class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top" title="Lihat Data">
                                     <i class="glyph-icon icon-eye"></i>
                                 </a>
                                 <a href="{{ route('maintenance.edit', $maintenance->no_register) }}"
-                                    class="btn btn-warning" data-toggle="tooltip" data-placement="top"
+                                    class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top"
                                     title="Ubah Data">
                                     <i class="glyph-icon icon-pencil"></i>
                                 </a>
-                                @if(Auth::user()->hasRole('admin'))
-                                <button class="btn btn-primary btn-md btn-cetak"
+                                @if(Auth::user()->hasRole('admin') || Auth::user()->hasrole('staff_inventaris'))
+                                <button class="btn btn-primary btn-sm btn-cetak"
                                     data-no_register="{{ $maintenance->no_register }}" data-toggle="modal"
                                     data-target="#modalReportTahunan" data-toggle="tooltip" data-placement="top"
                                     title="Cetak">

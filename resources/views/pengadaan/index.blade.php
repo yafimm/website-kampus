@@ -115,7 +115,7 @@
                 <a href="{{ route('pengadaan.create') }}" class="btn btn-primary">
                     <i class="glyph-icon icon-plus-circle"></i> Tambah
                 </a>
-                @if(Auth::user()->hasRole('admin'))
+                @if(Auth::user()->hasRole('admin') || Auth::useR()->hasRole('staff_inventaris'))
                 <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#modalReportTanggal">
                     <i class="glyph-icon icon-clipboard"></i> Cetak
                 </button>
@@ -164,7 +164,7 @@
                                     data-placement="top" title="Ubah Data" class="btn btn-warning btn-sm">
                                     <i class="glyph-icon icon-pencil"></i>
                                 </a>
-                                @if(Auth::user()->hasRole('admin'))
+                                @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris'))
                                 <button class="btn btn-primary btn-md btn-cetak btn-sm"
                                     data-no_register="{{ $pengadaan->no_register }}" data-toggle="modal"
                                     data-target="#modalReportSatuan" data-toggle="tooltip" data-placement="top"

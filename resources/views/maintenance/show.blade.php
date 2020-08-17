@@ -84,6 +84,7 @@
             <h3 class="title-hero">
               <div class="col-12 my-3">
                 <h5>No Register : {{ $arr_maintenance[0]->no_register }}</h5>
+                <h5>Toko : {{ $arr_maintenance[0]->toko }}</h5>
                 <h5>Tanggal Maintenance : {{ date('d-m-Y', strtotime($arr_maintenance[0]->tanggal_maintenance)) }}</h5>
                 <h5>Total Keseluruhan : Rp. {{ number_format($arr_maintenance->sum('biaya'), 2,',','.') }}</h5>
               </div>
@@ -105,24 +106,17 @@
                         </tr>
                     </thead>
 
-                    <tfoot>
-                        <tr>
-                          <th></th>
-                          <th>Kode</th>
-                          <th>Nama Barang</th>
-                          <th>Posisi</th>
-                          <th>Tanggal Maintenance</th>
-                          <th>Biaya</th>
-                          <th>Keterangan</th>
-                          <th>Status</th>
-                        </tr>
-                    </tfoot>
-
                     <tbody>
                         <tr>
                           @foreach($arr_maintenance as $key => $maintenance)
                             <td>{{ $key + 1 }}</td>
-                            <td>{{$maintenance->kode}}</td>
+                            <td>@if($maintenance->barang)
+                                  {{$maintenance->barang->b_kode}}
+                                @elseif($maintenance->inventaris)
+                                  {{$maintenance->inventaris->i_kode}}
+                                @else
+                                  - Data Barang / Inventaris sudah dihapus -
+                                @endif</td>
                             <td>@if($maintenance->barang)
                                   {{$maintenance->barang->b_nama}}
                                 @elseif($maintenance->inventaris)

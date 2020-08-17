@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\MaintenanceRequest;
 use App\Maintenance;
 use App\Barang;
 use App\Inventaris;
 use PDF;
+use DB;
 
 class MaintenanceController extends Controller
 {
@@ -19,21 +21,18 @@ class MaintenanceController extends Controller
 
     public function create()
     {
-        $arr_barang = collect(Barang::all()); // Nyatu sama inventaris
-        $arr_inventaris = collect(Inventaris::all());
-        $arr_barang_inventaris = $arr_inventaris->merge($arr_barang);
-        $maintenance = new Maintenance();
-        return view('maintenance.create', compact('arr_barang_inventaris', 'maintenance'));
+        $arr_maintenance = collect(new Maintenance());
+        return view('maintenance.create', compact('arr_maintenance'));
     }
 
-    public function store(Request $request)
+    public function store(MaintenanceRequest $request)
     {
         $data = $request->all();
         //Patokan total arraynya dari jumlah barang
         for ($i=0; $i < count($request->barang_inventaris); $i++) {
           $maintenance[] = [
               'no_register' => $request->no_register,
-              'kode' => $request->kode[$i],
+              'toko' => $request->toko,
               'tanggal_maintenance' => date('Y-m-d', strtotime($request->tanggal_maintenance)),
               'biaya' => $request->biaya[$i],
               'keterangan' => $request->keterangan[$i],
@@ -81,7 +80,7 @@ class MaintenanceController extends Controller
         return abort(404);
     }
 
-    public function update(Request $request, $id)
+    public function update(MaintenanceRequest $request, $id)
     {
         $data = $request->all();
         //Patokan total arraynya dari jumlah barang
@@ -89,7 +88,7 @@ class MaintenanceController extends Controller
         for ($i=0; $i < count($request->barang_inventaris); $i++) {
           $maintenance[] = [
               'no_register' => $id,
-              'kode' => $request->kode[$i],
+              'toko' => $request->toko,
               'tanggal_maintenance' => date('Y-m-d', strtotime($request->tanggal_maintenance)),
               'biaya' => $request->biaya[$i],
               'keterangan' => $request->keterangan[$i],
@@ -121,6 +120,37 @@ class MaintenanceController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function loadData(Request $request)
+    {
+        if ($request->has('q')) {
+            $cari = $request->q;
+            $dataBarang = DB::table('barang')->select('b_id', 'b_kode', 'b_nama')->where('b_kode', 'LIKE', '%'.$cari.'%')->orWhere('b_nama', 'LIKE', '%'.$cari.'%')->take(10)->get();
+            $dataInventaris = DB::table('inventaris')->select('i_id', 'i_kode', 'i_nama')->where('i_kode', 'LIKE', '%'.$cari.'%')->orWhere('i_nama', 'LIKE', '%'.$cari.'%')->take(10)->get();
+            $data = $dataBarang->merge($dataInventaris);
+            return response()->json($data);
+        }
+    }
+
+    public function getBarang(Request $request)
+    {
+        if($request->kode){
+            $jenisBarang = substr($request->kode, 0, 3);
+            if($jenisBarang == 'INV'){
+                $data = Inventaris::where('i_kode', $request->kode)->first();
+            }else{
+                $data = Barang::where('b_kode', $request->kode)->first();
+            }
+            if(count($data->maintenance) > 0){
+                $barangMaintenance = $data->maintenance->where('no_register', $request->no_register)->first();
+                if($barangMaintenance){
+                    return response()->json(['message' => 'Gagal menambahkan data, karena data ini sudah digunakan dipengadaan ini ('.$request->no_register.') !!', 'status' => false]);
+                }
+            }
+            return response()->json($data);
+        }
+        return response()->json(['message' => 'Gagal menambahkan data, karena data tidak ditemukan', 'status' => false]);
     }
 
     public function cetak(Request $request){
