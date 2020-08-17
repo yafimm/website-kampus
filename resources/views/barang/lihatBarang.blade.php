@@ -137,10 +137,10 @@
                                           <td>{{date('d/m/Y', strtotime($pengadaan->tanggal))}}</td>
                                           <td>{{$pengadaan->no_register}}</td>
                                           <td>{{$data_barang->b_satuan}}</td>
-                                          <td>{{$data_barang->getStok($pengadaan->created_at) }}</td>
+                                          <td>{{$data_barang->getStok($pengadaan->created_at) -  $pengadaan->qty }}</td>
                                           <td>{{$pengadaan->qty}}</td>
-                                          <td>{{ $pengadaan->qty + $data_barang->getStok($pengadaan->created_at) }}</td>
-                                          <td>{{'Rp. '.number_format($pengadaan->biaya, 2, ',' ,'.')}}</td>
+                                          <td>{{$data_barang->getStok($pengadaan->created_at) }}</td>
+                                          <td>{{'Rp. '.number_format($pengadaan->total, 2, ',' ,'.')}}</td>
                                       </tr>
                                     @endforeach
                                 </tbody>
