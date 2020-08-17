@@ -115,6 +115,6 @@ class BarangController extends Controller
        return $pdf->stream();
      }
 
-     
+
 
 }

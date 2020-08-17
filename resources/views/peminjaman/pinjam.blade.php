@@ -8,13 +8,13 @@
         $(function () {
             "use strict";
             $('#datestart').bsdatepicker({
-                format: 'mm-dd-yyyy'
+                format: 'dd-mm-yyyy'
             });
         });
         $(function () {
             "use strict";
             $('#dateend').bsdatepicker({
-                format: 'mm-dd-yyyy'
+                format: 'dd-mm-yyyy'
             });
         });
     </script>
@@ -50,6 +50,13 @@
     </script>
     <script type="text/javascript" src="{{ asset('assets/widgets/datatable/datatable-reorder.js') }}"></script>
 
+    <script type="text/javascript">
+        var peminjamanId = 0;
+    </script>
+
+
+    <script type="text/javascript" src="{{ asset('js/peminjaman.js') }}"></script>
+
     <div id="page-title">
         <h2>Halaman Peminjaman Barang</h2>
         <p>Selamat Datang {{Auth::user()->name}} | <strong>{{Auth::user()->role}}</strong></p>
@@ -70,6 +77,9 @@
                             <div class="col-sm-6">
                                 <input required name="inp_nama_event" type="text" class="form-control" id=""
                                     placeholder="Nama Kegiatan">
+                                @if($errors->has('inp_nama_event'))
+                                   <small class="form-text text-danger">*{{ $errors->first('inp_nama_event') }}</small>
+                                @endif
                             </div>
                         </div>
 
@@ -91,6 +101,9 @@
                                     @endforeach
 
                                 </select>
+                                @if($errors->has('idinventaris'))
+                                   <small class="form-text text-danger">*{{ $errors->first('idinventaris') }}</small>
+                                @endif
                             </div>
                         </div>
                         <br>
@@ -113,7 +126,11 @@
                                     <input required id="datestart" name="datestart" type="text"
                                         class="bootstrap-datepicker form-control" value=""
                                         data-date-format="mm/dd/yyyy">
+
                                 </div>
+                                @if($errors->has('datestart'))
+                                <small class="form-text text-danger">*{{ $errors->first('datestart') }}</small>
+                                @endif
                             </div>
                             <label class="col-sm-3 control-label">Jam Peminjaman Awal</label>
                             <div class="col-sm-3">
@@ -143,6 +160,9 @@
                                         class="bootstrap-datepicker form-control" value=""
                                         data-date-format="mm/dd/yyyy">
                                 </div>
+                                @if($errors->has('dateend'))
+                                <small class="form-text text-danger">*{{ $errors->first('dateend') }}</small>
+                                @endif
                             </div>
                             <label class="col-sm-3 control-label">Jam Peminjaman Akhir</label>
                             <div class="col-sm-3">
@@ -186,31 +206,7 @@
                 </div>
             </div>
 
-            <script>
-                $('#inventaris').change(function () {
-                    var selectedObject = $(this).find('option:selected');
-                    var id = selectedObject.data("invid");
-                    var nama = selectedObject.data("invnama");
-                    if (id == 'title') {
-                    } else {
-                        $("#content-daftar-inventaris").append('<div class="form-group">' +
-                            '<div class="col-sm-3">' +
-                            '</div>' +
-                            '<label class="col-sm-3 control-label">' + nama + '</label>' +
-                            '<div class="col-sm-3">' +
-                            '<input type="hidden" name="idinventaris[]" value="' + id + '">' +
-                            '<input required name="jumlahinventaris[]" type="number" class="form-control"' +
-                            'id="" placeholder="Jumlah barang">'+
-                            '</div>'+
-                            '<div class="col-sm-3">' +
-                            '</div>' +
-                            '<button class="btn btn-danger btn-sm"+'+
-                                'data-peminjamanid="" data-toggle="tooltip" data-placement="top"title="Hapus Data"><i class="glyph-icon icon-trash"></i>'+
-                            '</button>' +
-                            '</div>');
-                    }
-                });
-            </script>
+
 
         </div>
     </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\PeminjamanRequest;
 use App\Peminjaman;
 use PDF;
 use DB;
@@ -96,57 +97,49 @@ class PeminjamanController extends Controller
       return view('peminjaman.pinjam', compact('data_inventaris'));
     }
 
-    public function prosesPinjam(Request $request){
-      // dd($request->all());
-        $inp_namaevent = $request->post('inp_nama_event');
-        $inp_status = $request->post('status');
-        $inp_iduser = $request->post('iduser');
-        $inp_datestart = $this->getDate($request->post('datestart'));
+    public function prosesPinjam(PeminjamanRequest $request)
+    {
+        $inp_datestart = date('Y-m-d', strtotime($request->datestart));
         $inp_timestart = $this->getTime($request->post('timestart'));
-        $inp_dateend = $this->getDate($request->post('dateend'));
+        $inp_dateend = date('Y-m-d', strtotime($request->dateend));
         $inp_timeend = $this->getTime($request->post('timeend'));
+
         if(!empty($request->file('file'))){
             $b_file = $request->file('file');
             $fileName = time().'.'.$b_file->getClientOriginalExtension();
             $b_file->move(public_path('suratpeminjaman'), $fileName);
-        }else{
         }
-        $inp_idinventaris = null;
-        $inp_jumlahinventaris = null;
-        if($request->exists('idinventaris') && $request->exists('jumlahinventaris')){
-             $inp_idinventaris = $request->post('idinventaris');
-             $inp_jumlahinventaris = $request->post('jumlahinventaris');
-             $peminjaman = Peminjaman::create(
-                ['user_id' => $inp_iduser,
-                'p_nama_event' => $inp_namaevent,
-                'p_date' => $inp_datestart,
-                'p_scan_surat_peminjaman' => $fileName,
-                'p_status' => $inp_status,
+        
+        $peminjaman = Peminjaman::create(
+            ['user_id' => $request->iduser,
+            'p_nama_event' => $request->inp_nama_event,
+            'p_date' => $inp_datestart,
+            'p_scan_surat_peminjaman' => $fileName,
+            'p_status' => $request->status,
+            'created_at' => now(),
+            'updated_at' => now(),
+            'p_date_end' => $inp_dateend,
+            'p_time_start' => $inp_timestart,
+            'p_time_end' => $inp_timeend]
+        );
+
+        $i = 0;
+
+        foreach($request->idinventaris as $idinventaris){
+            DB::table('table_data_detail_peminjaman')->insert(
+                ['p_id' => $peminjaman->p_id,
+                'i_id' => $idinventaris,
+                'dp_jumlah' => $request->jumlahinventaris[$i],
                 'created_at' => now(),
-                'updated_at' => now(),
-                'p_date_end' => $inp_dateend,
-                'p_time_start' => $inp_timestart,
-                'p_time_end' => $inp_timeend]
+                'updated_at' => now()]
             );
-            $i = 0;
-            foreach($inp_idinventaris as $idinventaris){
-                DB::table('table_data_detail_peminjaman')->insert(
-                    ['p_id' => $peminjaman->p_id,
-                    'i_id' => $idinventaris,
-                    'dp_jumlah' => $inp_jumlahinventaris[$i],
-                    'created_at' => now(),
-                    'updated_at' => now()]
-                );
-                $i++;
-            }
-            return redirect()->route('peminjaman.index')->with('alert-class', 'alert-success')->with('flash_message', 'Data peminjaman berhasil diajukan !!');
-        }else{
-            echo "<script>alert('Gagal, Tidak memasukkan barang yang akan dipinjam')
-                    ;window.location='".route('peminjaman.index')."'</script>";
+            $i++;
         }
+        return redirect()->route('peminjaman.index')->with('alert-class', 'alert-success')->with('flash_message', 'Data peminjaman berhasil diajukan !!');
       }
 
-      public function ubah($id){
+      public function ubah($id)
+      {
            $data_inventaris = DB::table('inventaris')->get();
            $data_peminjaman = DB::table('peminjaman')
            ->join('users', 'peminjaman.user_id', '=', 'users.id')
@@ -164,87 +157,66 @@ class PeminjamanController extends Controller
            'table_data_detail_peminjaman.updated_at')
            ->where('table_data_detail_peminjaman.p_id', $data_peminjaman[0]->p_id)
            ->get();
-           $data_date_start = $data_peminjaman[0]->p_date;
-           $data_peminjaman[0]->p_date = $this->backDate($data_date_start);
-           $data_date_end= $data_peminjaman[0]->p_date_end;
-           $data_peminjaman[0]->p_date_end = $this->backDate($data_date_end);
            return view('peminjaman.ubahPeminjaman', compact('data_peminjaman','data_inventaris'));
        }
 
-       public function prosesUbah(Request $request){
-        $inp_namaevent = $request->post('inp_nama_event');
-        $inp_status = $request->post('status');
-        $inp_iduser = $request->post('iduser');
-        $inp_pid = $request->post('pid');
-        $inp_datestart = $this->getDate($request->post('datestart'));
-        $inp_timestart = $this->getTime($request->post('timestart'));
-        $inp_dateend = $this->getDate($request->post('dateend'));
-        $inp_timeend = $this->getTime($request->post('timeend'));
-        $fileNameAdded = "";
-        $data_peminjaman = DB::table('peminjaman')->where('p_id',$inp_pid)->get();
-        if(!empty($data_peminjaman)){
-            if(!empty($request->file('file'))){
-                $filenameDelete = public_path('suratpeminjaman/'.$data_peminjaman[0]->p_scan_surat_peminjaman);
-                File::delete($filenameDelete);
-                $b_file = $request->file('file');
-                $fileNameAdded = time().'.'.$b_file->getClientOriginalExtension();
-                $b_file->move(public_path('suratpeminjaman'), $fileNameAdded);
-                DB::table('peminjaman')->where('p_id',$inp_pid)->update([
-                    'p_nama_event' => $inp_namaevent,
-                    'p_date' => $inp_datestart,
-                    'p_date_end' => $inp_dateend,
-                    'p_time_start' => $inp_timestart,
-                    'p_time_end' => $inp_timeend,
-                    'p_scan_surat_peminjaman' => $fileNameAdded,
-                    'updated_at' => NOW()
-                ]);
-            }else{
-                DB::table('peminjaman')->where('p_id',$inp_pid)->update([
-                    'p_nama_event' => $inp_namaevent,
-                    'p_date' => $inp_datestart,
-                    'p_date_end' => $inp_dateend,
-                    'p_time_start' => $inp_timestart,
-                    'p_time_end' => $inp_timeend,
-                    'updated_at' => NOW()
-                ]);
-            }
-            $inp_idinventaris = null;
-            $inp_jumlahinventaris = null;
-            $i=0;
-            if($request->exists('idinventaris') && $request->exists('jumlahinventaris')){
-                $inp_idinventaris = $request->post('idinventaris');
-                $inp_jumlahinventaris = $request->post('jumlahinventaris');
-                foreach($inp_idinventaris as $idinventaris){
-                    $data_Inventaris_peminjaman = DB::table('table_data_detail_peminjaman')->where([
-                        ['p_id', $inp_pid],
-                        ['i_id', $idinventaris],])->get();
-                    if(!empty($data_Inventaris_peminjaman)){
-                        DB::table('table_data_detail_peminjaman')->where('dp_id',$data_Inventaris_peminjaman[0]->dp_id)->update([
-                            'dp_jumlah' => $inp_jumlahinventaris[$i]
-                        ]);
-                    }else{
-                        DB::table('table_data_detail_peminjaman')->insert(
-                            ['p_id' => $inp_pid,
-                            'i_id' => $idinventaris,
-                            'dp_jumlah' => $inp_jumlahinventaris[$i],
-                            'created_at' => now(),
-                            'updated_at' => now()]
-                        );
-                    }
-                    $i++;
+       public function prosesUbah(PeminjamanRequest $request)
+       {
+            $inp_datestart = date('Y-m-d', strtotime($request->datestart));
+            $inp_timestart = $this->getTime($request->post('timestart'));
+            $inp_dateend = date('Y-m-d', strtotime($request->dateend));
+            $inp_timeend = $this->getTime($request->post('timeend'));
+            $fileNameAdded = "";
+            $data_peminjaman = DB::table('peminjaman')->where('p_id',$request->pid)->get();
+            if(!empty($data_peminjaman)){
+                if(!empty($request->file('file'))){
+                    $filenameDelete = public_path('suratpeminjaman/'.$data_peminjaman[0]->p_scan_surat_peminjaman);
+                    File::delete($filenameDelete);
+                    $b_file = $request->file('file');
+                    $fileNameAdded = time().'.'.$b_file->getClientOriginalExtension();
+                    $b_file->move(public_path('suratpeminjaman'), $fileNameAdded);
+                    DB::table('peminjaman')->where('p_id',$request->pid)->update([
+                        'p_nama_event' => $request->inp_nama_event,
+                        'p_date' => $inp_datestart,
+                        'p_date_end' => $inp_dateend,
+                        'p_time_start' => $inp_timestart,
+                        'p_time_end' => $inp_timeend,
+                        'p_scan_surat_peminjaman' => $fileNameAdded,
+                        'updated_at' => NOW()
+                    ]);
+                }else{
+                    DB::table('peminjaman')->where('p_id',$request->pid)->update([
+                        'p_nama_event' => $request->inp_nama_event,
+                        'p_date' => $inp_datestart,
+                        'p_date_end' => $inp_dateend,
+                        'p_time_start' => $inp_timestart,
+                        'p_time_end' => $inp_timeend,
+                        'updated_at' => NOW()
+                    ]);
                 }
-                return redirect()->route('peminjaman.index')->with('alert-class', 'alert-success')->with('flash_message', 'Data peminjaman berhasil diubah !!');
+                $i=0;
+                if($request->exists('idinventaris') && $request->exists('jumlahinventaris')){
+                    DB::table('table_data_detail_peminjaman')->where('p_id', $request->pid)->delete();
+                    foreach($request->idinventaris as $key => $idinventaris){
+                        $data[] = ['p_id' => $request->pid,
+                                    'i_id' => $idinventaris,
+                                    'dp_jumlah' => $request->jumlahinventaris[$key],
+                                    'created_at' => now(),
+                                    'updated_at' => now()];
+                    }
+                    DB::table('table_data_detail_peminjaman')->insert($data);
+                    return redirect()->route('peminjaman.index')->with('alert-class', 'alert-success')->with('flash_message', 'Data peminjaman berhasil diubah !!');
+                }else{
+                    echo "<script>alert('Gagal, Tidak memasukkan barang yang akan dipinjam')
+                        ;window.location='".url('/dosen/peminjaman')."'</script>";
+                }
+
             }else{
-                echo "<script>alert('Gagal, Tidak memasukkan barang yang akan dipinjam')
-                    ;window.location='".url('/dosen/peminjaman')."'</script>";
+                echo "<script>alert('Gagal, Data Peminjaman tidak ditemukan')
+                        ;window.location='".url('/dosen/peminjaman')."'</script>";
             }
 
-        }else{
-            echo "<script>alert('Gagal, Data Peminjaman tidak ditemukan')
-                    ;window.location='".url('/dosen/peminjaman')."'</script>";
-        }
-
-    }
+       }
 
        public function getTime($time){
           $in_time = explode(" ",$time);

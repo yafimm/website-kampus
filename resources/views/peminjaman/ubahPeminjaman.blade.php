@@ -19,47 +19,20 @@
         /* Datepicker bootstrap */
         var date = new Date();
         //var dateStart = new Date({{'2019'}}, {{'11'}}, {{'02'}});
-        var dateStart = new Date({
-            {
-                $start_year
-            }
-        }, {
-            {
-                $start_month
-            }
-        }, {
-            {
-                $start_day
-            }
-        });
-        var dateEnd = new Date({
-            {
-                $end_year
-            }
-        }, {
-            {
-                $end_month
-            }
-        }, {
-            {
-                $end_day
-            }
-        });
+
         //console.log(dateEnd);
         $(function () {
             "use strict";
             $('#datestart').bsdatepicker({
-                format: 'mm-dd-yyyy'
+                format: 'dd-mm-yyyy'
             });
         });
         $(function () {
             "use strict";
             $('#dateend').bsdatepicker({
-                format: 'mm-dd-yyyy'
+                format: 'dd-mm-yyyy'
             });
         });
-        $('#datestart').bsdatepicker('setDate', dateStart);
-        $('#dateend').bsdatepicker('setDate', dateEnd);
     </script>
     <!-- Bootstrap Datepicker -->
     <script type="text/javascript" src="{{ asset('assets/widgets/datepicker-ui/datepicker.js') }}"></script>
@@ -68,6 +41,7 @@
 
     <script type="text/javascript" src="{{ asset('assets/widgets/timepicker/timepicker.js') }}"></script>
     <script type="text/javascript">
+        var peminjamanId = {{count($data_peminjaman[0]->detail_peminjaman)}};
         /* Timepicker */
         $(function () {
             "use strict";
@@ -82,6 +56,7 @@
             });
         });
     </script>
+    <script type="text/javascript" src="{{ asset('js/peminjaman.js') }}"></script>
 
     <script type="text/javascript" src="{{ asset('assets/widgets/chosen/chosen.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/widgets/chosen/chosen-demo.js') }}"></script>
@@ -96,21 +71,6 @@
     <script type="text/javascript" src="{{ asset('assets/widgets/charts/sparklines/sparklines.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/widgets/charts/sparklines/sparklines-demo.js') }}">
     </script>
-
-    <!-- Flot charts -->
-
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-resize.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-stack.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-pie.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-tooltip.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-demo-1.js') }}"></script>
-
-    <!-- PieGage charts -->
-
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/piegage/piegage.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/piegage/piegage-demo.js') }}"></script>
-
 
     <div id="page-title">
         <h2>Halaman Peminjaman Barang</h2>
@@ -133,13 +93,16 @@
                             <div class="col-sm-6">
                                 <input required name="inp_nama_event" type="text" class="form-control" id=""
                                     placeholder="Nama Kegiatan" value="{{$data_peminjaman[0]->p_nama_event}}">
+                                @if($errors->has('inp_nama_event'))
+                                   <small class="form-text text-danger">*{{ $errors->first('inp_nama_event') }}</small>
+                                @endif
                             </div>
                         </div>
                         <input type="hidden" name="pid" value="{{$data_peminjaman[0]->p_id}}">
                         <input type="hidden" name="status" value="0">
                         <input type="hidden" name="iduser" value="{{Auth::user()->id}}">
                         <h3 class="title-hero">
-                            Data Barang/Inventaris Yang Dipinjam
+                            Data Inventaris Yang Dipinjam
                         </h3>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Pilih Inventaris yang Ingin dipinjam</label>
@@ -158,13 +121,16 @@
                                         {{$inventaris->i_nama}}</option>
                                     @endforeach
                                 </select>
+                                @if($errors->has('idinventaris'))
+                                   <small class="form-text text-danger">*{{ $errors->first('idinventaris') }}</small>
+                                @endif
                             </div>
                         </div>
                         <br>
                         <br>
                         <div class="content-daftar-inventaris" id="content-daftar-inventaris">
-                            @foreach ($data_peminjaman[0]->detail_peminjaman as $detail)
-                            <div class="form-group">
+                            @foreach ($data_peminjaman[0]->detail_peminjaman as $key => $detail)
+                            <div id="peminjaman-{{ $key }}"class="form-group">
                                 <div class="col-sm-3">
                                 </div>
                                 <label class="col-sm-3 control-label">
@@ -178,6 +144,11 @@
                                     <input type="hidden" name="idinventaris[]" value="{{$detail->i_id}}">
                                     <input required name="jumlahinventaris[]" type="number" class="form-control"
                                         id="" placeholder="Jumlah" value="{{$detail->dp_jumlah}}">
+                                </div>
+                                <div class="col-sm-3">
+                                  <button class="btn btn-danger btn-sm" type="button"
+                                      onclick="hapusItem({{ $key }}, value)" data-toggle="tooltip" data-placement="top"title="Hapus Data"><i class="glyph-icon icon-trash"></i>
+                                  </button>
                                 </div>
                             </div>
                             @endforeach
@@ -195,8 +166,11 @@
                                         <i class="glyph-icon icon-calendar"></i>
                                     </span>
                                     <input required id="datestart" name="datestart" type="text"
-                                        class="bootstrap-datepicker form-control" value="{{ $data_peminjaman[0]->p_date }}"
+                                        class="bootstrap-datepicker form-control" value="{{ date('d-m-Y', strtotime($data_peminjaman[0]->p_date)) }}"
                                         data-date-format="mm-dd-yyyy">
+                                    @if($errors->has('datestart'))
+                                      <small class="form-text text-danger">*{{ $errors->first('datestart') }}</small>
+                                    @endif
                                 </div>
                             </div>
                             <label class="col-sm-3 control-label">Jam Peminjaman Awal</label>
@@ -225,9 +199,12 @@
                                         <i class="glyph-icon icon-calendar"></i>
                                     </span>
                                     <input required id="dateend" name="dateend" type="text"
-                                        class="bootstrap-datepicker form-control" value="{{ $data_peminjaman[0]->p_date_end }}"
+                                        class="bootstrap-datepicker form-control" value="{{ date('d-m-Y', strtotime($data_peminjaman[0]->p_date_end)) }}"
                                         data-date-format="mm-dd-yyyy">
                                 </div>
+                                @if($errors->has('dateend'))
+                                <small class="form-text text-danger">*{{ $errors->first('dateend') }}</small>
+                                @endif
                             </div>
                             <label class="col-sm-3 control-label">Jam Peminjaman Akhir</label>
                             <div class="col-sm-3">
@@ -278,27 +255,6 @@
                     </form>
                 </div>
             </div>
-
-            <script>
-                $('#inventaris').change(function () {
-                    var selectedObject = $(this).find('option:selected');
-                    var id = selectedObject.data("invid");
-                    var nama = selectedObject.data("invnama");
-                    if (id == 'title') {
-                    } else {
-                        $("#content-daftar-inventaris").append('<div class="form-group">' +
-                            '<div class="col-sm-3">' +
-                            '</div>' +
-                            '<label class="col-sm-3 control-label">' + nama + '</label>' +
-                            '<div class="col-sm-3">' +
-                            '<input type="hidden" name="idinventaris[]" value="' + id + '">' +
-                            '<input required name="jumlahinventaris[]" type="number" class="form-control"' +
-                            'id="" placeholder="Jumlah">' +
-                            '</div></div>');
-                    }
-                });
-            </script>
-
         </div>
     </div>
 

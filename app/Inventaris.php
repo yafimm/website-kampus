@@ -24,10 +24,10 @@ class Inventaris extends Model
     public function getStok($date = null)
     {
         if($date != null){
-            return $this->pengadaan()->where([['tanggal', '<=', $date]])->sum('qty') - $this->peminjaman()->where([['p_status', '=', 3], ['p_date', '<=', $date]])->sum('pivot.dp_jumlah');
+            return $this->pengadaan()->where([['tanggal', '<=', $date]])->sum('qty') - $this->peminjaman()->where([['p_status', '=', 1], ['p_date', '<=', $date]])->sum('dp_jumlah');
         }
         $date = date('Y-m-d H:i:s');
-        return $this->pengadaan([['tanggal', '<=', $date]])->sum('qty') - $this->request()->where([['p_status', '=', 3], ['p_date', '<=', $date]])->sum('pivot.dp_jumlah');
+        return $this->pengadaan([['tanggal', '<=', $date]])->sum('qty') - $this->peminjaman()->where([['p_status', '=', 1], ['p_date', '<=', $date]])->sum('dp_jumlah');
     }
 
     public function pengadaan()

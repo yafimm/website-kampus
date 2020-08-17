@@ -54,7 +54,7 @@ if(!function_exists('YaffSetPengadaanNoRegister')) {
         $id = 'PNGD'.date('ymd');
         $lastId = DB::table('pengadaan')->where('no_register','like', $id.'%')->orderBy('no_register', 'DESC')->first();
         if($lastId){
-            $count = substr($lastId->no_register, 9);
+            $count = substr($lastId->no_register, 10);
             $count++;
             if(strlen($count) == 1){
                 $count='00'.$count;
@@ -79,7 +79,7 @@ if(!function_exists('YaffSetMaintenanceNoRegister')) {
         $id = 'MNTS'.date('ymd');
         $lastId = DB::table('maintenance')->where('no_register','like', $id.'%')->orderBy('no_register', 'DESC')->first();
         if($lastId){
-            $count = substr($lastId->no_register, 9);
+            $count = substr($lastId->no_register, 10);
             $count++;
             if(strlen($count) == 1){
                 $count='00'.$count;

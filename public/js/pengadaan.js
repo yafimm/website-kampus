@@ -61,8 +61,8 @@ $(document).ready(function(){
         return {
           results:  $.map(data, function (item) {
             return {
-              text: item.b_kode+" - "+item.b_nama,
-              id: item.b_kode,
+              text: item.b_id ? item.b_kode+" - "+item.b_nama : item.i_kode+" - "+item.i_nama,
+              id: item.b_id ? item.b_kode : item.i_kode,
             }
           })
         };

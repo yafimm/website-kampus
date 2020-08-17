@@ -30,10 +30,10 @@ class Barang extends Model
     public function getStok($date = null)
     {
         if($date != null){
-            return $this->pengadaan()->where([['created_at', '<=', $date]])->sum('qty') - $this->request()->where([['rb_status', '=', 1], ['created_at', '<=', $date]])->sum('rb_jumlah');
+            return $this->pengadaan()->where([['created_at', '<=', $date]])->sum('qty') - $this->request()->where([['rb_status', '>=', 2], ['created_at', '<=', $date]])->sum('rb_jumlah');
         }
-        $date = date('Y-m-d');
-        return $this->pengadaan()->where([['tanggal', '<=', $date]])->sum('qty') - $this->request()->where([['rb_status', '=', 1], ['created_at', '<=', $date]])->sum('rb_jumlah');
+        $date = date('Y-m-d H:i:s');
+        return $this->pengadaan()->where([['tanggal', '<=', $date]])->sum('qty') - $this->request()->where([['rb_status', '>=', 2], ['created_at', '<=', $date]])->sum('rb_jumlah');
     }
 
     public function pengadaan()

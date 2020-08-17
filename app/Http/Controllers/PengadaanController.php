@@ -128,7 +128,9 @@ class PengadaanController extends Controller
     {
         if ($request->has('q')) {
             $cari = $request->q;
-            $data = DB::table('barang')->select('b_id', 'b_kode', 'b_nama')->where('b_kode', 'LIKE', '%'.$cari.'%')->orWhere('b_nama', 'LIKE', '%'.$cari.'%')->take(10)->get();
+            $dataBarang = DB::table('barang')->select('b_id', 'b_kode', 'b_nama')->where('b_kode', 'LIKE', '%'.$cari.'%')->orWhere('b_nama', 'LIKE', '%'.$cari.'%')->take(10)->get();
+            $dataInventaris = DB::table('inventaris')->select('i_id', 'i_kode', 'i_nama')->where('i_kode', 'LIKE', '%'.$cari.'%')->orWhere('i_nama', 'LIKE', '%'.$cari.'%')->take(10)->get();
+            $data = $dataBarang->merge($dataInventaris);
             return response()->json($data);
         }
     }
