@@ -32,7 +32,8 @@ class Barang extends Model
         if($date != null){
             return $this->pengadaan()->where([['created_at', '<', $date]])->sum('qty') - $this->request()->where([['rb_status', '=', 1], ['created_at', '<', $date]])->sum('rb_jumlah');
         }
-        return $this->pengadaan()->sum('qty') - $this->request()->where('rb_status', 1)->sum('rb_jumlah');
+        $date = date('Y-m-d');
+        return $this->pengadaan()->where([['created_at', '<', $date]])->sum('qty') - $this->request()->where([['rb_status', '=', 1], ['created_at', '<', $date]])->sum('rb_jumlah');
     }
 
     public function pengadaan()
