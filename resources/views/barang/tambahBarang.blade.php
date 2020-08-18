@@ -73,7 +73,7 @@
                             <label class="col-sm-3 control-label">Kode Barang</label>
                             <div class="col-sm-6">
                                 <input required name="kode" type="text" class="form-control" id=""
-                                    placeholder="Kolom Kode Barang" value="{{ YaffSetBarangKode() }}" readonly>
+                                    placeholder="Kolom Kode Barang" value="{{ old('kode') }}">
                                 @if($errors->has('kode'))
                                    <small class="form-text text-danger">*{{ $errors->first('kode') }}</small>
                                 @endif

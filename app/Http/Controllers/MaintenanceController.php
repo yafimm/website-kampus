@@ -138,9 +138,9 @@ class MaintenanceController extends Controller
         if($request->kode){
             $jenisBarang = substr($request->kode, 0, 3);
             if($jenisBarang == 'INV'){
-                $data = Inventaris::where('i_kode', $request->kode)->first();
+                $data = Inventaris::where('i_kode', substr($request->kode, 3))->first();
             }else{
-                $data = Barang::where('b_kode', $request->kode)->first();
+                $data = Barang::where('b_kode', substr($request->kode, 3))->first();
             }
             if(count($data->maintenance) > 0){
                 $barangMaintenance = $data->maintenance->where('no_register', $request->no_register)->first();

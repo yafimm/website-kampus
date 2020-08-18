@@ -140,9 +140,9 @@ class PengadaanController extends Controller
         if($request->kode){
             $jenisBarang = substr($request->kode, 0, 3);
             if($jenisBarang == 'INV'){
-                $data = Inventaris::where('i_kode', $request->kode)->first();
+                $data = Inventaris::where('i_kode', substr($request->kode, 3))->first();
             }else{
-                $data = Barang::where('b_kode', $request->kode)->first();
+                $data = Barang::where('b_kode', substr($request->kode, 3))->first();
             }
             if(count($data->pengadaan) > 0){
                 $barangPengadaan = $data->pengadaan->where('no_register', $request->no_register)->first();

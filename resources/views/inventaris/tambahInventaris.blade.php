@@ -57,7 +57,7 @@
                             <label class="col-sm-3 control-label">Kode Inventaris</label>
                             <div class="col-sm-6">
                                 <input required name="kode" type="text" class="form-control" id=""
-                                    placeholder="Kolom Kode Inventaris" value="{{ YaffSetInventarisKode() }}" readonly>
+                                    placeholder="Kolom Kode Inventaris" value="{{ old('kode') }}">
                                 @if($errors->has('kode'))
                                    <small class="form-text text-danger">*{{ $errors->first('kode') }}</small>
                                 @endif
