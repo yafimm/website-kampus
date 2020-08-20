@@ -44,7 +44,7 @@ $(document).ready(function(){
           results:  $.map(data, function (item) {
             return {
               text: item.b_id ? item.b_kode+" - "+item.b_nama : item.i_kode+" - "+item.i_nama,
-              id: item.b_id ? 'BRG'.item.b_kode : 'INV'.item.i_kode,
+              id: item.b_id ? 'BRG'+item.b_kode : 'INV'+item.i_kode,
             }
           })
         };
