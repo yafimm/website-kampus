@@ -227,7 +227,6 @@
 
 <body>
     <div id="sb-site">
-
         <div id="loading">
             <div class="spinner">
                 <div class="bounce1"></div>
@@ -294,37 +293,14 @@
             </div>
         </div>
 
+      </div>
 
         <!-- WIDGETS -->
 
         <script type="text/javascript" src="{{ asset('assets/bootstrap/js/bootstrap.js') }}"></script>
 
-        <!-- Bootstrap Dropdown -->
-
-        <!-- <script type="text/javascript" src="{{ asset('assets/widgets/dropdown/dropdown.js') }}"></script> -->
-
-        <!-- Bootstrap Tooltip -->
-
-        <!-- <script type="text/javascript" src="{{ asset('assets/widgets/tooltip/tooltip.js') }}"></script> -->
-
-        <!-- Bootstrap Popover -->
-
-        <!-- <script type="text/javascript" src="{{ asset('assets/widgets/popover/popover.js') }}"></script> -->
-
-        <!-- Bootstrap Progress Bar -->
-
         <script type="text/javascript" src="{{ asset('assets/widgets/progressbar/progressbar.js') }}"></script>
-
-        <!-- Bootstrap Buttons -->
-
-        <!-- <script type="text/javascript" src="{{ asset('assets/widgets/button/button.js') }}"></script> -->
-
-        <!-- Bootstrap Collapse -->
-
-        <!-- <script type="text/javascript" src="{{ asset('assets/widgets/collapse/collapse.js') }}"></script> -->
-
-        <!-- Superclick -->
-
+        
         <script type="text/javascript" src="{{ asset('assets/widgets/superclick/superclick.js') }}"></script>
 
         <!-- Input switch alternate -->
@@ -370,7 +346,7 @@
         <script type="text/javascript" src="{{ asset('assets/widgets/theme-switcher/themeswitcher.js') }}"></script>
 
         <script type="text/javascript" src="{{ asset('js/yaff_helper.js') }}"></script>
-    </div>
+        @yield('javascript')
 </body>
 
 </html>

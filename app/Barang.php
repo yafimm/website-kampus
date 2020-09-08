@@ -14,12 +14,12 @@ class Barang extends Model
         'b_kode', 'b_nama','b_stock','b_satuan','b_foto', 'b_harga'
     ];
 
-    protected $appends = ['tanggal', 'total'];
+    protected $appends = ['tanggal', 'total', 'stok'];
 
 
     public function getTotalAttribute()
     {
-        return $this->getStok() * $this->b_harga;
+        return $this->stok * $this->b_harga;
     }
 
     public function getTanggalAttribute()
@@ -29,11 +29,16 @@ class Barang extends Model
 
     public function getStok($date = null)
     {
-        if($date != null){
-            return $this->pengadaan()->where([['created_at', '<=', $date]])->sum('qty') - $this->request()->where([['rb_status', '>=', 2], ['created_at', '<=', $date]])->sum('rb_jumlah');
+        if($date == null){
+            $date = date('Y-m-d H:i:s');
+            return $this->pengadaan()->where('created_at', '<=', $date)->sum('qty') - $this->request()->where('rb_status', '>=', 2)->where('created_at', '<=', $date)->sum('rb_jumlah');
         }
-        $date = date('Y-m-d H:i:s');
-        return $this->pengadaan()->where([['tanggal', '<=', $date]])->sum('qty') - $this->request()->where([['rb_status', '>=', 2], ['created_at', '<=', $date]])->sum('rb_jumlah');
+        return $this->pengadaan()->where('created_at', '<=', $date)->sum('qty') - $this->request()->where('rb_status', '>=', 2)->where('created_at', '<=', $date)->sum('rb_jumlah');
+    }
+
+    public function getStokAttribute()
+    {
+        return $this->pengadaan->sum('qty') - $this->request->where('rb_status', '>=', 2)->sum('rb_jumlah');
     }
 
     public function pengadaan()

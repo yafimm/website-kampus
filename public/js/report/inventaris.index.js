@@ -1,4 +1,27 @@
 $(document).ready(function () {
+    dataChartInventaris = dataInventaris.sort(function(a,b) {
+                      return b.total - a.total;
+                    });
+    loadPieChart();
+    $('#sortChart').on('change', function(){
+
+      $("canvas#pieChart").remove();
+      $("div#chartDiv").append('<canvas id="pieChart" width="200px" height="150px"></canvas>');
+
+        if($(this).val() == 'tertinggi'){
+            dataChartInventaris = dataInventaris.sort(function(a,b) {
+                            return b.total - a.total;
+                          });
+
+        }else{
+            dataChartInventaris = dataInventaris.sort(function(a,b) {
+                                return a.total - b.total;
+                            });
+        }
+
+        loadPieChart();
+    });
+
     var table = $('#dt_inventaris').DataTable();
     var tt = new $.fn.dataTable.TableTools(table);
     $('.dataTables_filter input').attr("placeholder", "Search...");
@@ -19,6 +42,17 @@ $(document).ready(function () {
       dataTableTotal();
     });
 
+    function getColors(length){
+      let pallet = ["#0074D9", "#FF4136", "#2ECC40", "#FF851B", "#7FDBFF", "#B10DC9", "#FFDC00", "#001f3f", "#39CCCC", "#01FF70", "#85144b", "#F012BE", "#3D9970", "#111111", "#AAAAAA"];
+      let colors = [];
+
+      for(let i = 0; i < length; i++) {
+        colors.push(pallet[i % pallet.length]);
+      }
+
+      return colors;
+    }
+
     // function sum total harga
     function dataTableTotal(){
       let startPage = table.page.info().start;
@@ -33,6 +67,49 @@ $(document).ready(function () {
       }
       $('#totalPage').html(totalData);
       $('#totalHarga').html(convertNumberToRupiah(totalHarga));
+    }
+
+    function loadPieChart()
+    {
+        dataChartInventaris = dataChartInventaris.slice(0,5); //Ambil 5 data terakhir
+        let total = dataChartInventaris.map(a => a.total);
+        let inventaris = dataChartInventaris.map(a => a.i_nama);
+        data = {
+          datasets: [{
+              data: total,
+              backgroundColor: getColors(total.length)
+          }],
+
+
+
+          // These labels appear in the legend and in the tooltips when hovering different arcs
+          labels: inventaris
+        };
+        var options = {
+              tooltips: {
+                 callbacks: {
+                   label: function(tooltipItem, data) {
+                     var dataset = data.datasets[tooltipItem.datasetIndex];
+                     var meta = dataset._meta[Object.keys(dataset._meta)[0]];
+                     var total = meta.total;
+                     var currentValue = dataset.data[tooltipItem.index];
+                     var percentage = parseFloat((currentValue/total*100).toFixed(1));
+                     return convertNumberToRupiah(currentValue) + ' (' + percentage + '%)';
+                   },
+                   title: function(tooltipItem, data) {
+                     return data.labels[tooltipItem[0].index];
+                   }
+                 }
+               },
+         };
+
+
+        var pieChartId = document.getElementById('pieChart').getContext('2d');
+        var myPieChart = new Chart(pieChartId, {
+            type: 'pie',
+            data: data,
+            options: options
+        });
     }
 
 });

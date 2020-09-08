@@ -1,19 +1,16 @@
 @extends('report.index')
 @section('contentreport')
 <section class="section-chart">
-    <div class="row">
-        <div class="col-md-8 offset-md-2 mt-5 mb-5">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h2>Laporan Data Pengguna</h2>
-                    <hr>
-                </div>
-                <div class="card-body">
-                    <canvas id="myChart" width="200px" height="150px"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
+  <div class="row">
+      <div class="col-md-12 col-sm-12 mt-5 mb-5">
+          <div class="row">
+              <div class="col-12">
+                  <h2>Laporan Data Pengguna</h2>
+                  <hr>
+              </div>
+          </div>
+      </div>
+  </div>
 </section>
 
 <div class="example-box-wrapper">
@@ -56,41 +53,4 @@
     </table>
     <div>
 </div>
-
-<script type="text/javascript">
-
-  var dataPengguna = {!! json_encode($arr_pengguna_js) !!};
-  var dataChart = [];
-  var dataRole = [];
-  var i = 0;
-  for (key in dataPengguna) {
-      dataRole[i] = key;
-      dataChart[i] = dataPengguna[key];
-      i++;
-  }
-
-
-    </script>
-    {{-- chartjs --}}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            // The type of chart we want to create
-            type: 'pie',
-
-            // The data for our dataset
-            data: {
-                labels: dataRole,
-                datasets: [{
-                    label: 'Data Pengguna',
-                    backgroundColor: ["#0074D9", "#FF4136", "#2ECC40", "#FF851B"],
-                    data: dataChart
-                }]
-            },
-
-            // Configuration options go here
-        });
-    </script>
-
 @endsection

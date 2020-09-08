@@ -1,19 +1,27 @@
 @extends('report.index')
 @section('contentreport')
 <section class="section-chart">
-    <div class="row">
-        <div class="col-md-8 offset-md-2 mt-5 mb-5">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h2>Laporan Data Request</h2>
-                    <hr>
-                </div>
-                <div class="card-body">
-                    <canvas id="myChart" width="200px" height="150px"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
+  <div class="row">
+      <div class="col-md-12 col-sm-12 mt-5 mb-5">
+          <div class="row">
+              <div class="col-12">
+                  <h2>Laporan Data Request</h2>
+                  <hr>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-md-6 col-md-offset-3 col-sm-12" id="chartDiv">
+                  <canvas id="pieChart" width="200px" height="150px"></canvas>
+              </div>
+              <div class="col-md-3 col-md-offset-9 col-sm-12">
+                <select class="form-control" name="sort" id="sortChart">
+                  <option value="tertinggi">Tertinggi</option>
+                  <option value="terendah">Terendah</option>
+                </select>
+              </div>
+          </div>
+      </div>
+  </div>
 </section>
 
 <div class="example-box-wrapper">
@@ -69,103 +77,11 @@
     <div>
 </div>
 
-
     <script type="text/javascript">
-      var dateStart = new Date("{!! date('Y-m-d', strtotime(Request::get('mulai'))) !!}");
-      var dateEnd = new Date("{!! date('Y-m-d', strtotime(Request::get('akhir'))) !!}");
-      var rangeDate = (dateEnd - dateStart) / (1000 * 3600 * 24);
-      var dataHarga = {!! json_encode($arr_request_js) !!};
-      var dataChart = [[]];
-      var dataDate = [];
-
-      for (var i = 0; i < rangeDate; i++) {
-        if(i == 0){
-          dateStart.setDate(dateStart.getDate());
-        }else{
-          dateStart.setDate(dateStart.getDate() + 1);
-        }
-        let tanggal = dateStart.getDate() < 10 ? "0"+dateStart.getDate() : dateStart.getDate();
-        let bulan = (dateStart.getMonth() < 10 ? "0":"") + (dateStart.getMonth() + 1);
-        let tahun = dateStart.getFullYear();
-        let formatTanggal = tanggal+"-"+bulan+"-"+tahun;
-        let arrayData = [];
-        dataDate.push(formatTanggal);
-        for (key in dataHarga) {
-          //isiin array dengan 0 dulu biar jalan
-          dataChart.push([0]);
-          if(formatTanggal == key){
-            if(dataHarga[key][0] != null){
-              dataChart[0][i] = dataHarga[key][0];
-            }else{
-              dataChart[0][i] = 0;
-            }
-
-            if(dataHarga[key][1] != null){
-              dataChart[1][i] = dataHarga[key][1];
-            }else{
-              dataChart[1][i] = 0;
-            }
-
-            if(dataHarga[key][2] != null){
-              dataChart[2][i] = dataHarga[key][2];
-            }else{
-              dataChart[2][i] = 0;
-            }
-
-            if(dataHarga[key][3] != null){
-              dataChart[3][i] = dataHarga[key][3];
-            }else{
-              dataChart[3][i] = 0;
-            }
-
-          }else if(dataChart != 0){
-
-          }else{
-            dataChart[0][i] = 0;
-            dataChart[1][i] = 0;
-            dataChart[2][i] = 0;
-            dataChart[3][i] = 0;
-          }
-        }
-      }
-      console.log(dataChart);
-
+      var dataRequest = {!! json_encode($arr_request) !!};
     </script>
     {{-- chartjs --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            // The type of chart we want to create
-            type: 'bar',
-
-            // The data for our dataset
-            data: {
-                labels: dataDate,
-                datasets: [{
-                    label: 'Menunggu',
-                    backgroundColor: 'rgba(230, 126, 34, 1)',
-                    data: dataChart[0]
-                },
-                {
-                    label: 'Ditolak',
-                    backgroundColor: 'rgba(235, 103, 89, 1)',
-                    data: dataChart[1]
-                },
-                {
-                    label: 'Disetujui',
-                    backgroundColor: 'rgba(7, 155, 239, 1)',
-                    data: dataChart[2]
-                },
-                {
-                    label: 'Selesai',
-                    backgroundColor: 'rgba(46, 204, 113, 1)',
-                    data: dataChart[3]
-                }]
-            },
-
-        });
-    </script>
 
 
 @endsection

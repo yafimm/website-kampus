@@ -51,7 +51,7 @@
 				<td>{{$barang->b_satuan}}</td>
 				<td>{{$barang->b_stock}}</td>
 				<td>Rp. {{$barang->b_harga ? number_format($barang->b_harga, 2 ,',','.') : '0,00' }}</td>
-				<td>Rp. {{number_format($barang->total, 2, ',', '.')}}</td>
+				<td>Rp. {{number_format($barang->getTotal, 2, ',', '.')}}</td>
 				<td>{{$barang->created_at->format('d/m/Y')}}</td>
 			</tr>
 			@endforeach

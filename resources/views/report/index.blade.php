@@ -21,21 +21,6 @@
             });
 
     </script>
-    @if( Request::get("jenis") == 'databarang' )
-    <script type="text/javascript" src="{{ asset('js/report/barang.index.js') }}"></script>
-    @elseif( Request::get("jenis") == 'datapengadaan' )
-    <script type="text/javascript" src="{{ asset('js/report/pengadaan.index.js') }}"></script>
-    @elseif( Request::get("jenis") == 'datainventaris' )
-    <script type="text/javascript" src="{{ asset('js/report/inventaris.index.js') }}"></script>
-    @elseif( Request::get("jenis") == 'datapeminjaman' )
-    <script type="text/javascript" src="{{ asset('js/report/peminjaman.index.js') }}"></script>
-    @elseif( Request::get("jenis") == 'datapengguna' )
-    <script type="text/javascript" src="{{ asset('js/report/pengguna.index.js') }}"></script>
-    @elseif( Request::get("jenis") == 'datarequest' )
-    <script type="text/javascript" src="{{ asset('js/report/request.index.js') }}"></script>
-    @elseif( Request::get("jenis") == 'datamaintenance' )
-    <script type="text/javascript" src="{{ asset('js/report/maintenance.index.js') }}"></script>
-    @endif<!-- Bootstrap Datepicker -->
     <script type="text/javascript" src="{{ asset('assets/widgets/datepicker-ui/datepicker.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/widgets/datepicker-ui/datepicker-demo.js') }}">
     </script>
@@ -85,44 +70,11 @@
               $('input#cetakAkhir').val(dateEnd);
               $('form#cetakForm').attr('action', url);
               $('form#cetakForm').submit();
-              // $.ajax({
-              //    type:'POST',
-              //    url: url,
-              //    data:{mulai: dateStart, akhir: dateEnd},
-              //    success:function(data){
-              //      console.log('ADA');
-              //       alert(data.success);
-              //    },
-              //    error: function(xhr, textStatus, errorThrown){
-              //         console.log('gagal');
-              //        alert("Status: " + textStatus); alert("Error: " + xhr.responseText);
-              //        alert(xhr.status);
-              //     }
-              // });
             });
         });
 
 
     </script>
-    <!-- Sparklines charts -->
-
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/sparklines/sparklines.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/sparklines/sparklines-demo.js') }}">
-    </script>
-
-    <!-- Flot charts -->
-
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-resize.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-stack.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-pie.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-tooltip.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-demo-1.js') }}"></script>
-
-    <!-- PieGage charts -->
-
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/piegage/piegage.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/widgets/charts/piegage/piegage-demo.js') }}"></script>
 
     <div id="page-title">
         <h2>Halaman Executive Dashboard</h2>
@@ -199,4 +151,22 @@
     @yield('contentreport')
 
 </main>
+@endsection
+
+@section('javascript')
+  @if( Request::get("jenis") == 'databarang' )
+    <script type="text/javascript" src="{{ asset('js/report/barang.index.js') }}"></script>
+  @elseif( Request::get("jenis") == 'datapengadaan' )
+    <script type="text/javascript" src="{{ asset('js/report/pengadaan.index.js') }}"></script>
+  @elseif( Request::get("jenis") == 'datainventaris' )
+    <script type="text/javascript" src="{{ asset('js/report/inventaris.index.js') }}"></script>
+  @elseif( Request::get("jenis") == 'datapeminjaman' )
+    <script type="text/javascript" src="{{ asset('js/report/peminjaman.index.js') }}"></script>
+  @elseif( Request::get("jenis") == 'datapengguna' )
+    <script type="text/javascript" src="{{ asset('js/report/pengguna.index.js') }}"></script>
+  @elseif( Request::get("jenis") == 'datarequest' )
+    <script type="text/javascript" src="{{ asset('js/report/request.index.js') }}"></script>
+  @elseif( Request::get("jenis") == 'datamaintenance' )
+    <script type="text/javascript" src="{{ asset('js/report/maintenance.index.js') }}"></script>
+  @endif<!-- Bootstrap Datepicker -->
 @endsection

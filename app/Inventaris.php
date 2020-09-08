@@ -18,7 +18,7 @@ class Inventaris extends Model
 
     public function getTotalAttribute()
     {
-        return $this->i_unit * $this->i_harga;
+        return $this->stok * $this->i_harga;
     }
 
     public function getStok($date = null)
@@ -28,6 +28,11 @@ class Inventaris extends Model
         }
         $date = date('Y-m-d H:i:s');
         return $this->pengadaan([['tanggal', '<=', $date]])->sum('qty') - $this->peminjaman()->where([['p_status', '=', 1], ['p_date', '<=', $date]])->sum('dp_jumlah');
+    }
+
+    public function getStokAttribute()
+    {
+        return $this->pengadaan->sum('qty');
     }
 
     public function pengadaan()

@@ -27,7 +27,8 @@ class BarangController extends Controller
      }
 
      public function lihat($id){
-         $data_barang = Barang::findOrFail($id);
+         $data_barang = Barang::with(['pengadaan', 'request'])->findOrFail($id);
+         // dd($data_barang);
          return view('barang.lihatBarang', compact('data_barang'));
      }
 

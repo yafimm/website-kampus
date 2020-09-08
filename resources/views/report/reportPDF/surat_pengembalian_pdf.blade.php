@@ -78,7 +78,7 @@
 						<td>{{ $barang->b_stock }}</td>
 						<td>{{ $barang->b_harag}}</td>
 						<td>{{ $barang->created_at->format('d-m-Y') }}</td>
-						<td>{{ $barang->total }}</td>
+						<td>{{ $barang->getTotal }}</td>
 					</tr>
 					@endforeach
 				@endif
