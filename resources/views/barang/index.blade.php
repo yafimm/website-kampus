@@ -155,7 +155,7 @@
                                 <td>{{$barang->stok}}</td>
                                 <td>{{$barang->b_satuan}}</td>
                                 <td>{{'Rp. '.number_format($barang->b_harga, 2, ',' ,'.')}}</td>
-                                <td>{{'Rp. '.number_format($barang->getTotal, 2, ',', '.')}}</td>
+                                <td>{{'Rp. '.number_format($barang->total, 2, ',', '.')}}</td>
                                 <td>
                                     <a href="{{ route('barang.lihat', $barang->b_id) }}" class="btn btn-info btn-sm"
                                         data-toggle="tooltip" data-placement="top" title="Lihat Data">

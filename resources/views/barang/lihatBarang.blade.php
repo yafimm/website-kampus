@@ -67,6 +67,7 @@
                             <div class="col-sm-6">
                                 <input disabled name="stock" type="text" class="form-control" id=""
                                     placeholder="Kolom Stock Barang" value="{{$data_barang->stok}}">
+                                <small class="text-info">*Stok Untuk sekarang</small>
                             </div>
                         </div>
                         <div class="form-group">
