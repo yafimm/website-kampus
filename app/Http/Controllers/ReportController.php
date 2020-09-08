@@ -15,19 +15,6 @@ use DB;
 class ReportController extends Controller
 {
 
-    public function grafik()
-    {
-        $dataTotal = ['barang' => DB::table('barang')->count(),
-                 'inventaris' => DB::table('inventaris')->count(),
-                 'maintenance' => DB::table('maintenance')->count(),
-                 'peminjaman' => DB::table('peminjaman')->count(),
-                 'pengadaan' => DB::table('pengadaan')->count(),
-                 'request_barang' => DB::table('request_barang')->count(),
-                 'users' => DB::table('users')->count(),
-                  ];
-
-        return view('report.grafik', compact('dataTotal'));
-    }
     public function index(Request $request)
     {
         if(isset($request->jenis))

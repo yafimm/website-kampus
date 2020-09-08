@@ -135,7 +135,6 @@ Route::group(['middleware' => ['web', 'auth', 'role:admin,staff_inventaris,dosen
 //Modul executive dashboard
 Route::group(['middleware' => ['web', 'auth', 'role:yayasan']], function() {
   Route::get('/report', 'ReportController@index')->name('report.index');
-  Route::get('/grafik', 'ReportController@grafik')->name('report.grafik');
 });
 // Modul request
 Route::group(['middleware' => ['web', 'auth', 'role:dosen,admin,staff_inventaris']], function() {
