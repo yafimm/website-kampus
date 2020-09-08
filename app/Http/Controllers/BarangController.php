@@ -13,7 +13,7 @@ use File;
 class BarangController extends Controller
 {
      public function index(){
-         $data_barang = Barang::orderBy('b_id', 'desc')->get();
+         $data_barang = Barang::with('pengadaan','request')->orderBy('b_id', 'desc')->get();
          return view('barang.index', compact('data_barang'));
      }
 
