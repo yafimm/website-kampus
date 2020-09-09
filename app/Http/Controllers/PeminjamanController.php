@@ -109,7 +109,7 @@ class PeminjamanController extends Controller
             $fileName = time().'.'.$b_file->getClientOriginalExtension();
             $b_file->move(public_path('suratpeminjaman'), $fileName);
         }
-        
+
         $peminjaman = Peminjaman::create(
             ['user_id' => $request->iduser,
             'p_nama_event' => $request->inp_nama_event,
@@ -274,7 +274,8 @@ class PeminjamanController extends Controller
     public function cetakTanggal(Request $request){
         $data_peminjaman = Peminjaman::where([['created_at','>=', date('Y-m-d', strtotime($request->mulai))], ['created_at','<=', date('Y-m-d', strtotime($request->akhir))]])->get();
         $pdf = PDF::loadview('peminjaman.laporan_peminjaman_tanggal_pdf', ['data_peminjaman'=>$data_peminjaman, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
-        return $pdf->download('laporan-data-peminjaman.pdf');
+        // return $pdf->download('laporan-data-peminjaman.pdf');
+        return $pdf->stream();
     }
 
     public function cetak($id)
@@ -283,7 +284,8 @@ class PeminjamanController extends Controller
         if(\Auth::user()->id == $data_peminjaman->user_id)
         {
             $pdf = PDF::loadview('peminjaman.laporan_peminjaman_pdf', ['data_peminjaman'=>$data_peminjaman]);
-            return $pdf->download('laporan-data-peminjaman.pdf');
+            // return $pdf->download('laporan-data-peminjaman.pdf');
+            return $pdf->stream();
         }
     }
 

@@ -67,7 +67,7 @@
                     @endif
                 </td>
                 <td>{{$maintenance->posisi}}</td>
-                <td>{{date('d-m-Y', strtotime($maintenance->tanggal_maintenance))}}</td>
+                <td><span style="display:none;">{{date('Ymd', strtotime($maintenance->tanggal_maintenance))}}</span>{{date('d-m-Y', strtotime($maintenance->tanggal_maintenance))}}</td>
                 <td>{{$maintenance->biaya != 0 ? 'Rp. '. number_format($maintenance->biaya, 2, ',', '.') : 'Free'}}</td>
                 <td>{{$maintenance->keterangan}}</td>
                 <td>{!! ($maintenance->status == 'SELESAI' ? '<span class="label label-success">'.$maintenance->status.'</span>' : ($maintenance->status == 'SEDANG BERJALAN' ? '<span class="label label-warning">'.$maintenance->status.'</span>': '<span class="label label-danger">'.$maintenance->status.'</span>'))!!}</td>

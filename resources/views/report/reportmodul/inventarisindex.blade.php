@@ -59,7 +59,7 @@
                 <td>{{$inventaris->i_nama}}</td>
                 <td>{{$inventaris->stok}}</td>
                 <td>Rp. {{number_format($inventaris->i_harga, 2, ',','.')}}</td>
-                <td>{{$inventaris->created_at->format('d-m-Y')}}</td>
+                <td><span style="display:none;">{{date('Ymd', strtotime($inventaris->created_at))}}</span>{{$inventaris->created_at->format('d-m-Y')}}</td>
                 <td>Rp. {{number_format($inventaris->total, 2, ',','.')}}</td>
             </tr>
             @endforeach

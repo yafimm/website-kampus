@@ -126,7 +126,7 @@
                                 <span class="bs-label label-success">Selesai</span>
                                 @endif
                             </td>
-                            <td>{{ date('d/m/Y', strtotime($request->created_at)) }}</td>
+                            <td><span style="display:none;">{{date('Ymd', strtotime($request->created_at))}}</span>{{ date('d/m/Y', strtotime($request->created_at)) }}</td>
                             <td>
                                 @if ($request->rb_status == 0)
                                 <a href="{{ route('request.lihat',$request->rb_id) }}" class="btn btn-info btn-sm"

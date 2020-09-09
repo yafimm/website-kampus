@@ -123,7 +123,7 @@
                                     @foreach ($data_inventaris->pengadaan as $key => $pengadaan)
                                       <tr>
                                           <td>{{$key + 1}}</td>
-                                          <td>{{date('d/m/Y', strtotime($pengadaan->tanggal))}}</td>
+                                          <td><span style="display:none;">{{date('Ymd', strtotime($pengadaan->tanggal))}}</span>{{date('d/m/Y', strtotime($pengadaan->tanggal))}}</td>
                                           <td>{{$pengadaan->no_register}}</td>
                                           <td>{{$data_inventaris->i_satuan}}</td>
                                           <td>{{$data_inventaris->getStok($pengadaan->created_at) -  $pengadaan->qty }}</td>

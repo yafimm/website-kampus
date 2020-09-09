@@ -45,8 +45,8 @@
                 <td>{{$key + 1}}</td>
                 <td>{{$peminjaman->user ? $peminjaman->user->npm ? $peminjaman->user->npm : ($peminjaman->user->nip ? $peminjaman->user->nip : '-') : '- Data Pengguna sudah dihapus -' }}</td>
                 <td>{{$peminjaman->user ? $peminjaman->user->name : '- Data Pengguna sudah dihapus -' }}</td>
-                <td>{{date('d-m-Y', strtotime($peminjaman->p_date))}}</td>
-                <td>{{date('d-m-Y', strtotime($peminjaman->p_date_end))}}</td>
+                <td><span style="display:none;">{{date('Ymd', strtotime($peminjaman->p_date))}}</span>{{date('d-m-Y', strtotime($peminjaman->p_date))}}</td>
+                <td><span style="display:none;">{{date('Ymd', strtotime($peminjaman->p_date_end))}}</span>{{date('d-m-Y', strtotime($peminjaman->p_date_end))}}</td>
                 <td>{{$peminjaman->barang ? $peminjaman->barang->b_nama : '- Data Barang sudah dihapus -' }}</td>
                 <td>@if ($peminjaman->p_status == 0)
                                     <span class="bs-label label-warning">Menunggu</span>

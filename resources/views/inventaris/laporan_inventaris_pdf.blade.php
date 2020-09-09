@@ -50,7 +50,7 @@
 				<td>{{$inventaris->i_nama}}</td>
         <td>{{$inventaris->i_posisi}}</td>
 				<td>{{$inventaris->i_keterangan}}</td>
-				<td>{{$inventaris->i_unit}}</td>
+				<td>{{$inventaris->stok}}</td>
 				<td>Rp. {{$inventaris->i_harga ? number_format($inventaris->i_harga, 2, ',', '.') : '0,00'}}</td>
 				<td>Rp. {{number_format($inventaris->total, 2, ',', '.')}}</td>
 				<td>{{$inventaris->created_at->format('d/m/Y')}}</td>

@@ -159,7 +159,7 @@ class PengadaanController extends Controller
     {
         $data_pengadaan = Pengadaan::where([['no_register','=', $request->no_register]])->get();
         $pdf = PDF::loadview('pengadaan.laporan_pengadaan_pdf', ['data_pengadaan'=>$data_pengadaan]);
-        return $pdf->download('laporan-data-pengadaan'.$request->no_register.'.pdf');
+        return $pdf->stream();
     }
 
     public function cetakTanggal(Request $request)
@@ -170,7 +170,7 @@ class PengadaanController extends Controller
         });
 
         $pdf = PDF::loadview('pengadaan.laporan_pengadaan_tanggal_pdf', ['data_pengadaan'=>$data_pengadaan, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
-        return $pdf->download('laporan-data-pengadaan-'.$request->mulai.'_'.$request->mulai.'.pdf');
+        return $pdf->stream();
     }
 
 }

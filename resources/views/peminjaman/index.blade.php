@@ -143,8 +143,8 @@
                             <td>{{$count}}</td>
                             <td>{{$peminjaman->user ? $peminjaman->user->name : '- Data Pengguna sudah dihapus -'}}
                             </td>
-                            <td>{{date('d-m-Y', strtotime($peminjaman->p_date))}}</td>
-                            <td>{{date('d-m-Y', strtotime($peminjaman->p_date_end))}}</td>
+                            <td><span style="display:none;">{{date('Ymd', strtotime($peminjaman->p_date))}}</span>{{date('d-m-Y', strtotime($peminjaman->p_date))}}</td>
+                            <td><span style="display:none;">{{date('Ymd', strtotime($peminjaman->p_date_end))}}</span>{{date('d-m-Y', strtotime($peminjaman->p_date_end))}}</td>
                             <td>
                                 <a target="_blank"
                                     href="{{ route('downloadsurat', $peminjaman->p_scan_surat_peminjaman) }}"><u>Download</u></a>

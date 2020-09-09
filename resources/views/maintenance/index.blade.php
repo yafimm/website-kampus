@@ -152,7 +152,7 @@
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td>{{$maintenance->no_register}}</td>
-                            <td>{{date('d-m-Y', strtotime($maintenance->tanggal_maintenance))}}</td>
+                            <td><span style="display:none;">{{date('Ymd', strtotime($maintenance->tanggal_maintenance))}}</span>{{date('d-m-Y', strtotime($maintenance->tanggal_maintenance))}}</td>
                             <td>Rp. {{number_format($maintenance->total, 2,',','.')}}</td>
                             <td>
                                 <a href="{{ route('maintenance.show', $maintenance->no_register) }}"

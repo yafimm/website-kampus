@@ -115,7 +115,8 @@ class RequestController extends Controller
     public function cetakTanggal(Request $request){
       $data_request = RequestBarang::where([['created_at','>=', date('Y-m-d', strtotime($request->mulai))], ['created_at','<=', date('Y-m-d', strtotime($request->akhir))]])->get();
       $pdf = PDF::loadview('request.laporan_request_tanggal_pdf', ['data_request'=>$data_request, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
-      return $pdf->download('laporan-data-request.pdf');
+      // return $pdf->download('laporan-data-request.pdf');
+      return $pdf->stream();
     }
 
     public function cetak($id)
@@ -124,7 +125,8 @@ class RequestController extends Controller
         if(\Auth::user()->id == $data_request->user_id)
         {
             $pdf = PDF::loadview('request.laporan_request_pdf', ['data_request'=>$data_request]);
-            return $pdf->download('laporan-data-request-'.$data_request->rb_id.'.pdf');
+            // return $pdf->download('laporan-data-request-'.$data_request->rb_id.'.pdf');
+            return $pdf->stream();
         }
     }
 

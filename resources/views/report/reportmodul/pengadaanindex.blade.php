@@ -67,7 +67,7 @@
                 </td>
                 <td>{{$pengadaan->qty}}</td>
                 <td>Rp. {{ number_format($pengadaan->biaya,2,",",".") }}</td>
-                <td>{{date('d/m/Y', strtotime($pengadaan->tanggal))}}</td>
+                <td><span style="display:none;">{{date('Ymd', strtotime($pengadaan->tanggal))}}</span>{{date('d/m/Y', strtotime($pengadaan->tanggal))}}</td>
                 <td>Rp. {{ number_format($pengadaan->total,2,",",".")}}</td>
             </tr>
             @endforeach

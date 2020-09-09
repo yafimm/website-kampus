@@ -135,7 +135,7 @@
                                     @foreach ($data_barang->pengadaan as $key => $pengadaan)
                                       <tr>
                                           <td>{{$key + 1}}</td>
-                                          <td>{{date('d/m/Y', strtotime($pengadaan->tanggal))}}</td>
+                                          <td><span style="display:none;">{{date('Ymd', strtotime($pengadaan->tanggal))}}</span>{{date('d/m/Y', strtotime($pengadaan->tanggal))}}</td>
                                           <td>{{$pengadaan->no_register}}</td>
                                           <td>{{$data_barang->b_satuan}}</td>
                                           <td>{{$data_barang->getStok($pengadaan->created_at) -  $pengadaan->qty }}</td>

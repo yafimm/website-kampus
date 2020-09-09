@@ -60,7 +60,7 @@
                 <td>{{$barang->b_nama}}</td>
                 <td>{{$barang->stok}}</td>
                 <td>Rp. {{ number_format($barang->b_harga,2,",",".") }}</td>
-                <td>{{$barang->created_at->format('d-m-Y')}}</td>
+                <td><span style="display:none;">{{date('Ymd', strtotime($barang->created_at))}}</span>{{$barang->created_at->format('d-m-Y')}}</td>
                 <td>Rp. {{ number_format($barang->total)}}</td>
             </tr>
             @endforeach

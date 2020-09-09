@@ -114,9 +114,11 @@ class InventarisController extends Controller
     }
 
     public function cetak(Request $request){
-        $data_inventaris = Inventaris::where([['created_at','>=', date('Y-m-d', strtotime($request->mulai))], ['created_at','<=', date('Y-m-d', strtotime($request->akhir))]])->get();
+        $data_inventaris = Inventaris::with(['pengadaan' => function($q) use($request){
+                                                    $q->whereDate('created_at', '>=', date('Y-m-d', strtotime($request->mulai)))->whereDate('created_at', '<=', date('Y-m-d', strtotime($request->akhir)));
+                                              }])->whereDate('created_at', '>=', date('Y-m-d', strtotime($request->mulai)))->whereDate('created_at', '<=', date('Y-m-d', strtotime($request->akhir)))->get();
         $pdf = PDF::loadview('inventaris.laporan_inventaris_pdf', ['data_inventaris'=>$data_inventaris, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
-        return $pdf->download('laporan-data-inventaris.pdf');
+        return $pdf->stream();
     }
     // public function cetakTanggal(Request $request){
     //     $myArray = explode('-', $request->post('harian'));

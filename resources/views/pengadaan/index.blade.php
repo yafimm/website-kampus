@@ -153,7 +153,7 @@
                             <td>{{ $key + 1 }}</td>
                             <td>{{$pengadaan->no_register}}</td>
                             <td>{{$pengadaan->supplier}}</td>
-                            <td>{{date('d-m-Y', strtotime($pengadaan->tanggal))}}</td>
+                            <td><span style="display:none;">{{date('Ymd', strtotime($pengadaan->tanggal))}}</span>{{date('d-m-Y', strtotime($pengadaan->tanggal))}}</td>
                             <td>Rp. {{number_format($pengadaan->totalkeseluruhan, 2,',','.')}}</td>
                             <td>
                                 <a href="{{ route('pengadaan.show', $pengadaan->no_register) }}" class="btn btn-info btn-sm"

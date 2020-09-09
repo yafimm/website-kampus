@@ -58,7 +58,7 @@
                 <td>{{$request->user ? $request->user->name : '- Data Pengguna sudah dihapus -'}}</td>
                 <td>{{$request->barang ? $request->barang->b_nama : '- Data Barang sudah dihapus -'}}</td>
                 <td>{{$request->rb_jumlah}}</td>
-                <td>{{$request->created_at->format('d-m-Y') }}</td>
+                <td><span style="display:none;">{{date('Ymd', strtotime($request->created_at))}}</span>{{$request->created_at->format('d-m-Y') }}</td>
                 <td>  @if ($request->rb_status == 0)
                   <span class="bs-label label-warning">Menunggu</span>
                   @elseif($request->rb_status == 1)
