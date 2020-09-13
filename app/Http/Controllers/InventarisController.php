@@ -18,24 +18,32 @@ class InventarisController extends Controller
         // $this->middleware('role:admin');
     }
 
-    public function index(){
+    public function index()
+    {
         $data_inventaris = Inventaris::orderBy('i_id','desc')->get();
         return view('inventaris.index', compact('data_inventaris'));
     }
 
-    public function tambah(){
+    public function tambah()
+    {
         return view('inventaris.tambahInventaris');
     }
-    public function ubah($id){
+
+    public function ubah($id)
+    {
         $data_inventaris = Inventaris::findOrFail($id);
-        dD($data_inventaris->peminjaman);
         return view('inventaris.ubahInventaris', compact('data_inventaris'));
     }
-    public function lihat($id){
-        $data_inventaris = Inventaris::findOrFail($id);
+
+    public function lihat($id)
+    {
+        $data_inventaris = Inventaris::findOrFail($id)->with(['pengadaan']);
+        dd($data_inventaris);
         return view('inventaris.lihatInventaris', compact('data_inventaris'));
     }
-    public function prosesTambah(InventarisRequest $request){
+
+    public function prosesTambah(InventarisRequest $request)
+    {
         request()->validate([
             'foto' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);

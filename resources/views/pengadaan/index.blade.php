@@ -142,7 +142,7 @@
                         <tr class="table-primary">
                           <th colspan="4" class="text-center">Total Keseluruhan <br><small class="text-info text-sm">*Total Seluruh data.</small></th>
                           <th colspan="2" class="text-center">
-                              Rp. {{ number_format($arr_pengadaan->sum('totalkeseluruhan'), 2, ',', '.') }}
+                              Rp. {{ number_format($arr_pengadaan->sum('total'), 2, ',', '.') }}
                           </th>
                         </tr>
                     </tfoot>

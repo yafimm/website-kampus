@@ -28,8 +28,8 @@ class InventarisRequest extends FormRequest
           $foto = 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
           $kode = 'required|string|min:4|max:50|unique:inventaris,i_kode';
         }else{
-          $nama = 'required|string|min:5|max:50|unique:inventaris,i_nama,'.$this->get('id').',i_id';
-          $kode = 'required|string|min:5|max:50|unique:inventaris,i_kode,'.$this->get('id').',i_id';
+          $nama = 'required|string|min:4|max:50|unique:inventaris,i_nama,'.$this->get('id').',i_id';
+          $kode = 'required|string|min:4|max:50|unique:inventaris,i_kode,'.$this->get('id').',i_id';
           $foto = 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
         }
         return [

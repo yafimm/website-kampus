@@ -14,7 +14,7 @@ class PengadaanController extends Controller
 {
     public function index()
     {
-        $arr_pengadaan = Pengadaan::select('no_register', 'tanggal', 'supplier', \DB::raw("SUM(biaya) as totalkeseluruhan"))->groupBy('no_register', 'tanggal', 'supplier')->orderBy('tanggal','desc')->get();
+        $arr_pengadaan = Pengadaan::select('no_register', 'tanggal', 'supplier', \DB::raw("SUM(biaya * qty) as totalkeseluruhan"))->with(['barang', 'inventaris'])->groupBy('no_register', 'tanggal', 'supplier')->orderBy('tanggal','desc')->get();
         return view('pengadaan.index', compact('arr_pengadaan'));
     }
 
