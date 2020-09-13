@@ -182,7 +182,7 @@
                                 </a>
                                 @endif
 
-                                @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff inventaris'))
+                                @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris'))
                                 <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalSelesai"
                                     data-requestid="{{$request->rb_id}}" data-toggle="tooltip" data-placement="top"
                                     title="Selesai">

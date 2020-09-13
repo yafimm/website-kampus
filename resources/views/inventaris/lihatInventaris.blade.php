@@ -51,7 +51,7 @@
                             <label class="col-sm-3 control-label">Unit Inventaris</label>
                             <div class="col-sm-6">
                                 <input disabled name="unit" type="number" class="form-control" id=""
-                                    placeholder="Kolom Unit Inventaris" value="{{$data_inventaris->getStok()}}">
+                                    placeholder="Kolom Unit Inventaris" value="{{$data_inventaris->stok}}">
                             </div>
                         </div>
                         <div class="form-group">

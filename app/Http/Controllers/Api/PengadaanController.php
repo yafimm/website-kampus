@@ -14,7 +14,7 @@ class PengadaanController extends Controller
 {
     public function index()
     {
-        $arr_pengadaan = Pengadaan::select('no_register', 'tanggal', 'supplier', \DB::raw("SUM(biaya * qty) as totalkeseluruhan"))->with(['barang', 'inventaris'])->groupBy('no_register', 'tanggal', 'supplier')->orderBy('tanggal','desc')->get();
+        $arr_pengadaan = Pengadaan::select('no_register', 'tanggal', 'supplier', \DB::raw("SUM(biaya) as totalkeseluruhan"))->groupBy('no_register', 'tanggal', 'supplier')->orderBy('tanggal','desc')->get();
         return view('pengadaan.index', compact('arr_pengadaan'));
     }
 
@@ -108,10 +108,13 @@ class PengadaanController extends Controller
 
     public function edit($id)
     {
-        $arr_pengadaan = Pengadaan::with(['barang','inventaris'])->where('no_register', $id)->get();
+        $arr_pengadaan = Pengadaan::where('no_register', $id)->get();
         if(!$arr_pengadaan->isEmpty())
         {
-            return view('pengadaan.edit', compact('arr_pengadaan'));
+            $arr_barang = collect(Barang::all()); // Nyatu sama inventaris
+            $arr_inventaris = collect(Inventaris::all());
+            $arr_barang_inventaris = $arr_inventaris->merge($arr_barang);
+            return view('pengadaan.edit', compact('arr_pengadaan', 'arr_barang_inventaris'));
         }
         return abort(404);
     }
@@ -156,7 +159,7 @@ class PengadaanController extends Controller
     {
         $data_pengadaan = Pengadaan::where([['no_register','=', $request->no_register]])->get();
         $pdf = PDF::loadview('pengadaan.laporan_pengadaan_pdf', ['data_pengadaan'=>$data_pengadaan]);
-        return $pdf->stream();
+        return $pdf->download('laporan-data-pengadaan'.$request->no_register.'.pdf');
     }
 
     public function cetakTanggal(Request $request)
@@ -167,7 +170,7 @@ class PengadaanController extends Controller
         });
 
         $pdf = PDF::loadview('pengadaan.laporan_pengadaan_tanggal_pdf', ['data_pengadaan'=>$data_pengadaan, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
-        return $pdf->stream();
+        return $pdf->download('laporan-data-pengadaan-'.$request->mulai.'_'.$request->mulai.'.pdf');
     }
 
 }

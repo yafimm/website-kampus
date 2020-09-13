@@ -167,7 +167,7 @@
                                     <i class="glyph-icon icon-eye"></i>
                                 </a>
 
-                                @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff inventaris'))
+                                @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris'))
                                 <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalSetuju"
                                     data-peminjamanid="{{$peminjaman->p_id}}" data-toggle="tooltip" data-placement="top"
                                     title="Setuju">
@@ -201,7 +201,7 @@
                                     data-toggle="tooltip" data-placement="top" title="Lihat Data">
                                     <i class="glyph-icon icon-eye"></i>
                                 </a>
-                                @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff inventaris'))
+                                @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris'))
                                 <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalSelesai"
                                     data-peminjamanid="{{$peminjaman->p_id}}" data-toggle="tooltip" data-placement="top"
                                     title="Selesai">
@@ -242,7 +242,7 @@
     </div>
 
 
-    @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff inventaris'))
+    @if(Auth::user()->hasRole('admin') || Auth::user()->hasRole('staff_inventaris'))
 
     <div class="panel">
         <div class="panel-body">

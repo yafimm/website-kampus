@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\BarangRequest;
@@ -12,24 +12,26 @@ use File;
 
 class BarangController extends Controller
 {
-     public function index(){
-         $data_barang = Barang::with('pengadaan','request')->orderBy('b_id', 'desc')->get();
-         return view('barang.index', compact('data_barang'));
+     public function index()
+     {
+         $data_barang = Barang::with('pengadaan','request', 'request:user')->orderBy('b_id', 'desc')->simplePaginate(20);
+         return Response()->json(['status' => 200,
+                                  'data' => $data_barang,
+                                  'message' => 'Successfully load !!']);
      }
 
-     public function tambah(){
-         return view('barang.tambahBarang');
-     }
 
-     public function ubah($id){
-         $data_barang = Barang::findOrFail($id);
-         return view('barang.ubahBarang', compact('data_barang'));
-     }
-
-     public function lihat($id){
-         $data_barang = Barang::with(['pengadaan', 'request'])->findOrFail($id);
-         // dd($data_barang);
-         return view('barang.lihatBarang', compact('data_barang'));
+     public function lihat($id)
+     {
+         $data_barang = Barang::with(['pengadaan', 'request', 'request.user'])->find($id);
+         if($data_barang){
+             return Response()->json(['status' => 200,
+                                       'data' => $data_barang,
+                                       'message' => 'Success, data found !!']);
+         }
+         return Response()->json(['status' => 404,
+                                   'data' => null,
+                                   'message' => 'Failed, Data not found !!']);
      }
 
      public function prosesTambah(BarangRequest $request){
@@ -109,14 +111,10 @@ class BarangController extends Controller
      }
 
      public function cetak(Request $request){
-       $data_barang = Barang::with(['request' => function($q) use($request){
-                                                     $q->whereDate('created_at', '>=', date('Y-m-d', strtotime($request->mulai)))->whereDate('created_at', '<=', date('Y-m-d', strtotime($request->akhir)));
-                                                 },
-                                                 'pengadaan' => function($q) use($request){
-                                                     $q->whereDate('created_at', '>=', date('Y-m-d', strtotime($request->mulai)))->whereDate('created_at', '<=', date('Y-m-d', strtotime($request->akhir)));
-                                                 }])->whereDate('created_at', '>=', date('Y-m-d', strtotime($request->mulai)))->whereDate('created_at', '<=', date('Y-m-d', strtotime($request->akhir)))->get();
-
+       $data_barang = Barang::where([['created_at','>=', date('Y-m-d', strtotime($request->mulai))], ['created_at','<=', date('Y-m-d', strtotime($request->akhir))]])->get();
        $pdf = PDF::loadview('barang.laporan_barang_pdf', ['data_barang'=>$data_barang, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
+       // return view('barang.laporan_barang_pdf',  ['data_barang'=>$data_barang, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
+       // return $pdf->download('laporan-data-barang.pdf');
        return $pdf->stream();
      }
 

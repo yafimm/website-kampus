@@ -18,32 +18,24 @@ class InventarisController extends Controller
         // $this->middleware('role:admin');
     }
 
-    public function index()
-    {
+    public function index(){
         $data_inventaris = Inventaris::orderBy('i_id','desc')->get();
         return view('inventaris.index', compact('data_inventaris'));
     }
 
-    public function tambah()
-    {
+    public function tambah(){
         return view('inventaris.tambahInventaris');
     }
-
-    public function ubah($id)
-    {
+    public function ubah($id){
         $data_inventaris = Inventaris::findOrFail($id);
+        dD($data_inventaris->peminjaman);
         return view('inventaris.ubahInventaris', compact('data_inventaris'));
     }
-
-    public function lihat($id)
-    {
-        $data_inventaris = Inventaris::with('pengadaan')->findOrFail($id);
-        // dd($data_inventaris);
+    public function lihat($id){
+        $data_inventaris = Inventaris::findOrFail($id);
         return view('inventaris.lihatInventaris', compact('data_inventaris'));
     }
-
-    public function prosesTambah(InventarisRequest $request)
-    {
+    public function prosesTambah(InventarisRequest $request){
         request()->validate([
             'foto' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -122,11 +114,9 @@ class InventarisController extends Controller
     }
 
     public function cetak(Request $request){
-        $data_inventaris = Inventaris::with(['pengadaan' => function($q) use($request){
-                                                    $q->whereDate('created_at', '>=', date('Y-m-d', strtotime($request->mulai)))->whereDate('created_at', '<=', date('Y-m-d', strtotime($request->akhir)));
-                                              }])->whereDate('created_at', '>=', date('Y-m-d', strtotime($request->mulai)))->whereDate('created_at', '<=', date('Y-m-d', strtotime($request->akhir)))->get();
+        $data_inventaris = Inventaris::where([['created_at','>=', date('Y-m-d', strtotime($request->mulai))], ['created_at','<=', date('Y-m-d', strtotime($request->akhir))]])->get();
         $pdf = PDF::loadview('inventaris.laporan_inventaris_pdf', ['data_inventaris'=>$data_inventaris, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
-        return $pdf->stream();
+        return $pdf->download('laporan-data-inventaris.pdf');
     }
     // public function cetakTanggal(Request $request){
     //     $myArray = explode('-', $request->post('harian'));

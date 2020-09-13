@@ -14,9 +14,9 @@
     @if(!$arr_pengadaan->isEmpty())
       @foreach($arr_pengadaan as $no => $pengadaan)
         <tr id="pengadaan-detail-{{$no}}">
-          <td>{{$no + 1}}<input type="hidden" name="barang_inventaris[]" value="{{ isset($pengadaan->barang) ? 'BRG'.$pengadaan->barang->b_id : (isset($pengadaan->inventaris) ? 'INV'.$pengadaan->i_id : '-') }}"> </td>
-          <td>{{ (isset($pengadaan->barang) ? $pengadaan->barang->b_kode : (isset($pengadaan->inventaris) ? $pengadaaan->i_kode : ' - ')) }}</td>
-          <td>{{ (isset($pengadaan->barang) ? $pengadaan->barang->b_nama : (isset($pengadaan->inventaris) ? $pengadaaan->i_nama : ' - ')) }}</td>
+          <td>{{$no + 1}}<input type="hidden" name="barang_inventaris[]" value="{{ (isset($pengadaan->barang) ? 'BRG'.$pengadaan->barang->b_id : (isset($pengadaan->inventaris) ? 'INV'.$pengadaan->inventaris->i_id : '-')) }}"> </td>
+          <td>{{ (isset($pengadaan->barang) ? $pengadaan->barang->b_kode : (isset($pengadaan->inventaris) ? $pengadaan->inventaris->i_kode : ' - ')) }}</td>
+          <td>{{ (isset($pengadaan->barang) ? $pengadaan->barang->b_nama : (isset($pengadaan->inventaris) ? $pengadaan->inventaris->i_nama : ' - ')) }}</td>
           <td><input id="qty-{{$no}}" class="form-control" type="text" name="qty[]" onkeyup="setQty({{$no}}, value)" value="{{ $pengadaan->qty }}"></td>
           <td><input id="harga-{{$no}}" class="form-control" type="text" name="harga[]" onkeyup="setHarga( {{ $no }}, value)" value="{{ $pengadaan->biaya }}"></td>
           <td><span id="totalHargaSpan-{{ $no }}">Rp. {{ numbeR_format($pengadaan->total, 2, ',', '.')}}</span><input type="hidden" id="totalHarga-{{$no}}" class="form-control" type="text" name="totalHarga[]" value="{{ $pengadaan->total }}" readonly></td>

@@ -15,9 +15,9 @@
     @if(!$arr_maintenance->isEmpty())
       @foreach($arr_maintenance as $no => $maintenance)
         <tr id="maintenance-detail-{{$no}}">
-          <td>{{$no + 1}}<input type="hidden" name="barang_inventaris[]" value="{{ isset($maintenance->barang) ? 'BRG'.$maintenance->barang->b_id : (isset($maintenance->inventaris) ? 'INV'.$maintenance->i_id : '-') }}"> </td>
-          <td>{{ (isset($maintenance->barang) ? $maintenance->barang->b_kode : (isset($maintenance->inventaris) ? $pengadaaan->i_kode : ' - ')) }}</td>
-          <td>{{ (isset($maintenance->barang) ? $maintenance->barang->b_nama : (isset($maintenance->inventaris) ? $pengadaaan->i_nama : ' - ')) }}</td>
+          <td>{{$no + 1}}<input type="hidden" name="barang_inventaris[]" value="{{ isset($maintenance->barang) ? 'BRG'.$maintenance->barang->b_id : (isset($maintenance->inventaris) ? 'INV'.$maintenance->inventaris->i_id : '-') }}"> </td>
+          <td>{{ (isset($maintenance->barang) ? $maintenance->barang->b_kode : (isset($maintenance->inventaris) ? $maintenance->inventaris->i_kode : ' - ')) }}</td>
+          <td>{{ (isset($maintenance->barang) ? $maintenance->barang->b_nama : (isset($maintenance->inventaris) ? $maintenance->inventaris->i_nama : ' - ')) }}</td>
           <td><input id="posisi-{{$no}}" class="form-control" type="text" name="posisi[]" value="{{ $maintenance->posisi }}"></td>
           <td><input id="biaya-{{$no}}" class="form-control" type="text" name="biaya[]" onkeyup="setHarga( {{ $no }}, value)" value="{{ $maintenance->biaya }}"></td>
           <td><textarea class="form-control" name="keterangan[]">{{ $maintenance->keterangan }}</textarea></td>
