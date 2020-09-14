@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\InventarisRequest;
@@ -12,28 +12,25 @@ use App\Inventaris;
 
 class InventarisController extends Controller
 {
-    public function __construct()
+    public function index()
     {
-        // $this->middleware('auth');
-        // $this->middleware('role:admin');
+        $data_inventaris = Inventaris::with('pengadaan')->orderBy('i_id','desc')->paginate(20);
+        return Response()->json(['status'  => 200,
+                                 'data'    => $data_inventaris,
+                                 'message' => 'Successfully load !!']);
     }
 
-    public function index(){
-        $data_inventaris = Inventaris::orderBy('i_id','desc')->get();
-        return view('inventaris.index', compact('data_inventaris'));
-    }
-
-    public function tambah(){
-        return view('inventaris.tambahInventaris');
-    }
-    public function ubah($id){
-        $data_inventaris = Inventaris::findOrFail($id);
-        dD($data_inventaris->peminjaman);
-        return view('inventaris.ubahInventaris', compact('data_inventaris'));
-    }
-    public function lihat($id){
-        $data_inventaris = Inventaris::findOrFail($id);
-        return view('inventaris.lihatInventaris', compact('data_inventaris'));
+    public function lihat($id)
+    {
+        $inventaris = Inventaris::with('pengadaan')->find($id);
+        if($inventaris){
+            return Response()->json(['status'   => 200,
+                                      'data'    => $inventaris,
+                                      'message' => 'Success, data found !!']);
+        }
+        return Response()->json(['status'   => 404,
+                                  'data'    => null,
+                                  'message' => 'Failed, Data not found !!']);
     }
     public function prosesTambah(InventarisRequest $request){
         request()->validate([
@@ -55,23 +52,26 @@ class InventarisController extends Controller
 
         $i_foto->move(public_path('assets/images-resource/inventaris'), $imageName);
 
-        $data = ['i_nama' => $request->nama,
-                  'i_unit' => $request->unit,
-                  'i_kode' => $request->kode,
-                  'i_harga' => $request->harga,
-                  'i_posisi' => $request->posisi,
-                  'i_keterangan' => $request->keterangan,
-                  'i_foto' => $imageName
-                ];
+        $inventaris = Inventaris::create(['i_nama'       => $request->nama,
+                                          'i_unit'       => 0,
+                                          'i_kode'       => $request->kode,
+                                          'i_harga'      => $request->harga,
+                                          'i_posisi'     => $request->posisi,
+                                          'i_keterangan' => $request->keterangan,
+                                          'i_foto'       => $imageName]);
 
-        Inventaris::create($data);
-
-        return redirect()->route('inventaris.index')->with('alert-class', 'alert-success')->with('flash_message', 'Data Berhasil ditambahkan ke database !!');
+        if($inventaris){
+            return Response()->json(['status'  => 201,
+                                     'data'    => $inventaris,
+                                     'message' => 'Success, data successfully created !!']);
+        }
+        return Response()->json(['status'  => 500,
+                                 'data'    => null,
+                                 'message' => 'Failed, data failed to create !!']);
     }
 
     public function prosesUbah(InventarisRequest $request, $i_id){
         $data = ['i_nama' => $request->nama,
-                  'i_unit' => $request->unit,
                   'i_kode' => $request->kode,
                   'i_harga' => $request->harga,
                   'i_posisi' => $request->posisi,

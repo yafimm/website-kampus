@@ -28,7 +28,7 @@ class PengadaanController extends Controller
     public function show($id)
     {
         //$id sama dengan no register
-        $arr_pengadaan = Pengadaan::where('no_register', $id)->get();
+        $arr_pengadaan = Pengadaan::with('barang','inventaris')->where('no_register', $id)->get();
 
         return view('pengadaan.show', compact('arr_pengadaan'));
     }

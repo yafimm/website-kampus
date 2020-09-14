@@ -12,11 +12,15 @@ use File;
 
 class BarangController extends Controller
 {
-     public function index()
+     public function index(Request $request)
      {
-         $data_barang = Barang::with('pengadaan','request', 'request:user')->orderBy('b_id', 'desc')->simplePaginate(20);
-         return Response()->json(['status' => 200,
-                                  'data' => $data_barang,
+         $data_barang = Barang::with('pengadaan','request', 'request.user')->orderBy('b_id', 'desc');
+         // if($request->query){
+         //    $data_barang = $data_barang->where('')
+         // }
+         $data_barang = $data_barang->paginate(20);
+         return Response()->json(['status'  => 200,
+                                  'data'    => $data_barang,
                                   'message' => 'Successfully load !!']);
      }
 
@@ -25,12 +29,12 @@ class BarangController extends Controller
      {
          $data_barang = Barang::with(['pengadaan', 'request', 'request.user'])->find($id);
          if($data_barang){
-             return Response()->json(['status' => 200,
-                                       'data' => $data_barang,
+             return Response()->json(['status'   => 200,
+                                       'data'    => $data_barang,
                                        'message' => 'Success, data found !!']);
          }
-         return Response()->json(['status' => 404,
-                                   'data' => null,
+         return Response()->json(['status'   => 404,
+                                   'data'    => null,
                                    'message' => 'Failed, Data not found !!']);
      }
 
@@ -48,16 +52,20 @@ class BarangController extends Controller
 
          $request->foto->move(public_path('assets/images-resource/barang'), $imageName);
 
-         $barang = new Barang();
-         $barang->b_nama = $request->nama;
-         $barang->b_stock = $request->stock;
-         $barang->b_kode = $request->kode;
-         $barang->b_satuan = $request->satuan;
-         $barang->b_harga = $request->harga;
-         $barang->b_foto = $imageName;
-         $barang->save();
-
-         return redirect()->route('barang.index')->with('alert-class', 'alert-success')->with('flash_message','Data Barang berhasil ditambah ke database !!');
+         $barang = Barang::create(['b_nama'   => $request->nama,
+                                   'b_stock'  => 0,
+                                   'b_kode'   => $request->kode,
+                                   'b_satuan' => $request->satuan,
+                                   'b_harga'  => $request->b_harga,
+                                   'b_foto'   => $imageName]);
+         if($barang){
+             return Response()->json(['status'  => 201,
+                                      'data'    => $barang,
+                                      'message' => 'Success, data successfully created !!']);
+         }
+         return Response()->json(['status'  => 500,
+                                  'data'    => null,
+                                  'message' => 'Failed, data failed to create !!']);
      }
 
      public function prosesUbah(BarangRequest $request, $id){
@@ -86,36 +94,51 @@ class BarangController extends Controller
              File::delete($filename, $filename2);
              $data['b_foto'] = $imageName;
          }
-         Barang::where('b_id',$request->id)->update($data);
-         return redirect()->route('barang.index')->with('alert-class', 'alert-success')->with('flash_message', 'Data berhasil diubah !!');
+         $barang = Barang::where('b_id',$request->id)->update($data);
+         if($barang){
+             return Response()->json(['status'  => 200,
+                                      'data'    => $barang,
+                                      'message' => 'Success, data successfully updated !!']);
+         }
+         return Response()->json(['status'  => 404,
+                                  'data'    => null,
+                                  'message' => 'Failed, data failed to update !!']);
      }
 
      public function prosesHapus(Request $request){
-         $data_barang = Barang::where('b_id',$request->id)->first();
+         $barang = Barang::where('b_id',$request->id)->first();
+         if($barang){
+             return Response()->json(['status'  => 404,
+                                      'data'    => null,
+                                      'message' => 'Failed, data not found !!']);
+         }
          $filename = public_path('/assets/images-resource/barang/'.$data_barang->b_foto);
          $filename2 = public_path('/assets/images-resource/barang/resize_'.$data_barang->b_foto);
          File::delete($filename, $filename2);
-         $data_barang->delete();
-         return redirect()->route('barang.index')->with('alert-class', 'alert-success')->with('flash_message', 'Data berhasil dihapus !!');
+         $delete = $data_barang->delete();
+         if($delete){
+             return Response()->json(['status'  => 200,
+                                      'data'    => $delete,
+                                      'message' => 'Success, data successfully deleted !!']);
+         }
+         return Response()->json(['status'  => 500,
+                                  'data'    => null,
+                                  'message' => 'Failed, data failed to delete !!']);
      }
 
-     public function prosesRestock(Request $request){
-         $b_id = $request->post('id');
-         $b_stock = $request->post('stock');
-         $data_barang = DB::table('barang')->where('b_id',$b_id)->get();
-         $b_stock = $b_stock + $data_barang[0]->b_stock;
-         DB::table('barang')->where('b_id',$b_id)->update([
-             'b_stock' => $b_stock
-         ]);
-         return redirect()->route('barang.index')->with('alert-class', 'alert-success')->with('flash_message','Data berhasil ditambah stoknya !!');
-     }
+     public function cetak(Request $request)
+     {
+         $data_barang = Barang::with('pengadaan','request', 'request.user')->where([['created_at','>=', date('Y-m-d', strtotime($request->mulai))], ['created_at','<=', date('Y-m-d', strtotime($request->akhir))]])->get();
+         if($data_barang){
+             $pdf = PDF::loadview('barang.laporan_barang_pdf', ['data_barang'=>$data_barang, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
+             return Response()->json(['status'  => 200,
+                                      'data'    => $pdf->stream(),
+                                      'message' => 'Success, data is found !!']);
+         }
+         return Response()->json(['status'  => 404,
+                                  'data'    => null,
+                                  'message' => 'Failed, data not found !!']);
 
-     public function cetak(Request $request){
-       $data_barang = Barang::where([['created_at','>=', date('Y-m-d', strtotime($request->mulai))], ['created_at','<=', date('Y-m-d', strtotime($request->akhir))]])->get();
-       $pdf = PDF::loadview('barang.laporan_barang_pdf', ['data_barang'=>$data_barang, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
-       // return view('barang.laporan_barang_pdf',  ['data_barang'=>$data_barang, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
-       // return $pdf->download('laporan-data-barang.pdf');
-       return $pdf->stream();
      }
 
 

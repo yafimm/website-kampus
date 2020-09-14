@@ -14,7 +14,7 @@ class Inventaris extends Model
         'i_nama','i_unit','i_posisi','i_foto','i_keterangan', 'i_harga', 'i_kode', 'i_satuan'
     ];
 
-    protected $appends = ['total'];
+    protected $appends = ['total', 'stok'];
 
     public function getTotalAttribute()
     {

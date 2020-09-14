@@ -16,12 +16,21 @@ class BarangRequest extends FormRequest
         return true;
     }
 
+    protected function failedValidation(Validator $validator)
+    {
+        $errors = (new ValidationException($validator))->errors();
+
+        throw new HttpResponseException(
+            response()->json(['errors' => $errors], JsonResponse::HTTP_UNPROCESSABLE_ENTITY)
+        );
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-     public function rules()
+    public function rules()
     {
       if($this->method() == 'POST'){
         $nama = 'required|string|min:4|max:50|unique:barang,b_nama';
@@ -37,7 +46,6 @@ class BarangRequest extends FormRequest
         'nama' => $nama,
         'foto' => $foto,
         'kode' => $kode,
-        'stock' => 'required|integer',
         'harga' => 'required|integer',
         'satuan' => 'required|string',
       ];
@@ -64,4 +72,5 @@ class BarangRequest extends FormRequest
              'satuan.string' => 'Satuan harus berformat string',
          ];
     }
+
 }

@@ -44,5 +44,27 @@ Route::group(['namespace' => 'api'], function() {
     Route::group(['prefix' => 'barang'], function(){
         Route::get('/', 'BarangController@index');
         Route::get('/{id}', 'BarangController@lihat');
+        Route::post('/cetak', 'BarangController@cetak');
+        Route::post('/', 'BarangController@prosesTambah');
+        Route::delete('/hapus', 'BarangController@prosesHapus');
+        Route::put('/{id}', 'BarangController@prosesUbah');
+    });
+
+    Route::group(['prefix' => 'inventaris'], function(){
+        Route::get('/', 'InventarisController@index');
+        Route::get('/{id}', 'InventarisController@lihat');
+        Route::post('/cetak', 'InventarisController@cetak');
+        Route::post('/', 'InventarisController@prosesTambah');
+        Route::delete('/hapus', 'InventarisController@prosesHapus');
+        Route::put('/{id}', 'InventarisController@prosesUbah');
+    });
+
+    Route::group(['prefix' => 'pengadaan'], function(){
+        Route::get('/', 'PengadaanController@index');
+        Route::get('/{id}', 'PengadaanController@show');
+        Route::post('/cetak', 'PengadaanController@cetak');
+        Route::post('/', 'PengadaanController@prosesTambah');
+        Route::delete('/hapus', 'PengadaanController@prosesHapus');
+        Route::put('/{id}', 'PengadaanController@prosesUbah');
     });
 });

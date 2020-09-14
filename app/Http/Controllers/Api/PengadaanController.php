@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\PengadaanRequest;
@@ -14,8 +14,10 @@ class PengadaanController extends Controller
 {
     public function index()
     {
-        $arr_pengadaan = Pengadaan::select('no_register', 'tanggal', 'supplier', \DB::raw("SUM(biaya) as totalkeseluruhan"))->groupBy('no_register', 'tanggal', 'supplier')->orderBy('tanggal','desc')->get();
-        return view('pengadaan.index', compact('arr_pengadaan'));
+        $arr_pengadaan = Pengadaan::select('no_register', 'tanggal', 'supplier', \DB::raw("SUM(biaya * qty) as totalkeseluruhan"))->groupBy('no_register', 'tanggal', 'supplier')->orderBy('tanggal','desc')->get();
+        return Response()->json(['status'  => 200,
+                                 'data'    => $arr_pengadaan,
+                                 'message' => 'Successfully load !!']);
     }
 
     public function create()
@@ -28,9 +30,16 @@ class PengadaanController extends Controller
     public function show($id)
     {
         //$id sama dengan no register
-        $arr_pengadaan = Pengadaan::where('no_register', $id)->get();
+        $arr_pengadaan = Pengadaan::with(['barang:b_id,b_kode,b_nama','inventaris:i_id,i_kode,i_nama'])->where('no_register', $id)->get();
+        if(count($arr_pengadaan) > 0){
+            return Response()->json(['status'   => 200,
+                                      'data'    => $arr_pengadaan,
+                                      'message' => 'Success, data found !!']);
+        }
+        return Response()->json(['status'   => 404,
+                                  'data'    => null,
+                                  'message' => 'Failed, Data not found !!']);
 
-        return view('pengadaan.show', compact('arr_pengadaan'));
     }
 
     public function store(PengadaanRequest $request)
@@ -103,24 +112,6 @@ class PengadaanController extends Controller
         return redirect()->route('pengadaan.show', $id)
                           ->with('alert-class', 'alert-danger')
                           ->with('flash_message', 'Data Gagal diubah !!');
-
-    }
-
-    public function edit($id)
-    {
-        $arr_pengadaan = Pengadaan::where('no_register', $id)->get();
-        if(!$arr_pengadaan->isEmpty())
-        {
-            $arr_barang = collect(Barang::all()); // Nyatu sama inventaris
-            $arr_inventaris = collect(Inventaris::all());
-            $arr_barang_inventaris = $arr_inventaris->merge($arr_barang);
-            return view('pengadaan.edit', compact('arr_pengadaan', 'arr_barang_inventaris'));
-        }
-        return abort(404);
-    }
-
-    public function destroy()
-    {
 
     }
 

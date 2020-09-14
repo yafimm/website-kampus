@@ -16,11 +16,7 @@ class InventarisRequest extends FormRequest
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
+
     public function rules()
     {
         if($this->method() == 'POST'){
@@ -36,7 +32,6 @@ class InventarisRequest extends FormRequest
           'nama' => $nama,
           'foto' => $foto,
           'kode' => $kode,
-          'unit' => 'required|integer',
           'harga' => 'required|integer',
           'posisi' => 'required|string|min:3',
           'keterangan' => 'required|string|min:3'
