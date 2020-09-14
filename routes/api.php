@@ -40,7 +40,7 @@ Route::get('download/{filename}', function($filename)
 })
 ->where('filename', '[A-Za-z0-9\-\_\.]+')->name('api.downloadsurat');
 
-Route::group(['namespace' => 'api'], function() {
+Route::group(['namespace' => 'Api'], function() {
     Route::group(['prefix' => 'barang'], function(){
         Route::get('/', 'BarangController@index');
         Route::get('/{id}', 'BarangController@lihat');
