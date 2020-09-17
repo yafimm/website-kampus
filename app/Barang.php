@@ -14,7 +14,7 @@ class Barang extends Model
         'b_kode', 'b_nama','b_stock','b_satuan','b_foto', 'b_harga'
     ];
 
-    protected $appends = ['tanggal', 'total', 'stok'];
+    protected $appends = ['total', 'stok'];
 
 
     public function getTotalAttribute()

@@ -61,10 +61,34 @@ Route::group(['namespace' => 'Api'], function() {
 
     Route::group(['prefix' => 'pengadaan'], function(){
         Route::get('/', 'PengadaanController@index');
+        Route::get('/getnoregister', 'PengadaanController@getNoRegister');
+        Route::get('/cari', 'PengadaanController@loadData');
         Route::get('/{id}', 'PengadaanController@show');
         Route::post('/cetak', 'PengadaanController@cetak');
         Route::post('/', 'PengadaanController@prosesTambah');
         Route::delete('/hapus', 'PengadaanController@prosesHapus');
         Route::put('/{id}', 'PengadaanController@prosesUbah');
+    });
+
+    Route::group(['prefix' => 'maintenance'], function(){
+        Route::get('/', 'MaintenanceController@index');
+        Route::get('/getnoregister', 'MaintenanceController@getNoRegister');
+        Route::get('/cari', 'MaintenanceController@loadData');
+        Route::get('/getbarang', 'MaintenanceController@getBarang');
+        Route::get('/{id}', 'MaintenanceController@show');
+        Route::post('/cetak', 'MaintenanceController@cetak');
+        Route::post('/', 'MaintenanceController@store');
+        Route::put('/{id}', 'MaintenanceController@update');
+    });
+
+    Route::group(['prefix' => 'request'], function(){
+        Route::get('/', 'RequestController@index');
+        Route::get('/getnoregister', 'RequestController@getNoRegister');
+        Route::get('/{id}', 'RequestController@show');
+        Route::post('/cetak', 'RequestController@cetak');
+        Route::post('/', 'RequestController@store');
+        Route::post('/{id}', 'RequestController@update');
+        Route::delete('/hapus', 'RequestController@prosesHapus');
+        Route::put('/{id}', 'RequestController@prosesUbah');
     });
 });

@@ -29,9 +29,9 @@ class BarangController extends Controller
      {
          $data_barang = Barang::with(['pengadaan', 'request', 'request.user'])->find($id);
          if($data_barang){
-             return Response()->json(['status'   => 200,
-                                       'data'    => $data_barang,
-                                       'message' => 'Success, data found !!']);
+            return Response()->json(['status'   => 200,
+                                      'data'     => $data_barang,
+                                      'message'  => 'Success, data found !!']);
          }
          return Response()->json(['status'   => 404,
                                    'data'    => null,
@@ -59,8 +59,8 @@ class BarangController extends Controller
                                    'b_harga'  => $request->b_harga,
                                    'b_foto'   => $imageName]);
          if($barang){
-             return Response()->json(['status'  => 201,
-                                      'data'    => $barang,
+             return Response()->json(['status'  => 204,
+                                      'data'    => null,
                                       'message' => 'Success, data successfully created !!']);
          }
          return Response()->json(['status'  => 500,

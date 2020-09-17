@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\MaintenanceRequest;
@@ -16,13 +16,9 @@ class MaintenanceController extends Controller
     {
         $arr_maintenance = Maintenance::select('no_register', 'tanggal_maintenance', \DB::raw("SUM(biaya) as total"))->groupBy('no_register', 'tanggal_maintenance')->get();
         // dd($arr_maintenance[0]);
-        return view('maintenance.index', compact('arr_maintenance'));
-    }
-
-    public function create()
-    {
-        $arr_maintenance = collect(new Maintenance());
-        return view('maintenance.create', compact('arr_maintenance'));
+        return Response()->json(['status'  => 200,
+                                 'data'    => $arr_maintenance,
+                                 'message' => 'Successfully load !!']);
     }
 
     public function store(MaintenanceRequest $request)
@@ -52,9 +48,13 @@ class MaintenanceController extends Controller
         }
 
         if($store){
-              return redirect()->route('maintenance.index')->with('alert-class', 'alert-success')->with('flash_message', 'Data Maintenance berhasil dibuat !!');
+            return Response()->json(['status'  => 204,
+                                     'data'    => null,
+                                     'message' => 'Success, data successfully created !!']);
         }
-        return redirect()->route('maintenance.index');
+        return Response()->json(['status'  => 404,
+                                 'data'    => null,
+                                 'message' => 'Failed, data failed to create !!']);
 
 
     }
@@ -62,22 +62,20 @@ class MaintenanceController extends Controller
     public function show($id)
     {
         //$id sama dengan no register
-        $arr_maintenance = Maintenance::where('no_register', $id)->get();
-        return view('maintenance.show', compact('arr_maintenance'));
-    }
-
-    public function edit($id)
-    {
-        $arr_maintenance = Maintenance::where('no_register', $id)->get();
-        $arr_barang = collect(Barang::all()); // Nyatu sama inventaris
-        $arr_inventaris = collect(Inventaris::all());
-        $arr_barang_inventaris = $arr_inventaris->merge($arr_barang);
-
-        if(!$arr_maintenance->isEmpty())
-        {
-            return view('maintenance.edit', compact('arr_maintenance', 'arr_barang_inventaris'));
+        $arr_maintenance = Maintenance::where('no_register', $id)->with(['inventaris' => function($q){
+                                                                                return $q->select(['i_id','i_nama', 'i_kode']);
+                                                                          },
+                                                                          'barang' => function($q){
+                                                                                return $q->select(['b_id', 'b_nama', 'b_kode']);
+                                                                          }])->get();
+        if($arr_maintenance){
+           return Response()->json(['status'   => 200,
+                                     'data'     => $arr_maintenance,
+                                     'message'  => 'Success, data found !!']);
         }
-        return abort(404);
+        return Response()->json(['status'   => 404,
+                                  'data'    => null,
+                                  'message' => 'Failed, Data not found !!']);
     }
 
     public function update(MaintenanceRequest $request, $id)
@@ -108,18 +106,20 @@ class MaintenanceController extends Controller
 
         }
         if($store){
-              return redirect()->route('maintenance.show', $id)
-                              ->with('alert-class', 'alert-success')
-                              ->with('flash_message', 'Data Berhasil diubah !!');
+            return Response()->json(['status'  => 204,
+                                     'data'    => null,
+                                     'message' => 'Success, data successfully updated !!']);
         }
-        return redirect()->route('maintenance.show', $id)
-                          ->with('alert-class', 'alert-danger')
-                          ->with('flash_message', 'Data Gagal diubah !!');
+        return Response()->json(['status'  => 404,
+                                 'data'    => null,
+                                 'message' => 'Failed, data failed to update !!']);
     }
 
-    public function destroy($id)
+    public function getNoRegister()
     {
-        //
+       return Response()->json(['status'   => 200,
+                                'data'    => YaffSetMaintenanceNoRegister(),
+                                'message' => 'Success, the register number was successfully generated !!']);
     }
 
     public function loadData(Request $request)
@@ -129,13 +129,20 @@ class MaintenanceController extends Controller
             $dataBarang = DB::table('barang')->select('b_id', 'b_kode', 'b_nama')->where('b_kode', 'LIKE', '%'.$cari.'%')->orWhere('b_nama', 'LIKE', '%'.$cari.'%')->take(10)->get();
             $dataInventaris = DB::table('inventaris')->select('i_id', 'i_kode', 'i_nama')->where('i_kode', 'LIKE', '%'.$cari.'%')->orWhere('i_nama', 'LIKE', '%'.$cari.'%')->take(10)->get();
             $data = $dataBarang->merge($dataInventaris);
-            return response()->json($data);
+            if(count($data) > 0){
+                return Response()->json(['status'  => 200,
+                                         'data'    => $data,
+                                         'message' => 'Success, data found !!']);
+            }
+            return Response()->json(['status'  => 404,
+                                     'data'    => null,
+                                     'message' => 'Failed, data not found !!']);
         }
     }
 
     public function getBarang(Request $request)
     {
-        if($request->kode){
+        if($request->kode && $request->no_register){
             $jenisBarang = substr($request->kode, 0, 3);
             if($jenisBarang == 'INV'){
                 $data = Inventaris::where('i_kode', substr($request->kode, 3))->first();
@@ -145,12 +152,19 @@ class MaintenanceController extends Controller
             if(count($data->maintenance) > 0){
                 $barangMaintenance = $data->maintenance->where('no_register', $request->no_register)->first();
                 if($barangMaintenance){
-                    return response()->json(['message' => 'Gagal menambahkan data, karena data ini sudah digunakan dipengadaan ini ('.$request->no_register.') !!', 'status' => false]);
+                    return Response()->json(['status'  => 400,
+                                             'data'    => null,
+                                             'message' => 'Failed to get data, because the data is already in the no_register .'$request->no_register' !!']);
                 }
             }
-            return response()->json($data);
+            return Response()->json(['status'  => 200,
+                                     'data'    => $data,
+                                     'message' => 'Success, data found']);
         }
-        return response()->json(['message' => 'Gagal menambahkan data, karena data tidak ditemukan', 'status' => false]);
+
+        return Response()->json(['status'  => 400,
+                                 'data'    => null,
+                                 'message' => 'Failed to get data, kode and no_register is required or data not found !!']);
     }
 
     public function cetak(Request $request){

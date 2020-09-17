@@ -20,13 +20,6 @@ class PengadaanController extends Controller
                                  'message' => 'Successfully load !!']);
     }
 
-    public function create()
-    {
-        $arr_pengadaan = collect(new Pengadaan);
-        // dd($arr_pengadaan);
-        return view('pengadaan.create', compact('arr_pengadaan'));
-    }
-
     public function show($id)
     {
         //$id sama dengan no register
@@ -69,13 +62,13 @@ class PengadaanController extends Controller
         // $store = Pengadaan::insert($pengadaan);
 
         if($store){
-              return redirect()->route('pengadaan.show', $request->no_register)
-                              ->with('alert-class', 'alert-success')
-                              ->with('flash_message', 'Data Pengadaan berhasil ditambahkan !!');
+            return Response()->json(['status'   => 204,
+                                      'data'    => null,
+                                      'message' => 'Success, data successfuly created !!']);
         }
-        return redirect()->route('pengadaan.show', $request->no_register)
-                          ->with('alert-class', 'alert-danger')
-                          ->with('flash_message', 'Data Gagal ditambahkan !!');
+        return Response()->json(['status'   => 404,
+                                  'data'    => null,
+                                  'message' => 'Failed, Data failed to create !!']);
 
     }
 
@@ -113,6 +106,13 @@ class PengadaanController extends Controller
                           ->with('alert-class', 'alert-danger')
                           ->with('flash_message', 'Data Gagal diubah !!');
 
+    }
+
+    public function getNoRegister()
+    {
+       return Response()->json(['status'   => 200,
+                                'data'    => YaffSetPengadaanNoRegister(),
+                                'message' => 'Success, the register number was successfully generated !!']);
     }
 
     public function loadData(Request $request)
