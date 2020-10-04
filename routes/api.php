@@ -13,9 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 //authentikasi user - V
 
@@ -40,7 +37,10 @@ Route::get('download/{filename}', function($filename)
 })
 ->where('filename', '[A-Za-z0-9\-\_\.]+')->name('api.downloadsurat');
 
-Route::group(['namespace' => 'Api'], function() {
+
+Route::post('/login', 'api\LoginController@login');
+
+Route::group(['namespace' => 'Api', 'middleware' => ['auth:api', 'roleAPI:admin,staff_inventaris']], function() {
     Route::group(['prefix' => 'barang'], function(){
         Route::get('/', 'BarangController@index');
         Route::get('/{id}', 'BarangController@lihat');
@@ -79,16 +79,5 @@ Route::group(['namespace' => 'Api'], function() {
         Route::post('/cetak', 'MaintenanceController@cetak');
         Route::post('/', 'MaintenanceController@store');
         Route::put('/{id}', 'MaintenanceController@update');
-    });
-
-    Route::group(['prefix' => 'request'], function(){
-        Route::get('/', 'RequestController@index');
-        Route::get('/getnoregister', 'RequestController@getNoRegister');
-        Route::get('/{id}', 'RequestController@show');
-        Route::post('/cetak', 'RequestController@cetak');
-        Route::post('/', 'RequestController@store');
-        Route::post('/{id}', 'RequestController@update');
-        Route::delete('/hapus', 'RequestController@prosesHapus');
-        Route::put('/{id}', 'RequestController@prosesUbah');
     });
 });

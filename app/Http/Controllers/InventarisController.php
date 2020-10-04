@@ -21,7 +21,8 @@ class InventarisController extends Controller
     public function index()
     {
         $data_inventaris = Inventaris::orderBy('i_id','desc')->get();
-        return view('inventaris.index', compact('data_inventaris'));
+        $data_ruangan = Inventaris::select('i_posisi')->groupBy('i_posisi')->get();
+        return view('inventaris.index', compact('data_inventaris', 'data_ruangan'));
     }
 
     public function tambah()
@@ -66,6 +67,7 @@ class InventarisController extends Controller
         $data = ['i_nama' => $request->nama,
                   'i_unit' => $request->unit,
                   'i_kode' => $request->kode,
+                  'jenis' => $request->jenis,
                   'i_harga' => $request->harga,
                   'i_posisi' => $request->posisi,
                   'i_keterangan' => $request->keterangan,
@@ -82,6 +84,7 @@ class InventarisController extends Controller
                   'i_unit' => $request->unit,
                   'i_kode' => $request->kode,
                   'i_harga' => $request->harga,
+                  'jenis' => $request->jenis,
                   'i_posisi' => $request->posisi,
                   'i_keterangan' => $request->keterangan,
                 ];
@@ -124,7 +127,13 @@ class InventarisController extends Controller
     public function cetak(Request $request){
         $data_inventaris = Inventaris::with(['pengadaan' => function($q) use($request){
                                                     $q->whereDate('created_at', '>=', date('Y-m-d', strtotime($request->mulai)))->whereDate('created_at', '<=', date('Y-m-d', strtotime($request->akhir)));
-                                              }])->whereDate('created_at', '>=', date('Y-m-d', strtotime($request->mulai)))->whereDate('created_at', '<=', date('Y-m-d', strtotime($request->akhir)))->get();
+                                              }])->whereDate('created_at', '>=', date('Y-m-d', strtotime($request->mulai)))->whereDate('created_at', '<=', date('Y-m-d', strtotime($request->akhir)));
+        if($request->ruangan == 'semua'){
+          $data_inventaris = $data_inventaris->get();
+        }else{
+          $data_inventaris->where('i_posisi', $request->ruangan)->get();
+        }
+        
         $pdf = PDF::loadview('inventaris.laporan_inventaris_pdf', ['data_inventaris'=>$data_inventaris, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
         return $pdf->stream();
     }

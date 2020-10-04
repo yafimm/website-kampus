@@ -112,6 +112,15 @@ class RequestController extends Controller
         return redirect()->route('request.index')->with('alert-class', 'alert-success')->with('flash_message', 'Data Request Barang berhasil diubah !!');
     }
 
+    public function loadData(Request $request)
+    {
+        if ($request->has('q')) {
+            $cari = $request->q;
+            $dataBarang = DB::table('barang')->select('b_id', 'b_kode', 'b_nama')->where('b_kode', 'LIKE', '%'.$cari.'%')->orWhere('b_nama', 'LIKE', '%'.$cari.'%')->take(10)->get();
+            return response()->json($data);
+        }
+    }
+
     public function cetakTanggal(Request $request){
       $data_request = RequestBarang::where([['created_at','>=', date('Y-m-d', strtotime($request->mulai))], ['created_at','<=', date('Y-m-d', strtotime($request->akhir))]])->get();
       $pdf = PDF::loadview('request.laporan_request_tanggal_pdf', ['data_request'=>$data_request, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);

@@ -125,6 +125,7 @@
                                 <th></th>
                                 <th>Kode</th>
                                 <th>Nama</th>
+                                <th>Jenis</th>
                                 <th>Stock</th>
                                 <th>Satuan</th>
                                 <th>Harga</th>
@@ -152,6 +153,7 @@
                                 <td>{{$key + 1}}</td>
                                 <td>{{$barang->b_kode}}</td>
                                 <td>{{$barang->b_nama}}</td>
+                                <td>{{$barang->jenis}}</td>
                                 <td>{{$barang->stok}}</td>
                                 <td>{{$barang->b_satuan}}</td>
                                 <td>{{'Rp. '.number_format($barang->b_harga, 2, ',' ,'.')}}</td>
@@ -263,47 +265,6 @@
             </div>
         </div>
     </div>
-
-    <div class="modal fade" id="modalRestock" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header" style="background-color:#357ef2;color:#fff">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Tambah Stock Barang</h4>
-                </div>
-                <form name="restockForm" id="restockForm" action="{{ route('barang.restock') }}" method="POST"
-                    class="form-horizontal">
-                    {{ csrf_field() }}
-                    <input type="hidden" name="id" id="id">
-                    <div class="modal-body">
-                        <p>Masukkan penambahan stock</p>
-                        <br>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">Tambah Stock</label>
-                            <div class="col-sm-6">
-                                <input required name="stock" type="number" class="form-control" id="stock"
-                                    placeholder="Kolom Stock Barang">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-success">Tambahkan</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <script type="text/javascript">
-        $('#modalRestock').on('show.bs.modal', function (event) {
-              var button = $(event.relatedTarget);
-              var id = button.data('barangid');
-              var modal = $(this);
-              modal.find('#id').val(id);
-          });
-    </script>
 
       <script type="text/javascript">
 

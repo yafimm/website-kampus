@@ -32,6 +32,7 @@ class InventarisRequest extends FormRequest
           'nama' => $nama,
           'foto' => $foto,
           'kode' => $kode,
+          'jenis' => 'required|in:ATK,ART',
           'harga' => 'required|integer',
           'posisi' => 'required|string|min:3',
           'keterangan' => 'required|string|min:3'

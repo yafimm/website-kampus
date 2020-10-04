@@ -14,10 +14,18 @@ class BarangController extends Controller
 {
      public function index(Request $request)
      {
-         $data_barang = Barang::with('pengadaan','request', 'request.user')->orderBy('b_id', 'desc');
-         // if($request->query){
-         //    $data_barang = $data_barang->where('')
-         // }
+         $data_barang = Barang::with('pengadaan','request', 'request.user');
+         if($request->nama){
+            $data_barang = $data_barang->where('b_nama', 'like','%'.$request->nama.'%');
+         }
+
+         if($request->orderBy){
+           if($request->desc == 'asc'){
+             $data_barang = $data_barang->orderBy('b_id', $request->orderBy);
+           }else if($request->orderBy == 'desc'){
+             $data_barang = $data_barang->orderBy('b_id', $request->orderBy);
+           }
+         }
          $data_barang = $data_barang->paginate(20);
          return Response()->json(['status'  => 200,
                                   'data'    => $data_barang,

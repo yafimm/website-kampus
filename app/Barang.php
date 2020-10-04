@@ -11,7 +11,7 @@ class Barang extends Model
     protected $primaryKey = 'b_id';
 
     protected $fillable = [
-        'b_kode', 'b_nama','b_stock','b_satuan','b_foto', 'b_harga'
+        'b_kode', 'b_nama','b_stock','b_satuan','b_foto', 'b_harga', 'jenis'
     ];
 
     protected $appends = ['total', 'stok'];

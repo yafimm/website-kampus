@@ -50,6 +50,7 @@ class BarangController extends Controller
          $barang->b_nama = $request->nama;
          $barang->b_stock = $request->stock;
          $barang->b_kode = $request->kode;
+         $barang->jenis = $request->jenis;
          $barang->b_satuan = $request->satuan;
          $barang->b_harga = $request->harga;
          $barang->b_foto = $imageName;
@@ -62,6 +63,7 @@ class BarangController extends Controller
          $data = ['b_nama' => $request->nama,
                   'b_stock' => $request->stock,
                   'b_satuan' => $request->satuan,
+                  'jenis' => $request->jenis,
                   'b_harga' => $request->harga];
 
          if(!empty($request->file('foto'))) {

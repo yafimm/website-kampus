@@ -71,6 +71,18 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-3 control-label">Jenis Barang</label>
+                            <div class="col-sm-6">
+                                <select name="jenis" id="jenis" class="form-control">
+                                    <option value="ATK" {{ $data_barang->jenis == 'ATK' ? 'selected' : '' }}>ATK</option>
+                                    <option value="ART" {{ $data_barang->jenis == 'ART' ? 'selected' : '' }}>ART</option>
+                                </select>
+                                @if($errors->has('jenis'))
+                                   <small class="form-text text-danger">*{{ $errors->first('jenis') }}</small>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-3 control-label">Stock Barang</label>
                             <div class="col-sm-6">
                                 <input required name="stock" type="text" class="form-control" id=""

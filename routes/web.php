@@ -1,5 +1,6 @@
 <?php
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -49,7 +50,6 @@ Route::group(['middleware' => ['web','auth','role:admin,staff_inventaris']], fun
 
   // Modul Barang
   Route::get('/barang', 'BarangController@index')->name('barang.index');
-  Route::post('/barang/restock', 'BarangController@prosesRestock')->name('barang.restock');
   Route::get('/barang/tambah', 'BarangController@tambah')->name('barang.tambah');
   Route::post('/barang', 'BarangController@prosesTambah')->name('barang.prosesTambah');
   Route::delete('/barang/hapus', 'BarangController@prosesHapus')->name('barang.prosesHapus');
@@ -141,6 +141,7 @@ Route::group(['middleware' => ['web', 'auth', 'role:dosen,admin,staff_inventaris
   Route::get('/request', 'RequestController@index')->name('request.index');
   Route::post('/request', 'RequestController@prosesTambah')->name('request.prosesTambah');
   Route::get('/request/tambah', 'RequestController@tambah')->name('request.tambah');
+  Route::get('/request/cari', 'RequestController@loadData')->name('request.cari');
   Route::get('/request/cetak/{id}', 'RequestController@cetak')->name('request.cetak.user');
   Route::get('/request/{id}/edit', 'RequestController@ubah')->name('request.ubah');
   Route::get('/request/{id}', 'RequestController@lihat')->name('request.lihat');

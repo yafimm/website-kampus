@@ -16,15 +16,6 @@ class BarangRequest extends FormRequest
         return true;
     }
 
-    protected function failedValidation(Validator $validator)
-    {
-        $errors = (new ValidationException($validator))->errors();
-
-        throw new HttpResponseException(
-            response()->json(['errors' => $errors], JsonResponse::HTTP_UNPROCESSABLE_ENTITY)
-        );
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -46,6 +37,7 @@ class BarangRequest extends FormRequest
         'nama' => $nama,
         'foto' => $foto,
         'kode' => $kode,
+        'jenis' => 'required|in:ATK,ART',
         'harga' => 'required|integer',
         'satuan' => 'required|string',
       ];

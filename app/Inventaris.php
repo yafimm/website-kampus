@@ -11,7 +11,7 @@ class Inventaris extends Model
     protected $primaryKey = 'i_id';
 
     protected $fillable = [
-        'i_nama','i_unit','i_posisi','i_foto','i_keterangan', 'i_harga', 'i_kode', 'i_satuan'
+        'i_nama','i_unit','i_posisi','i_foto','i_keterangan', 'i_harga', 'i_kode', 'i_satuan', 'jenis'
     ];
 
     protected $appends = ['total', 'stok'];

@@ -122,6 +122,7 @@
                             <th></th>
                             <th>Kode</th>
                             <th>Nama</th>
+                            <th>Jenis</th>
                             <th>Posisi</th>
                             <th>Keterangan</th>
                             <th>Unit</th>
@@ -150,6 +151,7 @@
                             <td>{{$key + 1}}</td>
                             <td>{{$inventaris->i_kode}}</td>
                             <td>{{$inventaris->i_nama}}</td>
+                            <td>{{$inventaris->jenis}}</td>
                             <td>{{$inventaris->i_posisi}}</td>
                             <td>{{$inventaris->i_keterangan}}</td>
                             <td>{{$inventaris->getStok()}}</td>
@@ -252,6 +254,20 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="form-group">
+                                <label class="col-sm-3 control-label">Berdasarkan Ruangan</label>
+                                <div class="col-sm-6">
+                                    <div class="input-prepend input-group">
+                                      <select class="form-control" name="ruangan">
+                                        <option value="semua">Semua Ruangan</option>
+                                        @foreach($data_ruangan as $ruangan)
+                                          <option value="{{ $ruangan->i_posisi }}">{{$ruangan->i_posisi}}</option>
+                                        @endforeach
+                                      </select>
+                                    </div>
+                                </div>
+                            </div>
                         <br>
                     </div>
                     <div class="modal-footer">

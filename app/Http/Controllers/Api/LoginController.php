@@ -1,56 +1,41 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api;
 
 use Illuminate\Http\Request;
+use Validator;
+use JWTFactory;
+use JWTAuth;
+use JWTAuthException;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
     public function __construct()
     {
-
+       $this->user = new User;
     }
-
-    public function getLogin(){
-        if(Auth::check()){
-            // if(Auth::user()->role == 'mahasiswa' || Auth::user()->role == 'ormawa'){
-            //     return redirect('/user/dashboard');
-            // }else if(Auth::user()->role == 'admin'){
-            //     return redirect('/admin/dashboard');
-            // }else if(Auth::user()->role == 'bagumum'){
-            //     return redirect('/bagumum/dashboard');
-            // }else if(Auth::user()->role == 'dosen'){
-            //     return redirect('/dosen/dashboard');
-            // }
-            return redirect('dashboard');
-        }else{
-            return view('auth.viewLogin');
-        }
+    public function login(Request $request)
+    {
+       $validator = Validator::make($request->all(), [
+           'email' => 'required|string|email|max:255',
+           'password'=> 'required'
+       ]);
+       if ($validator->fails()) {
+           return response()->json($validator->errors());
+       }
+       \Config::set('jwt.user', 'App\User');
+       \Config::set('auth.providers.users.model', \App\User::class);
+       $credentials = $request->only('email', 'password');
+       $token = null;
+       try {
+           if (! $token = JWTAuth::attempt($credentials)) {
+               return response()->json(['error' => 'invalid_credentials'], 401);
+           }
+       } catch (JWTException $e) {
+           return response()->json(['error' => 'could_not_create_token'], 500);
+       }
+      return response()->json(compact('token'));
     }
-
-    public function postLogin(Request $request){
-         //dd($request);
-         $email = $request->post('email');
-         $password = $request->post('password');
-         if(Auth::attempt(['email' => $email, 'password' => $password])){
-            // if(Auth::user()->role == 'mahasiswa' || Auth::user()->role == 'ormawa'){
-            //     return redirect('/user/dashboard');
-            // }else if(Auth::user()->role == 'admin'){
-            //     return redirect('/admin/dashboard');
-            // }else if(Auth::user()->role == 'bagumum'){
-            //     return redirect('/bagumum/dashboard');
-            // }else if(Auth::user()->role == 'dosen'){
-            //     return redirect('/dosen/dashboard');
-            // }
-            return redirect('dashboard');
-         }else{
-            return redirect()->route('login')->with('alert-class', 'alert-danger')->with('flash_message', 'Email atau password salah !!');
-         }
-    }
-
-    public function postLogout(){
-        Auth::logout();
-        return redirect('/login');
-   }
 }

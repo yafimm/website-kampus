@@ -154,7 +154,7 @@ class MaintenanceController extends Controller
                 if($barangMaintenance){
                     return Response()->json(['status'  => 400,
                                              'data'    => null,
-                                             'message' => 'Failed to get data, because the data is already in the no_register .'$request->no_register' !!']);
+                                             'message' => 'Failed to get data, because the data is already in the no_register '.$request->no_register.' !!']);
                 }
             }
             return Response()->json(['status'  => 200,
@@ -169,17 +169,31 @@ class MaintenanceController extends Controller
 
     public function cetak(Request $request){
       $data_maintenance = Maintenance::where([['no_register','=', $request->no_register]])->get();
-      $pdf = PDF::loadview('maintenance.laporan_maintenance_pdf', ['data_maintenance'=>$data_maintenance]);
-      return $pdf->download('laporan-data-maintenance'.$request->no_register.'.pdf');
+      if(count($data_maintenance) > 0){
+          $pdf = PDF::loadview('maintenance.laporan_maintenance_pdf', ['data_maintenance'=>$data_maintenance]);
+          return Response()->json(['status'  => 200,
+                                   'data'    => $pdf->stream(),
+                                   'message' => 'Success, data is found !!']);
+      }
+      return Response()->json(['status'  => 404,
+                               'data'    => null,
+                               'message' => 'Failed, data not found !!']);
+
     }
 
     public function cetakTanggal(Request $request){
       $data_maintenance = Maintenance::where([['tanggal_maintenance','>=', date('Y-m-d', strtotime($request->mulai))], ['tanggal_maintenance','<=', date('Y-m-d', strtotime($request->akhir))]])->orderBy('tanggal_maintenance', 'asc')->with('barang', 'inventaris')->get();
-      $data_maintenance = $data_maintenance->mapToGroups(function ($item, $key) {
-          return [$item['no_register'] => $item];
-      });
-
-      $pdf = PDF::loadview('maintenance.laporan_maintenance_tanggal_pdf', ['data_maintenance'=>$data_maintenance, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
-      return $pdf->download('laporan-data-maintenance-'.$request->mulai.'_'.$request->mulai.'.pdf');
+      if(count($data_maintenance) > 0){
+          $data_maintenance = $data_maintenance->mapToGroups(function ($item, $key) {
+            return [$item['no_register'] => $item];
+          });
+          $pdf = PDF::loadview('maintenance.laporan_maintenance_pdf', ['data_maintenance'=>$data_maintenance]);
+          return Response()->json(['status'  => 200,
+                                   'data'    => $pdf->stream(),
+                                   'message' => 'Success, data is found !!']);
+      }
+      return Response()->json(['status'  => 404,
+                               'data'    => null,
+                               'message' => 'Failed, data not found !!']);
     }
 }

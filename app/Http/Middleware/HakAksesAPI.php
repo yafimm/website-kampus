@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class HakAksesMiddleware
+class HakAksesAPI
 {
     /**
      * Handle an incoming request.
@@ -21,11 +21,13 @@ class HakAksesMiddleware
                     return $next($request);
                   }
               } catch (ModelNotFoundException $exception) {
-                return abort('401');
+                return response()->json(['status'  => 401,
+                                         'message' => 'You dont have a permission for this endpoint']);
               }
           }
+          return response()->json(['status'  => 401,
+                                   'message' => 'You dont have a permission for this endpoint']);
 
-        return abort('401');
         // if(auth()->check() && !auth()->user()->hasRole($nameRole)){
         //     return abort('401');
         // }
