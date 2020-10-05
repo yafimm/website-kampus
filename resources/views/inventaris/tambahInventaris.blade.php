@@ -54,18 +54,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Jenis Inventaris</label>
-                            <div class="col-sm-6">
-                                <select name="jenis" id="jenis" class="form-control">
-                                    <option value="ATK">ATK</option>
-                                    <option value="ART">ART</option>
-                                </select>
-                                @if($errors->has('jenis'))
-                                   <small class="form-text text-danger">*{{ $errors->first('jenis') }}</small>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label class="col-sm-3 control-label">Kode Inventaris</label>
                             <div class="col-sm-6">
                                 <input required name="kode" type="text" class="form-control" id=""

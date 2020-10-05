@@ -63,6 +63,13 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-3 control-label">Jenis Barang</label>
+                            <div class="col-sm-6">
+                                <input disabled name="nama" type="text" class="form-control" id=""
+                                    placeholder="Kolom Jenis Barang" value="{{$data_barang->jenis}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-3 control-label">Stok Barang</label>
                             <div class="col-sm-6">
                                 <input disabled name="stock" type="text" class="form-control" id=""

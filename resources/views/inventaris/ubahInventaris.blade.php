@@ -66,18 +66,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Jenis Inventaris</label>
-                            <div class="col-sm-6">
-                                <select name="jenis" id="jenis" class="form-control">
-                                    <option value="ATK" {{ $data_inventaris->jenis == 'ATK' ? 'selected' : '' }}>ATK</option>
-                                    <option value="ART" {{ $data_inventaris->jenis == 'ART' ? 'selected' : '' }}>ART</option>
-                                </select>
-                                @if($errors->has('jenis'))
-                                   <small class="form-text text-danger">*{{ $errors->first('jenis') }}</small>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label class="col-sm-3 control-label">Unit Inventaris</label>
                             <div class="col-sm-6">
                                 <input required name="unit" type="number" class="form-control" id=""

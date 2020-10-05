@@ -122,7 +122,6 @@
                             <th></th>
                             <th>Kode</th>
                             <th>Nama</th>
-                            <th>Jenis</th>
                             <th>Posisi</th>
                             <th>Keterangan</th>
                             <th>Unit</th>
@@ -151,7 +150,6 @@
                             <td>{{$key + 1}}</td>
                             <td>{{$inventaris->i_kode}}</td>
                             <td>{{$inventaris->i_nama}}</td>
-                            <td>{{$inventaris->jenis}}</td>
                             <td>{{$inventaris->i_posisi}}</td>
                             <td>{{$inventaris->i_keterangan}}</td>
                             <td>{{$inventaris->getStok()}}</td>

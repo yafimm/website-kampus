@@ -110,16 +110,24 @@
 
   <script type="text/javascript">
   var urlCari = '{!! route("request.cari") !!}';
-
   $('.cari').select2({
     placeholder: 'Cari berdasarkan kode/nama ..',
     ajax: {
-      url: urlCari,
-      dataType: 'json',
-      data:{jenis:$('input[name="jenis"] :checked').val()},
+        url: urlCari,
+        dataType: 'json',
+        data: function (params) {
+                  var query = {
+                    q: params.term,
+                    type: 'public',
+                    jenis:$('input[name="jenis"]:checked').val()
+                  }
+
+              return query;
+              },
+      type:"GET",
       delay: 250,
       processResults: function (data) {
-        console.log($('input[name="jenis"] :checked').val());
+        console.log(data);
         return {
           results:  $.map(data, function (item) {
             return {

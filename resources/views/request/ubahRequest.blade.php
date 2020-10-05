@@ -18,6 +18,10 @@
 
     <!-- Flot charts -->
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
+
     <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-resize.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/widgets/charts/flot/flot-stack.js') }}"></script>
@@ -51,25 +55,42 @@
                         <input type="hidden" name="status" value="{{$data_request->rb_status}}">
                         <input type="hidden" name="iduser" value="{{Auth::user()->id}}">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Barang</label>
-                            <div class="col-sm-6">
-                                <select name="idBarang" class="chosen-select">
-                                    <optgroup label="Barang">
-                                        @foreach ($data_barang as $barang)
-                                        <option @if ($data_request->b_id == $barang->b_id)
-                                            {{'selected'}}
-                                            @endif
-                                            value="{{$barang->b_id}}">{{$barang->b_nama}}</option>
-                                        @endforeach
-                                    </optgroup>
-                                </select>
+                          <label class="col-sm-3 control-label">Jenis</label>
+                            <div class="col-md-6 col-lg-3 col-sm-12">
+                              <div class="form-check">
+                                <input class="form-check-input" type="radio" name="jenis" id="exampleRadios1" value="ATK" {{ $data_request->jenis == 'ATK' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="exampleRadios1">
+                                  ATK
+                                </label>
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="radio" name="jenis" id="exampleRadios2" value="ART" {{ $data_request->jenis == 'ART' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="exampleRadios2">
+                                  ART
+                                </label>
+                              </div>
                             </div>
+                        </div>
+                        <div class="form-group">
+                              <label class="col-sm-3 control-label">Barang</label>
+                              <div class="col-md-6 col-lg-3 col-sm-12">
+                                  <div class="col-sm-12">
+                                    <div class="input-prepend input-group">
+                                        <span class="add-on input-group-addon">
+                                            <i class="glyph-icon icon-search"></i>
+                                        </span>
+                                        <select id="cari" class="cari form-control" style="width:500px;" name="b_id">
+                                          <option value="{{ $data_request->b_id }}" checked>{{ $data_request->b_nama }}</option>
+                                        </select>
+                                    </div>
+                                  </div>
+                              </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Jumlah</label>
                             <div class="col-sm-6">
-                                <input required name="jumlah" type="number" class="form-control" id=""
-                                    placeholder="Jumlah" value="{{$data_request->rb_jumlah}}">
+                                <input required name="jumlah" type="number" class="form-control" id="" value="{{ $data_request->rb_jumlah }}"
+                                    placeholder="Jumlah">
                             </div>
                         </div>
                         <div class="form-group">
@@ -77,9 +98,7 @@
                             </div>
                             <div class="col-sm-3">
                                 <button type="submit" class="btn btn-success">
-                                    <i class="glyph-icon icon-file"></i> Simpan</button>
-                                <a href="{{ route('request.index') }}" class="btn btn-blue-alt"><i
-                                        class="glyph-icon icon-arrow-left"></i> Kembali</a>
+                                    <i class="glyph-icon icon-check"></i> Simpan</button>
                             </div>
                         </div>
 
@@ -91,4 +110,37 @@
     </div>
 
 </div>
+<script type="text/javascript">
+var urlCari = '{!! route("request.cari") !!}';
+$('.cari').select2({
+  placeholder: 'Cari berdasarkan kode/nama ..',
+  ajax: {
+      url: urlCari,
+      dataType: 'json',
+      data: function (params) {
+                var query = {
+                  q: params.term,
+                  type: 'public',
+                  jenis:$('input[name="jenis"]:checked').val()
+                }
+
+            return query;
+            },
+    type:"GET",
+    delay: 250,
+    processResults: function (data) {
+      console.log(data);
+      return {
+        results:  $.map(data, function (item) {
+          return {
+            text: item.b_nama,
+            id: item.b_id
+          }
+        })
+      };
+    },
+    cache: true
+  }
+});
+</script>
 @endsection

@@ -67,7 +67,6 @@ class InventarisController extends Controller
         $data = ['i_nama' => $request->nama,
                   'i_unit' => $request->unit,
                   'i_kode' => $request->kode,
-                  'jenis' => $request->jenis,
                   'i_harga' => $request->harga,
                   'i_posisi' => $request->posisi,
                   'i_keterangan' => $request->keterangan,
@@ -84,7 +83,6 @@ class InventarisController extends Controller
                   'i_unit' => $request->unit,
                   'i_kode' => $request->kode,
                   'i_harga' => $request->harga,
-                  'jenis' => $request->jenis,
                   'i_posisi' => $request->posisi,
                   'i_keterangan' => $request->keterangan,
                 ];

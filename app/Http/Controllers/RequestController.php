@@ -81,9 +81,8 @@ class RequestController extends Controller
 
     public function prosesTambah(Request $request){
         // kenapa pake requesst all, karena kolom sama name di input tambahnya sesuai
-        dd($request->all());
         RequestBarang::create(['user_id' => $request->iduser,
-                              'b_id' => $request->idBarang,
+                              'b_id' => $request->b_id,
                               'rb_jumlah' => $request->jumlah,
                               'rb_status' => $request->status]);
 
@@ -94,7 +93,7 @@ class RequestController extends Controller
         $data_request = DB::table('request_barang')
         ->join('users', 'request_barang.user_id', '=', 'users.id')
         ->join('barang', 'request_barang.b_id', '=', 'barang.b_id')
-        ->select('request_barang.rb_id', 'users.name', 'request_barang.b_id','barang.b_nama','barang.b_foto', 'request_barang.rb_jumlah', 'request_barang.rb_status', 'request_barang.created_at','request_barang.updated_at')
+        ->select('request_barang.rb_id', 'users.name', 'request_barang.b_id','barang.b_nama','barang.b_foto', 'barang.jenis', 'request_barang.rb_jumlah',  'request_barang.rb_status', 'request_barang.created_at','request_barang.updated_at')
         ->where('request_barang.rb_id', $id)
         ->first();
         $data_barang = Barang::all();
@@ -105,7 +104,7 @@ class RequestController extends Controller
 
         RequestBarang::findOrFail($id)
                       ->update(['user_id' => $request->iduser,
-                                'b_id' => $request->idBarang,
+                                'b_id' => $request->b_id,
                                 'rb_jumlah' => $request->jumlah,
                                 'rb_status' => $request->status,
                                 ]);
@@ -115,19 +114,19 @@ class RequestController extends Controller
 
     public function loadData(Request $request)
     {
-        if ($request->has('q')) {
-            $cari = $request->q;
-            $dataBarang = DB::table('barang')->select('b_id', 'b_kode', 'b_nama')->where(function ($q){
-                                                                                    $q->where('b_kode', 'LIKE', '%'.$cari.'%')
-                                                                                      ->where('jenis','=',$request->jenis);
-                                                                                  })
-                                                                                  ->orWhere(function($q){
-                                                                                    $q->where('b_nama', 'LIKE', '%'.$cari.'%')
-                                                                                       ->where('jenis','=',$request->jenis);
-                                                                                   })
-                                                                                  ->take(10)->get();
-            return response()->json($dataBarang);
-        }
+          if($request->has('q')) {
+              $cari = $request->q;
+              $dataBarang = DB::table('barang')->select('b_id', 'b_kode', 'b_nama')->where(function ($q) use ($request){
+                                                                                      $q->where('b_kode', 'LIKE', '%'.$request->q.'%')
+                                                                                        ->where('jenis','=',$request->jenis);
+                                                                                    })
+                                                                                    ->orWhere(function($q) use ($request){
+                                                                                      $q->where('b_nama', 'LIKE', '%'.$request->q.'%')
+                                                                                         ->where('jenis','=',$request->jenis);
+                                                                                     })
+                                                                                    ->take(10)->get();
+              return response()->json($dataBarang);
+          }
     }
 
     public function cetakTanggal(Request $request){
