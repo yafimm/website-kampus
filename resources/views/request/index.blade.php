@@ -100,6 +100,7 @@
                             <th></th>
                             <th>User</th>
                             <th>Barang</th>
+                            <th>Jenis</th>
                             <th>Jumlah</th>
                             <th>Status</th>
                             <th>Tanggal</th>
@@ -113,6 +114,8 @@
                             <td>{{$key + 1}}</td>
                             <td>{{$request->user->name}}</td>
                             <td>{{$request->barang ? $request->barang->b_nama : '- Data barang sudah dihapus -'}}
+                            </td>
+                            <td>{{$request->barang ? $request->barang->jenis : '- Data barang sudah dihapus -'}}
                             </td>
                             <td>{{$request->rb_jumlah}}</td>
                             <td>

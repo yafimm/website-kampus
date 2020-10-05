@@ -262,7 +262,7 @@
                                       <select class="form-control" name="ruangan">
                                         <option value="semua">Semua Ruangan</option>
                                         @foreach($data_ruangan as $ruangan)
-                                          <option value="{{ $ruangan->i_posisi }}">{{$ruangan->i_posisi}}</option>
+                                          <option value="{{ $ruangan->i_posisi }}">{{ ucwords($ruangan->i_posisi) }}</option>
                                         @endforeach
                                       </select>
                                     </div>

@@ -52,6 +52,23 @@
                         <input type="hidden" name="status" value="0">
                         <input type="hidden" name="iduser" value="{{Auth::user()->id}}">
                         <div class="form-group">
+                          <label class="col-sm-3 control-label">Jenis</label>
+                            <div class="col-md-6 col-lg-3 col-sm-12">
+                              <div class="form-check">
+                                <input class="form-check-input" type="radio" name="jenis" id="exampleRadios1" value="ATK" checked>
+                                <label class="form-check-label" for="exampleRadios1">
+                                  ATK
+                                </label>
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="radio" name="jenis" id="exampleRadios2" value="ART">
+                                <label class="form-check-label" for="exampleRadios2">
+                                  ART
+                                </label>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
                               <label class="col-sm-3 control-label">Barang</label>
                               <div class="col-md-6 col-lg-3 col-sm-12">
                                   <div class="col-sm-12">
@@ -59,7 +76,7 @@
                                         <span class="add-on input-group-addon">
                                             <i class="glyph-icon icon-search"></i>
                                         </span>
-                                        <select id="cari" class="cari form-control" style="width:500px;" name="cari"></select>
+                                        <select id="cari" class="cari form-control" style="width:500px;" name="b_id"></select>
                                     </div>
                                   </div>
                               </div>
@@ -93,13 +110,16 @@
 
   <script type="text/javascript">
   var urlCari = '{!! route("request.cari") !!}';
+
   $('.cari').select2({
     placeholder: 'Cari berdasarkan kode/nama ..',
     ajax: {
       url: urlCari,
       dataType: 'json',
+      data:{jenis:$('input[name="jenis"] :checked').val()},
       delay: 250,
       processResults: function (data) {
+        console.log($('input[name="jenis"] :checked').val());
         return {
           results:  $.map(data, function (item) {
             return {

@@ -81,6 +81,7 @@ class RequestController extends Controller
 
     public function prosesTambah(Request $request){
         // kenapa pake requesst all, karena kolom sama name di input tambahnya sesuai
+        dd($request->all());
         RequestBarang::create(['user_id' => $request->iduser,
                               'b_id' => $request->idBarang,
                               'rb_jumlah' => $request->jumlah,
@@ -116,8 +117,16 @@ class RequestController extends Controller
     {
         if ($request->has('q')) {
             $cari = $request->q;
-            $dataBarang = DB::table('barang')->select('b_id', 'b_kode', 'b_nama')->where('b_kode', 'LIKE', '%'.$cari.'%')->orWhere('b_nama', 'LIKE', '%'.$cari.'%')->take(10)->get();
-            return response()->json($data);
+            $dataBarang = DB::table('barang')->select('b_id', 'b_kode', 'b_nama')->where(function ($q){
+                                                                                    $q->where('b_kode', 'LIKE', '%'.$cari.'%')
+                                                                                      ->where('jenis','=',$request->jenis);
+                                                                                  })
+                                                                                  ->orWhere(function($q){
+                                                                                    $q->where('b_nama', 'LIKE', '%'.$cari.'%')
+                                                                                       ->where('jenis','=',$request->jenis);
+                                                                                   })
+                                                                                  ->take(10)->get();
+            return response()->json($dataBarang);
         }
     }
 

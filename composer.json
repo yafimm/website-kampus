@@ -43,7 +43,7 @@
             "database/factories"
         ],
         "files": [
-           "App/Yaff_helpers.php"
+           "app/Yaff_helpers.php"
          ]
     },
     "autoload-dev": {

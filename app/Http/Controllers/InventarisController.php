@@ -131,9 +131,9 @@ class InventarisController extends Controller
         if($request->ruangan == 'semua'){
           $data_inventaris = $data_inventaris->get();
         }else{
-          $data_inventaris->where('i_posisi', $request->ruangan)->get();
+          $data_inventaris = $data_inventaris->where('i_posisi', $request->ruangan)->get();
         }
-        
+
         $pdf = PDF::loadview('inventaris.laporan_inventaris_pdf', ['data_inventaris'=>$data_inventaris, 'mulai' => $request->mulai, 'akhir' => $request->akhir]);
         return $pdf->stream();
     }
